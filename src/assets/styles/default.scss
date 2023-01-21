@@ -6,3 +6,15 @@ html {
     font: normal 400 var(--default-size)/1.2 "Roboto", sans-serif;
     color: var(--white-color);
 }
+.h1-title {
+    font-size: var(--h1-size);
+}
+.h2-title {
+    font-size: var(--h2-size);
+}
+.container {
+    padding: 0 20px;
+    margin: 0 auto;
+    max-width: 1800px;
+    width: 100%;
+}
