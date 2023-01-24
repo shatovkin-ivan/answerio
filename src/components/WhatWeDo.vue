@@ -27,9 +27,9 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <h3 class="info__subtitle">
+                        <p class="info__subtitle">
                             Saving time
-                        </h3>
+                        </p>
                     </li>
                     <li class="info__item">
                         <svg width="85" height="85" viewBox="0 0 85 85" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -43,9 +43,9 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <h3 class="info__subtitle">
+                        <p class="info__subtitle">
                             Reliable sources
-                        </h3>
+                        </p>
                     </li>
                     <li class="info__item">
                         <svg width="85" height="85" viewBox="0 0 85 85" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -63,9 +63,9 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <h3 class="info__subtitle">
+                        <p class="info__subtitle">
                             Various topics
-                        </h3>
+                        </p>
                     </li>
                     <li class="info__item">
                         <svg width="85" height="85" viewBox="0 0 85 85" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -78,9 +78,9 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <h3 class="info__subtitle">
+                        <p class="info__subtitle">
                             Free of charge
-                        </h3>
+                        </p>
                     </li>
                     <li class="info__item">
                         <svg width="85" height="85" viewBox="0 0 85 85" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -94,11 +94,18 @@
                                 </linearGradient>
                             </defs>
                         </svg>
-                        <h3 class="info__subtitle">
+                        <p class="info__subtitle">
                             Quality answers
-                        </h3>
+                        </p>
                     </li>
                 </ul>
+                <h3 class="h2-title info__secondary-title">
+                    For whom is <span>Аnsverio</span>
+                </h3>
+                <p class="info__text">
+                    For students, professionals, entrepreneurs, amateurs and anyone interested in getting more information on any topic.
+                </p>
+                <img class="info__img" src="@/assets/images/info.png" alt="">
             </div>
         </div>
     </section>
@@ -113,7 +120,7 @@
         padding-top: 64px;
         &__wrap {
             border-radius: 30px;
-            padding: 125px 107px 195px 107px;
+            padding: 125px 107px 95px 107px;
             background-color: #D9D9D9;
         }
         &__head {
@@ -139,6 +146,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 35px;
+            margin-bottom: 114px;
         }
         &__item {
             display: flex;
@@ -166,6 +174,27 @@
             font-size: 2.8rem;
             line-height: 1.5;
             color: var(--theme-color-1);
+        }
+        &__secondary-title {
+            margin-bottom: 36px;
+            text-align: center;
+            color: #27292D;
+            & :is(span) {
+                font-size: inherit;
+                line-height: inherit;
+                color: var(--theme-color-1);
+            }
+        }
+        &__text {
+            margin: 0 auto 40px auto;
+            max-width: 900px;
+            color: rgba(74, 76, 77, .6);
+            line-height: 1.5;
+            text-align: center;
+        }
+        &__img {
+            display: block;
+            margin: 0 auto;
         }
     }
 </style>
