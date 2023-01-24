@@ -3,6 +3,7 @@
   <main>
     <app-ask/>
     <FindsAnswers />
+    <WhatWeDo />
   </main>
   <FooterComponent />
 </template>
@@ -11,6 +12,7 @@
 import HeaderComponent from './components/Header.vue'
 import AppAsk from './components/AppAsk.vue';
 import FindsAnswers from './components/answers/FindsAnswers.vue';
+import WhatWeDo from './components/WhatWeDo.vue';
 import FooterComponent from './components/Footer.vue'
 import '@/assets/styles/style.scss'
 
@@ -20,6 +22,7 @@ export default {
     HeaderComponent,
     AppAsk,
     FindsAnswers,
+    WhatWeDo,
     FooterComponent,
   }
 }

@@ -20,6 +20,12 @@
             <ul class="answers__cards">
                 <AnswerCard />
             </ul>
+            <div class="answers__pagination">
+                More 100 elements
+                <button class="answers__show-more">
+                    Show all
+                </button>
+            </div>
         </div>
     </section>
 </template>
@@ -78,6 +84,18 @@ export default {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 40px;
+            margin-bottom: 77px;
+        }
+        &__pagination {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #A0A1A6;
+        }
+        &__show-more {
+            margin-left: 18px;
+            background-color: transparent;
+            color: var(--theme-color-1);
         }
     }
     .categories {

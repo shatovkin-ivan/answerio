@@ -1,168 +1,28 @@
 <template>
-    <li class="card">
+    <li 
+        class="card" 
+        v-for="(card, index) in cards" 
+        :key="index"
+        :class="{ 'open' : card.isOpen }"
+    >
         <div class="card__top">
             <div class="card__head">
                 <p class="card__subtitle">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit?
+                    {{ card.title }}
                 </p>
-                <button class="card__button">
-                    <svg>
-                        <use xlink:href="@/assets/images/sprites.svg#plus"></use>
-                    </svg>
-                </button>
+                <ToggleButton 
+                    :index="index"
+                    @BtnToggleContent="toggleContent"
+                />
             </div> 
+            
             <div class="card__content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc 
+                {{ card.text }}
             </div>
         </div>
-        
         <div class="card__bottom">
             <span class="card__tag">
-                Technology
-            </span>
-            <div class="card__social">
-                <button class="card__share">
-                    Share
-                    <div class="card__icon">
-                        <svg>
-                            <use xlink:href="@/assets/images/sprites.svg#share"></use>
-                        </svg>
-                    </div>
-                </button>
-                <ul class="card__links">
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </li>
-
-    <li class="card">
-        <div class="card__top">
-            <div class="card__head">
-                <p class="card__subtitle">
-                    Lorem consectetur adipiscing elit?
-                </p>
-                <button class="card__button">
-                    <svg>
-                        <use xlink:href="@/assets/images/sprites.svg#plus"></use>
-                    </svg>
-                </button>
-            </div> 
-            <div class="card__content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc 
-            </div>
-        </div>
-        
-        <div class="card__bottom">
-            <span class="card__tag">
-                Technology
-            </span>
-            <div class="card__social">
-                <button class="card__share">
-                    Share
-                    <div class="card__icon">
-                        <svg>
-                            <use xlink:href="@/assets/images/sprites.svg#share"></use>
-                        </svg>
-                    </div>
-                </button>
-                <ul class="card__links">
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </li>
-
-    <li class="card">
-        <div class="card__top">
-            <div class="card__head">
-                <p class="card__subtitle">
-                    Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?
-                </p>
-                <button class="card__button">
-                    <svg>
-                        <use xlink:href="@/assets/images/sprites.svg#plus"></use>
-                    </svg>
-                </button>
-            </div> 
-            <div class="card__content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc 
-            </div>
-        </div>
-        
-        <div class="card__bottom">
-            <span class="card__tag">
-                Technology
-            </span>
-            <div class="card__social">
-                <button class="card__share">
-                    Share
-                    <div class="card__icon">
-                        <svg>
-                            <use xlink:href="@/assets/images/sprites.svg#share"></use>
-                        </svg>
-                    </div>
-                </button>
-                <ul class="card__links">
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </li>
-
-    <li class="card">
-        <div class="card__top">
-            <div class="card__head">
-                <p class="card__subtitle">
-                    Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?
-                </p>
-                <button class="card__button">
-                    <svg>
-                        <use xlink:href="@/assets/images/sprites.svg#plus"></use>
-                    </svg>
-                </button>
-            </div> 
-            <div class="card__content">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc 
-            </div>
-        </div>
-        
-        <div class="card__bottom">
-            <span class="card__tag">
-                Technology
+                {{ card.category }}
             </span>
             <div class="card__social">
                 <button class="card__share">
@@ -194,10 +54,59 @@
 
 <script>
 
+import ToggleButton from '@/components/answers/ToggleButton.vue'
+
+export default {
+    components: {
+        ToggleButton,
+    },
+    data() {
+        return {
+            cards: [
+                {
+                    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
+                    category: 'Technology',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: 'Health & Fitness',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: 'Finance & Investing',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: ' Travel',
+                    isOpen: false,
+                },
+            ]
+        }
+    },
+    methods: {
+        toggleContent(i) {
+            this.cards[i.index].isOpen ? this.cards[i.index].isOpen = false : this.cards[i.index].isOpen = true
+        }
+    }
+}
+
 </script>
 
 <style scoped lang="scss">
     .card {
+        &.open :is(.card__content) {
+            max-height: none;
+            background: none;
+            -webkit-background-clip: border-box;
+            -webkit-text-fill-color: currentcolor;
+        }
         &__top {
             border-radius: 16px 16px 0 0;
             padding: 16px 25px 37px 35px;
@@ -237,6 +146,7 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             text-fill-color: transparent;
+            transition: .3s max-height ease-in-out;
             &::before {
                 content: '';
                 position: absolute;
