@@ -28,10 +28,18 @@
                 </p>
             </label>
             <div class="modal__buttons">
-                <button type="button" class="modal__button modal__button_accept">
+                <button 
+                    @click="setCookie('hideCookieModal', true, 30)"
+                    type="button" 
+                    class="modal__button modal__button_accept"
+                >
                     Accept
                 </button>
-                <button type="button" class="modal__button modal__button_ignore">
+                <button 
+                    @click="setSesionStorage('hideCookieModal', true)"
+                    type="button" 
+                    class="modal__button modal__button_ignore"
+                >
                     To ignore
                 </button>
             </div>
@@ -40,7 +48,19 @@
 </template>
 
 <script>
-
+    export default {
+        methods: {
+            setSesionStorage(key, value) {
+                sessionStorage.setItem(key, value)
+            },
+            setCookie(key, value, expires) {
+                const date = new Date;
+                date.setDate(date.getDate() + expires);
+                document.cookie = `${key}=${value}; path=/; expires=" + ${date.toUTCString()};`
+            }
+        }
+    }
+    
 </script>
 
 <style scoped lang="scss">

@@ -1,5 +1,13 @@
 <template>
   <div class="ask">
+	<div class="ask__bg">
+		<picture>
+			<source srcset="@/assets/images/intro-bg.avif" type="image/avif">
+			<source srcset="@/assets/images/intro-bg.webp" type="image/webp">
+			<source srcset="@/assets/images/intro-bg.png" type="image/png">
+			<img src="@/assets/images/intro-bg.png" alt="">
+		</picture>
+	</div>
     <div class="container">
       <h1 class="ask__title h1-title">From <span class="h1-title">science</span> fiction to reality</h1>
       <p class="ask__text">Get an instant AI-based response from reliable sources</p>
@@ -29,7 +37,8 @@
 <style scoped lang="scss">
 
 .ask {
-
+	padding-top: 131px;
+	position: relative;
 	&__title {
 		font-weight: 400;
 		color: #A0A1A6;
@@ -93,7 +102,19 @@
 			background-repeat: no-repeat;
 		} 
 	}
-
+	&__bg {
+		position: absolute;
+		top: -125px;
+		left: 0;
+		width: 100vw;
+		height: auto;
+		z-index: -1;
+		& :is(img) {
+			display: block;
+			width: 100%;
+			height: auto;
+		}
+	}
 }
 .form {
   background: linear-gradient(181.25deg, #224EFE -41.38%, #0E36D6 87.57%);

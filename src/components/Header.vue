@@ -19,8 +19,6 @@ export default {
 
 .header {
 	padding: 24px 0;
-	margin-bottom: 131px;
-	
 	&__title {
 		text-transform: uppercase;
 	}

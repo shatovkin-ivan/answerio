@@ -1,5 +1,13 @@
 <template>
     <section class="answers">
+        <div class="answers__bg">
+            <picture>
+                <source srcset="@/assets/images/answers-bg.avif" type="image/avif">
+                <source srcset="@/assets/images/answers-bg.webp" type="image/webp">
+                <source srcset="@/assets/images/answers-bg.png" type="image/png">
+                <img src="@/assets/images/answers-bg.png" alt="">
+            </picture>
+        </div>
         <div class="container">
             <h1 class="h1-title answers__title">
                 Finds Answerio
@@ -68,7 +76,21 @@ export default {
 
 <style scoped lang="scss">
     .answers {
+        position: relative;
         padding: 220px 0 64px 0;
+        &__bg {
+            position: absolute;
+            bottom: -50%;
+            left: 0;
+            width: 100vw;
+            height: auto;
+            z-index: -1;
+            & :is(img) {
+                display: block;
+                width: 100%;
+                height: auto;
+            }
+        }
         &__title {
             margin-bottom: 30px;
         }
