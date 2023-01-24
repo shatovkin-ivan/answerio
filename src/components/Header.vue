@@ -1,10 +1,10 @@
 <template>
   <header class="header">
     <div class="container flex">
-      <router-link class="title" to="/">
+      <router-link class="header__title" to="/">
         Answerio
       </router-link>
-      <button class="button">Sign In</button>
+      <button class="header__button">Sign In</button>
     </div>
   </header>
 </template>
@@ -15,25 +15,25 @@ export default {
 }
 </script>
 
-<style scoped>
-  .flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
+<style scoped lang="scss">
 
-  .title {
-    text-transform: uppercase;
-  }
+.header {
+	padding: 24px 0;
+	margin-bottom: 131px;
+	
+	&__title {
+		text-transform: uppercase;
+	}
 
-  .button {
-    font-size: 20px;
+	&__button {
+		font-size: 20px;
     font-weight: 500;
     color: #7F8186;
     background: #1D1F20;
     box-shadow: 0px 34px 64px rgba(0, 0, 0, 0.25);
     border-style: none;
     border-radius: 18px;
-    padding: 15px 50px;
-  }
+    padding: 20px 50px;
+	}
+}
 </style>
