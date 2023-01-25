@@ -25,7 +25,12 @@
           <button class="ask__clear">Clear</button>
           <button class="ask__question">
 						<span class="ask__question-text">Ask a question</span> 
-						<span class="ask__question-count">1</span>
+						<span class="ask__question-count">
+							1
+							<svg>
+								<use xlink:href="@/assets/images/sprites.svg#light"></use>
+						</svg>
+						</span>
 					</button>
          </div>
         </div>
@@ -87,20 +92,14 @@
 	&__question-count {
 		padding-left: 37px;
 		position: relative;
+	}
 
-		&::after {
-			content: '';
-			display: block;
-			position: absolute;
-			top: 5px;
-			left: 16px;
-			width: 15px;
-			height: 20px;
-			background-image: url('../assets/images/light.svg');
-			background-position: center;
-			background-size: contain;
-			background-repeat: no-repeat;
-		} 
+	&__question-count svg {
+		width: 15px;
+		height: 20px;
+		position: absolute;
+		top: 5px;
+		left: 16px;
 	}
 	&__bg {
 		position: absolute;
@@ -117,11 +116,14 @@
 	}
 }
 .form {
+	max-width: 1024px;
+	width: 100%;
   background: linear-gradient(181.25deg, #224EFE -41.38%, #0E36D6 87.57%);
   box-shadow: 0px 34px 64px 0px #00000040;
   border-radius: 30px;
   text-align: center;
   padding: 26px 29px 32px;
+	margin: 0 auto;
 
 	&__input-wrap {
 		display: block;
@@ -177,6 +179,19 @@
 
 	&__radio.radio-2 {
 		background-image: url('../assets/images/thumb-up.svg');
+	}
+}
+
+@media screen and (max-width: 768px){
+	.ask {
+		&__title, 
+		&__title span {
+			font-size: 38px;
+		}
+
+		&__text {
+			font-size: 16px;
+		}
 	}
 }
 </style>
