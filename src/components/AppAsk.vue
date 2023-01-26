@@ -182,11 +182,22 @@
 	}
 }
 
+@media screen and (max-width: 1200px){
+	.ask {
+		padding-top: 116px;
+	}
+}
+
 @media screen and (max-width: 768px){
 	.ask {
+		padding-top: 77px;
 		&__title, 
 		&__title span {
 			font-size: 38px;
+		}
+
+		&__title {
+			margin-bottom: 20px;
 		}
 
 		&__text {

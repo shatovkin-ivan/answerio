@@ -16,7 +16,11 @@
 						</div>
 					</div>
 				</div>
-				<p class="footer__rights">All Rights Reserved © 2023</p>
+				<div class="footer__rights">
+					<p class="footer__rights-text">All Rights Reserved © 2023</p>
+					<div class="footer__rights-line"></div>
+				</div>
+			
 			</div>
     </footer>
   </template>
@@ -36,6 +40,7 @@
 			background: #224EFE;
 			border-radius: 30px;
 			padding: 122px 0;
+			margin-bottom: 133px;
 		}
 
 		&__inner-wrap {
@@ -99,36 +104,78 @@
 		}
 
 		&__rights {
-			font-size: 20px;
-			font-weight: 500;
-			line-height: 240%;
-			color: #A0A1A6;
+			display: flex;
+			align-items: center;
+			justify-content: space-between;
+			gap: 24px;
 			opacity: 0.4;
-			position: relative;
-			margin-top: 133px;
 
-			&::after {
-				content: '';
-				display: block;
-				position: absolute;
-				right: 0;
-				top: 50%;
-				height: 2px;
-				width: 80%;
-				background: #FFFFFF;
+			&-text {
+				max-width: 246px;
+				width: 100%;
+				font-size: 20px;
+				font-weight: 500;
+				line-height: 240%;
+				color: #A0A1A6;
+				position: relative;
+			}
+
+			&-line {
+			height: 2px;
+			width: 100%;
+			background: #FFFFFF;
 			}
 		}
 	}
 
 	@media screen and (max-width: 1200px) {
 	.footer {
+		padding-top: 150px;
+
 		&__wrap {
 			padding: 73px 53px;
+			margin-bottom: 150px;
 		}
 
 		&__title {
 			max-width: 507px;
 		}
+	}
+	}
+
+	@media screen and (max-width: 768px) {
+		.footer {
+    padding-top: 70px;
+
+		&__wrap {
+			padding: 54px 24px;
+			margin-bottom: 70px;
+		}
+
+		&__inner-wrap {
+			flex-direction: column;
+			gap: 36px;
+		}
+
+		&__title {
+			font-size: 42px;
+			text-align: center;
+			max-width: none;
+		}
+
+		&__button.gmail {
+			margin-bottom: 20px;
+		}
+
+		&__rights-text {
+			font-size: 16px;
+			max-width: 197px;
+		}
+
+		&__rights-line {
+			opacity: 0.1;
+		}
+		
 	}
 	}
 	</style>

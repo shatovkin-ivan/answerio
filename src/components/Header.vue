@@ -18,7 +18,8 @@ export default {
 <style scoped lang="scss">
 
 .header {
-	padding: 24px 0;
+	padding-top: 24px;
+	
 	&__title {
 		text-transform: uppercase;
 		font-size: 20px;
