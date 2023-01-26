@@ -25,9 +25,17 @@
                     {{ answer }}
                 </li>
             </ul>
-            <ul class="answers__cards">
-                <AnswerCard />
-            </ul>
+            <masonry-wall :items="cards" :ssr-columns="1" :column-width="550" :gap="40">
+                <template #default="{ item, index }">
+                    <AnswerCard
+                        @BtnToggleContent="toggleContent"
+                        :items="cards"
+                        :item="item"
+                        :index="index"
+                    />
+                </template>
+            </masonry-wall>
+            
             <div class="answers__pagination">
                 More 100 elements
                 <button class="answers__show-more">
@@ -39,13 +47,15 @@
 </template>
 
 <script>
-
+import MasonryWall from '@yeger/vue-masonry-wall'
+import { defineComponent } from 'vue'
 import AnswerCard from '@/components/answers/AnswerCard.vue'
 
 
-export default {
+export default defineComponent({
     components: {
-        AnswerCard
+        AnswerCard,
+        MasonryWall
     },
     data() {
         return {
@@ -68,10 +78,65 @@ export default {
                 'Arts and Humanities',
                 'Lifestyle & Beauty',
             ],
+            cards: [
+                {
+                    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
+                    category: 'Technology',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: 'Health & Fitness',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: 'Finance & Investing',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: ' Travel',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: 'Finance & Investing',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: ' Travel',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: 'Finance & Investing',
+                    isOpen: false,
+                },
+                {
+                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
+                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
+                    category: ' Travel',
+                    isOpen: false,
+                },
+            ],
             choosenClass: 'choosen'
         }
-    }
-}
+    },
+    methods: {
+        toggleContent(i) {
+            this.items[i.index].isOpen ? this.items[i.index].isOpen = false : this.items[i.index].isOpen = true
+        },
+    },
+})
 </script>
 
 <style scoped lang="scss">
