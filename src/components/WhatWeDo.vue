@@ -117,7 +117,6 @@
 
 <style scoped lang="scss">
     .info {
-        padding-top: 64px;
         &__wrap {
             border-radius: 30px;
             padding: 125px 107px 95px 107px;

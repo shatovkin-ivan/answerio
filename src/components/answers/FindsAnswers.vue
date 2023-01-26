@@ -127,23 +127,34 @@ export default {
         max-width: 1570px;
         width: 100%;
         &__item {
-            border: 2px solid var(--theme-color-1);
-            border-radius: 68px;
-            padding: 0 30px;
-            font-size: 2rem;
-            line-height: 2.7;
-            color: var(--theme-color-1);
-            text-align: center;
-            cursor: pointer;
-            background-color: transparent;
-            transition: .3s background-color ease-in-out, .3s color ease-in-out;
-            &:hover, &.choosen {
-                background-color: var(--theme-color-1);
-                color: var(--white-color);
-            }
-            &.choosen {
-                pointer-events: none;
-            }
+					border: 2px solid var(--theme-color-1);
+					border-radius: 68px;
+					padding: 0 30px;
+					font-size: 2rem;
+					line-height: 2.7;
+					color: var(--theme-color-1);
+					text-align: center;
+					cursor: pointer;
+					background-color: transparent;
+					transition: .3s background-color ease-in-out, .3s color ease-in-out;
+					&:hover, &.choosen {
+							background-color: var(--theme-color-1);
+							color: var(--white-color);
+					}
+					&.choosen {
+							pointer-events: none;
+					}
         }
     }
+
+		@media screen and (max-width: 1200px) {
+			.answers {
+				padding: 150px 0;
+
+				&__categories {
+					margin-bottom: 55px;
+				}
+			}
+			
+		}
 </style>
