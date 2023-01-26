@@ -1,14 +1,13 @@
 <template>
     <li 
         class="card" 
-        v-for="(card, index) in cards" 
         :key="index"
-        :class="{ 'open' : card.isOpen }"
+        :class="{ 'open' : item.isOpen }"
     >
         <div class="card__top">
             <div class="card__head">
                 <p class="card__subtitle">
-                    {{ card.title }}
+                    {{ item.title }}
                 </p>
                 <ToggleButton 
                     :index="index"
@@ -17,12 +16,12 @@
             </div> 
             
             <div class="card__content">
-                {{ card.text }}
+                {{ item.text }}
             </div>
         </div>
         <div class="card__bottom">
             <span class="card__tag">
-                {{ card.category }}
+                {{ item.category }}
             </span>
             <div class="card__social">
                 <button class="card__share">
@@ -60,41 +59,16 @@ export default {
     components: {
         ToggleButton,
     },
-    data() {
-        return {
-            cards: [
-                {
-                    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
-                    category: 'Technology',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: 'Health & Fitness',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: 'Finance & Investing',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: ' Travel',
-                    isOpen: false,
-                },
-            ]
-        }
+    props: {
+        item: Object,
+        index: Number,
+        items: Array,
     },
-    methods: {
-        toggleContent(i) {
-            this.cards[i.index].isOpen ? this.cards[i.index].isOpen = false : this.cards[i.index].isOpen = true
-        }
-    }
+    // methods: {
+    //     toggleContent(i) {
+    //         this.items[i.index].isOpen ? this.items[i.index].isOpen = false : this.items[i.index].isOpen = true
+    //     }
+    // }
 }
 
 </script>
@@ -106,6 +80,9 @@ export default {
             background: none;
             -webkit-background-clip: border-box;
             -webkit-text-fill-color: currentcolor;
+        }
+        &::marker {
+            content: none;
         }
         &__top {
             border-radius: 16px 16px 0 0;
