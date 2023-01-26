@@ -24,26 +24,42 @@
                 {{ item.category }}
             </span>
             <div class="card__social">
-                <button class="card__share">
+                <div class="card__share" @click="visible=!visible">
                     Share
                     <div class="card__icon">
                         <svg>
                             <use xlink:href="@/assets/images/sprites.svg#share"></use>
                         </svg>
                     </div>
-                </button>
-                <ul class="card__links">
+                </div>
+                <ul class="card__links" v-show="visible">
                     <li class="card__link">
-                        <a href=""></a>
+                        <a href="">
+                            <svg>
+                                <use xlink:href="@/assets/images/sprites.svg#facebook"></use>
+                            </svg>
+                        </a>
                     </li>
                     <li class="card__link">
-                        <a href=""></a>
+                        <a href="">
+                            <svg>
+                                <use xlink:href="@/assets/images/sprites.svg#telegram"></use>
+                            </svg>
+                        </a>
                     </li>
                     <li class="card__link">
-                        <a href=""></a>
+                        <a href="">
+                            <svg>
+                                <use xlink:href="@/assets/images/sprites.svg#instagram"></use>
+                            </svg>
+                        </a>
                     </li>
                     <li class="card__link">
-                        <a href=""></a>
+                        <a href="">
+                            <svg>
+                                <use xlink:href="@/assets/images/sprites.svg#twitter"></use>
+                            </svg>
+                        </a>
                     </li>
                 </ul>
             </div>
@@ -59,10 +75,15 @@ export default {
     components: {
         ToggleButton,
     },
+    data() {
+        return {
+            visible: false,
+        }
+    },
     props: {
         item: Object,
         index: Number,
-        items: Array,
+        // items: Array,
     },
     // methods: {
     //     toggleContent(i) {
@@ -162,6 +183,8 @@ export default {
             align-items: center;
             font-style: italic;
             background-color: transparent;
+            cursor: pointer;
+            user-select: none;
             & :is(svg) {
                 width: 18px;
                 height: 18px;
@@ -177,6 +200,38 @@ export default {
             width: 38px;
             height: 38px;
             background-color: #404245;
+        }
+        &__social {
+            position: relative;
+        }
+        &__links {
+            position: absolute;
+            top: -65px;
+            right: 0;
+            display: flex;
+            align-items: center;
+            gap: 21px;
+            border-radius: 10px;
+            padding: 13px 18px;
+            max-height: 50px;
+            background-color: rgba(196, 196, 196, 0.4);
+            backdrop-filter: blur(2px);
+        }
+        &__link {
+            & :is(a) {
+                display: block;
+            }
+            & :is(svg) {
+                display: block;
+                width: 25px;
+                height: 25px;
+                fill: #fff;
+                opacity: .6;
+                transition: .3s opacity ease-in-out;
+                &:hover {
+                    opacity: 1;
+                }
+            }
         }
     }
 </style>
