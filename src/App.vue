@@ -37,6 +37,7 @@ export default {
   },
   mounted() {
     this.isCookieHidden()
+    console.log('222');
   },
   methods: {
     isCookieHidden() {

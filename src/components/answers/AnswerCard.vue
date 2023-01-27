@@ -2,21 +2,19 @@
     <li 
         class="card" 
         :key="index"
-        :class="{ 'open' : item.isOpen }"
     >
         <div class="card__top">
             <div class="card__head">
                 <p class="card__subtitle">
-                    {{ item.title }}
+                    {{ item.question }}
                 </p>
                 <ToggleButton 
                     :index="index"
-                    @BtnToggleContent="toggleContent"
                 />
             </div> 
             
             <div class="card__content">
-                {{ item.text }}
+                {{ item.answer }}
             </div>
         </div>
         <div class="card__bottom">

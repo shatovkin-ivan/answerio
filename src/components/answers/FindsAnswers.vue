@@ -20,16 +20,16 @@
                     v-for="(answer, index) in answerCategories" 
                     :key="index" 
                     class="categories__item"
+                    :data-id="Object.values(answer)"
                     :class="index === 0 ? 'choosen' : ''"
                 >
-                    {{ answer }}
+                    {{ getStringValue(answer) }}
                 </li>
             </ul>
-            <masonry-wall :items="cards" :ssr-columns="1" :column-width="550" :gap="40">
+            <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="550" :gap="40">
                 <template #default="{ item, index }">
                     <AnswerCard
-                        @BtnToggleContent="toggleContent"
-                        :items="cards"
+                        :items="topAnswers"
                         :item="item"
                         :index="index"
                     />
@@ -48,6 +48,7 @@
 
 <script>
 import MasonryWall from '@yeger/vue-masonry-wall'
+
 import { defineComponent } from 'vue'
 import AnswerCard from '@/components/answers/AnswerCard.vue'
 
@@ -60,81 +61,55 @@ export default defineComponent({
     data() {
         return {
             answerCategories: [
-                'Top',
-                'Technology',
-                'Science',
-                'Business',
-                'Health & Fitness',
-                'Education',
-                'Travel',
-                'Food & Drinks',
-                'Sports',
-                'Politics & Government',
-                'Entertainment & Music',
-                'Religion & Spirituality',
-                'Finance & Investing',
-                'Automobiles & Transportation',
-                'Careers & Workplace',
-                'Arts and Humanities',
-                'Lifestyle & Beauty',
+                // {'Other' : 0},
+                // категории other на данный момент нет
+                {'Top': null},
+                {'Technology': 1},
+                {'Science': 2},
+                {'Business': 3},
+                {'Health And Fitness': 4},
+                {'Education': 5},
+                {'Travel': 6},
+                {'FoodAndDrinks': 7},
+                {'Politics And Government': 8},
+                {'Lifestyle And Beauty': 9},
+                {'Entertainment And Music': 10},
+                {'Sports': 11},
+                {'Religion And Spirituality': 12},
+                {'Philosophy And Psychology': 13},
+                {'Culture History And Languages': 14},
+                {'Relationships': 15},
+                {'Finance And Investing': 16},
+                {'Automobiles And Transportation': 17},
+                {'Careers And Workplace': 18},
+                {'Arts And Humanities': 19}
             ],
-            cards: [
-                {
-                    title: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit?',
-                    category: 'Technology',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: 'Health & Fitness',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: 'Finance & Investing',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: ' Travel',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: 'Finance & Investing',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: ' Travel',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: 'Finance & Investing',
-                    isOpen: false,
-                },
-                {
-                    title: 'Lorem consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit dolor sit amet, consectetur adipiscing elit?',
-                    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse sollicitudin nec nunc',
-                    category: ' Travel',
-                    isOpen: false,
-                },
-            ],
+            topAnswers: [],
             choosenClass: 'choosen'
         }
     },
+    mounted() {
+        this.getTopQuestion('https://answerio-dev-apim.azure-api.net/answerio-dev-api//Question/TopByCategory?PageSize=9')
+    },
     methods: {
-        toggleContent(i) {
-            this.items[i.index].isOpen ? this.items[i.index].isOpen = false : this.items[i.index].isOpen = true
+        getStringValue(item) {
+            return Object.keys(item).join(' ')
         },
+        async getTopQuestion (url) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Ocp-Apim-Subscription-Key': '08733ebda0994b709a90755651769b26',
+                        'Content-Type': 'application/json',
+                    },
+                })
+                const data = await response.json()
+                console.log(data);
+                this.topAnswers = await data.items
+            } catch(e) {
+                console.log('error');
+            }
+        }
     },
 })
 </script>

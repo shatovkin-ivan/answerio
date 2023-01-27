@@ -16,13 +16,13 @@ export default {
     props: {
         index: Number,
     },
-    methods: {
-        toggleText(i) {
-            this.$emit('BtnToggleContent', {
-                index: i
-            })
-        }
-    }
+    // methods: {
+    //     toggleText(i) {
+    //         this.$emit('BtnToggleContent', {
+    //             index: i
+    //         })
+    //     }
+    // }
 }
 
 </script>
