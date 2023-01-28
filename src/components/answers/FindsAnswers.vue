@@ -28,7 +28,6 @@
             <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="550" :gap="40">
                 <template #default="{ item, index }">
                     <AnswerCard
-                        :items="topAnswers"
                         :item="item"
                         :index="index"
                     />
@@ -37,7 +36,10 @@
             
             <div class="answers__pagination">
                 More 100 elements
-                <button class="answers__show-more">
+                <button 
+                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api//Question/TopByCategory?PageSize=9?${continuationToken}`)"
+                    class="answers__show-more"
+                >
                     Show all
                 </button>
             </div>
@@ -84,7 +86,8 @@ export default defineComponent({
             {'Careers And Workplace': 18},
             {'Arts And Humanities': 19}
         ]
-        let topAnswers = ref([])
+        const topAnswers = ref([])
+        const continuationToken = ref('')
         async function getQuestions(url) {
             try {
                 const response = await fetch(url, {
@@ -94,6 +97,22 @@ export default defineComponent({
                     },
                 })
                 const data = await response.json()
+                topAnswers.value = await data.items
+                continuationToken.value = await data.continuationToken.slice(1, data.continuationToken.length - 1)
+            } catch(e) {
+                console.log('error');
+            }
+        }
+        async function showMore(url) {
+            try {
+                const response = await fetch(url, {
+                    headers: {
+                        'Ocp-Apim-Subscription-Key': '08733ebda0994b709a90755651769b26',
+                        'Content-Type': 'application/json',
+                    }
+                })
+                const data = await response.json()
+                console.log(data);
                 topAnswers.value = await data.items
             } catch(e) {
                 console.log('error');
@@ -111,9 +130,11 @@ export default defineComponent({
         return {
             choosen,
             answerCategories,
+            continuationToken,
             topAnswers,
             getStringValue,
-            clearCategories
+            clearCategories,
+            showMore
         }
     },
 })
@@ -157,6 +178,7 @@ export default defineComponent({
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: 77px;
             color: #A0A1A6;
         }
         &__show-more {

@@ -13,34 +13,11 @@
                     </div>
                 </div>
                 <ul class="card-bottom__links" v-show="visible">
-                    <li class="card-bottom__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#facebook"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="card-bottom__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#telegram"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="card-bottom__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#instagram"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="card-bottom__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#twitter"></use>
-                            </svg>
-                        </a>
-                    </li>
+                    <ShareItem 
+                        v-for="(social, index) in socials"
+                        :key="index"
+                        :item="social"
+                    />
                 </ul>
             </div>
         </div>
@@ -48,20 +25,46 @@
 
 <script>
 
-    import { ref } from 'vue'
+    import ShareItem from './ShareItem.vue'
+    import { ref, computed } from 'vue'
 
     export default {
+        components: {
+            ShareItem
+        },
         props: {
             item: {
                 type: Object,
                 required: true
             }
         },
-        setup() {
+        setup(props) {
             const visible = ref(false)
-
+            const cardURL = computed(() => {
+                return window.location.protocol + '//' + window.location.host + props.item.url
+            })
+            const socials = ref([
+                {
+                    iconId: 'facebook',
+                    link: `https://www.facebook.com/sharer/sharer.php?u=${cardURL.value}`
+                },
+                {
+                    iconId: 'telegram',
+                    link: `https://t.me/share/url?url=${cardURL.value}&text=${props.item.question}`
+                },
+                {
+                    iconId: 'instagram',
+                    link: ''
+                },
+                {
+                    iconId: 'twitter',
+                    link: `https://twitter.com/intent/tweet?text=${props.item.question}&url=${cardURL.value}`
+                },
+            ])
+            
             return {
-                visible
+                visible,
+                socials
             }
         }
     }
