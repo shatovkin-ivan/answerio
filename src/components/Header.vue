@@ -1,6 +1,6 @@
 <template>
   <header class="header">
-    <div class="container flex">
+    <div class="container flex gap-50">
       <router-link class="header__title" to="/">
         Answerio
       </router-link>
@@ -18,9 +18,14 @@ export default {
 <style scoped lang="scss">
 
 .header {
-	padding: 24px 0;
+	padding-top: 24px;
+	
 	&__title {
 		text-transform: uppercase;
+		font-size: 20px;
+		font-weight: 700;
+		letter-spacing: 0.1em;
+		line-height: 240%;
 	}
 
 	&__button {
@@ -32,6 +37,22 @@ export default {
     border-style: none;
     border-radius: 18px;
     padding: 20px 50px;
+	}
+}
+
+@media screen and (max-width: 768px) {
+	.header {
+		&__button {
+			padding: 20px 30px;
+		}
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.header {
+		&__button {
+			padding: 20px 20px;
+		}
 	}
 }
 </style>
