@@ -10,6 +10,7 @@
                 </p>
                 <ToggleButton 
                     :index="index"
+                    @BtnToggleModal="toggleModal"
                 />
             </div> 
             
@@ -17,77 +18,51 @@
                 {{ item.answer }}
             </div>
         </div>
-        <div class="card__bottom">
-            <span class="card__tag">
-                {{ item.category }}
-            </span>
-            <div class="card__social">
-                <div class="card__share" @click="visible=!visible">
-                    Share
-                    <div class="card__icon">
-                        <svg>
-                            <use xlink:href="@/assets/images/sprites.svg#share"></use>
-                        </svg>
-                    </div>
-                </div>
-                <ul class="card__links" v-show="visible">
-                    <li class="card__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#facebook"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="card__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#telegram"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="card__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#instagram"></use>
-                            </svg>
-                        </a>
-                    </li>
-                    <li class="card__link">
-                        <a href="">
-                            <svg>
-                                <use xlink:href="@/assets/images/sprites.svg#twitter"></use>
-                            </svg>
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <AnswerCardFooter 
+            :item="item"
+        />
     </li>
+    <Teleport to="body">
+        <DetailAnswer 
+            :item="item"
+            :visible="showModal"
+            @hideModalOverlay="closeModal"
+        />
+    </Teleport>
 </template>
 
 <script>
 
-import ToggleButton from '@/components/answers/ToggleButton.vue'
+import ToggleButton from '@/components/answers/ToggleButton.vue';
+import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue';
+import DetailAnswer from '@/components/answers/DetailAnswer.vue';
 
+import { ref } from 'vue';
+ 
 export default {
     components: {
         ToggleButton,
-    },
-    data() {
-        return {
-            visible: false,
-        }
+        AnswerCardFooter,
+        DetailAnswer
     },
     props: {
         item: Object,
         index: Number,
-        // items: Array,
     },
-    // methods: {
-    //     toggleContent(i) {
-    //         this.items[i.index].isOpen ? this.items[i.index].isOpen = false : this.items[i.index].isOpen = true
-    //     }
-    // }
+    setup() {
+        let showModal = ref(false)
+        function toggleModal() {
+            showModal.value = !showModal.value
+        }
+        function closeModal(visibility) {
+            showModal.value = !visibility
+        }
+        return {
+            toggleModal,
+            showModal,
+            closeModal
+        }
+    }
 }
 
 </script>
@@ -154,81 +129,6 @@ export default {
                 height: 100%;
                 background: linear-gradient(180deg, #A0A1A6 22.03%, rgba(160, 161, 166, 0) 157.63%);
                 opacity: .5;
-            }
-        }
-        &__bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 0 0 16px 16px;
-            padding: 27px 24px;
-            background-color: #292A2C;
-        }
-        &__tag {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(94, 96, 99, 0.6);
-            border-radius: 68px;
-            padding: 0 18px;
-            height: 32px;
-            font-size: 1.4rem;
-            font-style: italic;
-            color: #5E6063;
-        }
-        &__share {
-            display: flex;
-            align-items: center;
-            font-style: italic;
-            background-color: transparent;
-            cursor: pointer;
-            user-select: none;
-            & :is(svg) {
-                width: 18px;
-                height: 18px;
-                fill: var(--white-color);
-            }
-        }
-        &__icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            margin-left: 12px;
-            width: 38px;
-            height: 38px;
-            background-color: #404245;
-        }
-        &__social {
-            position: relative;
-        }
-        &__links {
-            position: absolute;
-            top: -65px;
-            right: 0;
-            display: flex;
-            align-items: center;
-            gap: 21px;
-            border-radius: 10px;
-            padding: 13px 18px;
-            max-height: 50px;
-            background-color: rgba(196, 196, 196, 0.4);
-            backdrop-filter: blur(2px);
-        }
-        &__link {
-            & :is(a) {
-                display: block;
-            }
-            & :is(svg) {
-                display: block;
-                width: 25px;
-                height: 25px;
-                fill: #fff;
-                opacity: .6;
-                transition: .3s opacity ease-in-out;
-                &:hover {
-                    opacity: 1;
-                }
             }
         }
     }

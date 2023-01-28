@@ -16,15 +16,14 @@
                 Select one or more topics of interest
             </p>
             <ul class="answers__categories categories">
-                <li 
+                <CategoryButton 
                     v-for="(answer, index) in answerCategories" 
                     :key="index" 
-                    class="categories__item"
-                    :data-id="Object.values(answer)"
-                    :class="index === 0 ? 'choosen' : ''"
-                >
-                    {{ getStringValue(answer) }}
-                </li>
+                    :dataId="+Object.values(answer)"
+                    :text="getStringValue(answer)"
+                    :choosen="choosen"
+                    @removeChoosen="clearCategories"
+                />
             </ul>
             <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="550" :gap="40">
                 <template #default="{ item, index }">
@@ -47,55 +46,46 @@
 </template>
 
 <script>
+
 import MasonryWall from '@yeger/vue-masonry-wall'
-
-import { defineComponent } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import AnswerCard from '@/components/answers/AnswerCard.vue'
-
+import CategoryButton from '@/components/answers/CategoryButton.vue'
 
 export default defineComponent({
     components: {
         AnswerCard,
-        MasonryWall
+        MasonryWall,
+        CategoryButton
     },
-    data() {
-        return {
-            answerCategories: [
-                // {'Other' : 0},
-                // категории other на данный момент нет
-                {'Top': null},
-                {'Technology': 1},
-                {'Science': 2},
-                {'Business': 3},
-                {'Health And Fitness': 4},
-                {'Education': 5},
-                {'Travel': 6},
-                {'FoodAndDrinks': 7},
-                {'Politics And Government': 8},
-                {'Lifestyle And Beauty': 9},
-                {'Entertainment And Music': 10},
-                {'Sports': 11},
-                {'Religion And Spirituality': 12},
-                {'Philosophy And Psychology': 13},
-                {'Culture History And Languages': 14},
-                {'Relationships': 15},
-                {'Finance And Investing': 16},
-                {'Automobiles And Transportation': 17},
-                {'Careers And Workplace': 18},
-                {'Arts And Humanities': 19}
-            ],
-            topAnswers: [],
-            choosenClass: 'choosen'
-        }
-    },
-    mounted() {
-        this.getTopQuestion('https://answerio-dev-apim.azure-api.net/answerio-dev-api//Question/TopByCategory?PageSize=9')
-    },
-    methods: {
-        getStringValue(item) {
-            return Object.keys(item).join(' ')
-        },
-        async getTopQuestion (url) {
+    setup() {
+        let choosen = ref(false)
+        const answerCategories = [
+            // {'Other' : 0},
+            // категории other на данный момент нет
+            {'Top': null},
+            {'Technology': 1},
+            {'Science': 2},
+            {'Business': 3},
+            {'Health And Fitness': 4},
+            {'Education': 5},
+            {'Travel': 6},
+            {'Food And Drinks': 7},
+            {'Politics And Government': 8},
+            {'Lifestyle And Beauty': 9},
+            {'Entertainment And Music': 10},
+            {'Sports': 11},
+            {'Religion And Spirituality': 12},
+            {'Philosophy And Psychology': 13},
+            {'Culture History And Languages': 14},
+            {'Relationships': 15},
+            {'Finance And Investing': 16},
+            {'Automobiles And Transportation': 17},
+            {'Careers And Workplace': 18},
+            {'Arts And Humanities': 19}
+        ]
+        let topAnswers = ref([])
+        async function getQuestions(url) {
             try {
                 const response = await fetch(url, {
                     headers: {
@@ -104,11 +94,26 @@ export default defineComponent({
                     },
                 })
                 const data = await response.json()
-                console.log(data);
-                this.topAnswers = await data.items
+                topAnswers.value = await data.items
             } catch(e) {
                 console.log('error');
             }
+        }
+        function getStringValue(item) {
+            return Object.keys(item).join(' ')
+        }
+        function clearCategories() {
+            choosen.value = false
+        }
+        onMounted(() => {
+            getQuestions('https://answerio-dev-apim.azure-api.net/answerio-dev-api//Question/TopByCategory?PageSize=9')
+        })
+        return {
+            choosen,
+            answerCategories,
+            topAnswers,
+            getStringValue,
+            clearCategories
         }
     },
 })
@@ -166,24 +171,5 @@ export default defineComponent({
         gap: 20px;
         max-width: 1570px;
         width: 100%;
-        &__item {
-            border: 2px solid var(--theme-color-1);
-            border-radius: 68px;
-            padding: 0 30px;
-            font-size: 2rem;
-            line-height: 2.7;
-            color: var(--theme-color-1);
-            text-align: center;
-            cursor: pointer;
-            background-color: transparent;
-            transition: .3s background-color ease-in-out, .3s color ease-in-out;
-            &:hover, &.choosen {
-                background-color: var(--theme-color-1);
-                color: var(--white-color);
-            }
-            &.choosen {
-                pointer-events: none;
-            }
-        }
     }
 </style>
