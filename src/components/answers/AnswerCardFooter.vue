@@ -4,7 +4,10 @@
                 {{ item.category }}
             </span>
             <div class="card-bottom__social">
-                <div class="card-bottom__share" @click="visible=!visible">
+                <div 
+                    class="card-bottom__share" 
+                    @click="visible=!visible"
+                >
                     Share
                     <div class="card-bottom__icon">
                         <svg>

@@ -22,7 +22,8 @@
                     :dataId="+Object.values(answer)"
                     :text="getStringValue(answer)"
                     :choosen="choosen"
-                    @removeChoosen="clearCategories"
+                    :currentCategory="currentCategory"
+                    @getCategoryId="setCategoryId"
                 />
             </ul>
             <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="550" :gap="40">
@@ -37,7 +38,7 @@
             <div class="answers__pagination">
                 More 100 elements
                 <button 
-                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api//Question/TopByCategory?PageSize=9?${continuationToken}`)"
+                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory?PageSize=9&${continuationToken}`)"
                     class="answers__show-more"
                 >
                     Show all
@@ -62,6 +63,7 @@ export default defineComponent({
     },
     setup() {
         let choosen = ref(false)
+        let currentCategory = ref(null)
         const answerCategories = [
             // {'Other' : 0},
             // категории other на данный момент нет
@@ -97,6 +99,7 @@ export default defineComponent({
                     },
                 })
                 const data = await response.json()
+                console.log(data);
                 topAnswers.value = await data.items
                 continuationToken.value = await data.continuationToken.slice(1, data.continuationToken.length - 1)
             } catch(e) {
@@ -118,6 +121,11 @@ export default defineComponent({
                 console.log('error');
             }
         }
+        function setCategoryId(event) {
+            currentCategory.value = event.dataset.id
+            topAnswers.value = []
+            getQuestions(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory?CategoryId=${currentCategory.value}&PageSize=9`)
+        }
         function getStringValue(item) {
             return Object.keys(item).join(' ')
         }
@@ -125,16 +133,18 @@ export default defineComponent({
             choosen.value = false
         }
         onMounted(() => {
-            getQuestions('https://answerio-dev-apim.azure-api.net/answerio-dev-api//Question/TopByCategory?PageSize=9')
+            getQuestions('https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory?PageSize=9')
         })
         return {
             choosen,
             answerCategories,
             continuationToken,
             topAnswers,
+            currentCategory,
             getStringValue,
             clearCategories,
-            showMore
+            showMore,
+            setCategoryId
         }
     },
 })

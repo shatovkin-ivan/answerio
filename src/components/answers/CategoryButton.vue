@@ -5,7 +5,7 @@
             class="category__button"
             :data-id="dataId"
             :class="choosenBtn ? 'choosen' : ''"
-            @click="setChoosen"
+            @click="setChoosen(), sendChange($event)"
         >
             {{ text }}
 
@@ -34,8 +34,13 @@ import { onMounted, ref } from 'vue';
                 type: Boolean,
                 required: true
             },
+            currentCategory: {
+                type: Number,
+                default: null,
+                required: true
+            }
         },
-        setup(props) {
+        setup(props, { emit }) {
             let choosenBtn = ref(props.choosen)
             onMounted(() => {
                 if (props.dataId === 0) {
@@ -45,9 +50,13 @@ import { onMounted, ref } from 'vue';
             function setChoosen() {
                 choosenBtn.value = true
             }
+            const sendChange = (e) => {
+                emit('getCategoryId', e.target)
+            }
             return {
                 choosenBtn,
                 setChoosen,
+                sendChange
             }
         }
     }
