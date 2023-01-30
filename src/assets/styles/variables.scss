@@ -8,3 +8,10 @@
     --theme-color-2: #A0A1A6;
     --theme-color-3: #141618;
 }
+
+@media screen and (max-width: 991px) {
+    :root {
+        --h1-size: 3.8rem;
+        --default-size: 1.6rem;
+    }
+}

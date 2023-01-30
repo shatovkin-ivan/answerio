@@ -132,4 +132,17 @@ export default {
             }
         }
     }
+    @media screen and (max-width: 560px) {
+        .card {
+            &__top {
+                padding: 16px 15px 15px 16px;
+            }
+            &__subtitle {
+                margin-bottom: 15px;
+            }
+            &__content {
+                max-height: 76px;
+            }
+        }
+    }
 </style>

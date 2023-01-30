@@ -4,8 +4,8 @@
             type="button"
             class="category__button"
             :data-id="dataId"
-            :class="choosenBtn ? 'choosen' : ''"
-            @click="setChoosen(), sendChange($event)"
+            :class="isChoosen ? 'choosen' : ''"
+            @click="sendChange($event)"
         >
             {{ text }}
 
@@ -18,7 +18,7 @@
 
 <script>
 
-import { onMounted, ref } from 'vue';
+// import { ref } from 'vue';
 
     export default {
         props: {
@@ -30,32 +30,16 @@ import { onMounted, ref } from 'vue';
                 type: Number,
                 required: true
             },
-            choosen: {
+            isChoosen: {
                 type: Boolean,
                 required: true
             },
-            currentCategory: {
-                type: Number,
-                default: null,
-                required: true
-            }
         },
         setup(props, { emit }) {
-            let choosenBtn = ref(props.choosen)
-            onMounted(() => {
-                if (props.dataId === 0) {
-                    setChoosen()
-                }
-            })
-            function setChoosen() {
-                choosenBtn.value = true
-            }
             const sendChange = (e) => {
-                emit('getCategoryId', e.target)
+                emit('getCategoryId', e.currentTarget)
             }
             return {
-                choosenBtn,
-                setChoosen,
                 sendChange
             }
         }
@@ -71,6 +55,7 @@ import { onMounted, ref } from 'vue';
             border-radius: 68px;
             padding: 0 30px;
             font-size: 2rem;
+            font-style: italic;
             line-height: 2.7;
             color: var(--theme-color-1);
             text-align: center;
@@ -93,6 +78,40 @@ import { onMounted, ref } from 'vue';
             }
             &.choosen {
                 pointer-events: none;
+            }
+        }
+    }
+    @media screen and (max-width: 1440px) {
+        .category {
+            &__button {
+                line-height: 2.5;
+            }
+        }
+    }
+    @media screen and (max-width: 991px) {
+        .category {
+            &__button {
+                padding: 0 15px;
+                font-size: 1.4rem;
+                line-height: 3.86;
+            }
+        }
+    }
+    @media screen and (max-width: 560px) {
+        .category {
+            &__button {
+                border: none;
+                padding: 0;
+                line-height: 1.9;
+                color: #5E6063;
+                background-color: transparent;
+                &.choosen {
+                    background-color: transparent;
+                    color: var(--theme-color-1);
+                }
+            }
+            &__icon {
+                display: none;
             }
         }
     }

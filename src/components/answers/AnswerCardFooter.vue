@@ -98,6 +98,7 @@
             display: flex;
             align-items: center;
             font-style: italic;
+            color: rgba(255, 255, 255, .6);
             background-color: transparent;
             cursor: pointer;
             user-select: none;
@@ -147,6 +148,16 @@
                 &:hover {
                     opacity: 1;
                 }
+            }
+        }
+    }
+    @media screen and (max-width: 560px) {
+        .card-bottom {
+            padding: 11px 15px;
+            &__tag {
+                max-width: 130px;
+                font-size: 1.2rem;
+                text-align: center;
             }
         }
     }
