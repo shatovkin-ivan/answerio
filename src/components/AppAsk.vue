@@ -13,7 +13,13 @@
       <p class="ask__text">Get an instant AI-based response from reliable sources</p>
       <form class="form">
 				<div class="form__input-wrap">
-					<input class="form__input" type="text" placeholder="Ask any question...">
+					<input 
+						class="form__input" 
+						type="text" 
+						placeholder="Ask any question..."
+						v-model="value"
+					>
+					<div class="test">{{  answer }}</div>
 				</div>
         <div class="flex">
           <div class="form__left-block">
@@ -24,7 +30,7 @@
          <div class="form__right-block">
           <button class="ask__clear">Clear</button>
           <button class="ask__question">
-						<span class="ask__question-text">Ask a question</span> 
+						<span class="ask__question-text" @click.prevent="sendQuestion">Ask a question</span> 
 						<span class="ask__question-count">
 							1
 							<svg>
@@ -37,10 +43,49 @@
       </form>
     </div>
   </div>
+	<recommended-questions :questions="questions"></recommended-questions>
 </template>
 
 <script>
+import { ref } from 'vue'
+import RecommendedQuestions from './RecommendedQuestions.vue'
 export default {
+setup() {
+	const value = ref('')
+	let answer = ref('')
+	let questions = ref('')
+	async function sendQuestion() {
+		try {
+			const response = await fetch('https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/Process', {
+				method: 'POST',
+				headers: {
+					'Ocp-Apim-Subscription-Key': '08733ebda0994b709a90755651769b26',
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					question: value.value,
+				}),
+			})
+			const data = await response.json()
+			answer.value = data.answer
+			questions.value = data.recommendedQuestions
+			console.log(answer.value);
+			console.log(data.recommendedQuestions);
+		} catch(e) {
+			console.log(e);
+		}
+	}
+
+	return {
+		sendQuestion,
+		value,
+		answer,
+		questions
+	}
+},
+components: {
+	RecommendedQuestions
+}
 
 }
 </script>
