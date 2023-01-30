@@ -39,6 +39,12 @@
   </div>
 </template>
 
+<script>
+export default {
+
+}
+</script>
+
 <style scoped lang="scss">
 
 .ask {
@@ -200,9 +206,3 @@
 	}
 }
 </style>
-
-<script>
-export default {
-
-}
-</script>
