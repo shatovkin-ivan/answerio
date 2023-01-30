@@ -2,73 +2,67 @@
     <li 
         class="card" 
         :key="index"
-        :class="{ 'open' : item.isOpen }"
     >
         <div class="card__top">
             <div class="card__head">
                 <p class="card__subtitle">
-                    {{ item.title }}
+                    {{ item.question }}
                 </p>
                 <ToggleButton 
                     :index="index"
-                    @BtnToggleContent="toggleContent"
+                    @BtnToggleModal="toggleModal"
                 />
             </div> 
             
             <div class="card__content">
-                {{ item.text }}
+                {{ item.answer }}
             </div>
         </div>
-        <div class="card__bottom">
-            <span class="card__tag">
-                {{ item.category }}
-            </span>
-            <div class="card__social">
-                <button class="card__share">
-                    Share
-                    <div class="card__icon">
-                        <svg>
-                            <use xlink:href="@/assets/images/sprites.svg#share"></use>
-                        </svg>
-                    </div>
-                </button>
-                <ul class="card__links">
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                    <li class="card__link">
-                        <a href=""></a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <AnswerCardFooter 
+            :item="item"
+        />
     </li>
+    <Teleport to="body">
+        <DetailAnswer 
+            :item="item"
+            :visible="showModal"
+            @hideModalOverlay="closeModal"
+        />
+    </Teleport>
 </template>
 
 <script>
 
-import ToggleButton from '@/components/answers/ToggleButton.vue'
+import ToggleButton from '@/components/answers/ToggleButton.vue';
+import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue';
+import DetailAnswer from '@/components/answers/DetailAnswer.vue';
 
+import { ref } from 'vue';
+ 
 export default {
     components: {
         ToggleButton,
+        AnswerCardFooter,
+        DetailAnswer
     },
     props: {
         item: Object,
         index: Number,
-        items: Array,
     },
-    // methods: {
-    //     toggleContent(i) {
-    //         this.items[i.index].isOpen ? this.items[i.index].isOpen = false : this.items[i.index].isOpen = true
-    //     }
-    // }
+    setup() {
+        let showModal = ref(false)
+        function toggleModal() {
+            showModal.value = !showModal.value
+        }
+        function closeModal(visibility) {
+            showModal.value = !visibility
+        }
+        return {
+            toggleModal,
+            showModal,
+            closeModal
+        }
+    }
 }
 
 </script>
@@ -137,46 +131,18 @@ export default {
                 opacity: .5;
             }
         }
-        &__bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 0 0 16px 16px;
-            padding: 27px 24px;
-            background-color: #292A2C;
-        }
-        &__tag {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 2px solid rgba(94, 96, 99, 0.6);
-            border-radius: 68px;
-            padding: 0 18px;
-            height: 32px;
-            font-size: 1.4rem;
-            font-style: italic;
-            color: #5E6063;
-        }
-        &__share {
-            display: flex;
-            align-items: center;
-            font-style: italic;
-            background-color: transparent;
-            & :is(svg) {
-                width: 18px;
-                height: 18px;
-                fill: var(--white-color);
+    }
+    @media screen and (max-width: 560px) {
+        .card {
+            &__top {
+                padding: 16px 15px 15px 16px;
             }
-        }
-        &__icon {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-radius: 50%;
-            margin-left: 12px;
-            width: 38px;
-            height: 38px;
-            background-color: #404245;
+            &__subtitle {
+                margin-bottom: 15px;
+            }
+            &__content {
+                max-height: 76px;
+            }
         }
     }
 </style>

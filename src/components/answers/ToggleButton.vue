@@ -1,6 +1,6 @@
 <template>
     <button
-        @click="toggleText(index)"
+        @click="toggleModal(index)"
         class="card__button"
     >
         <svg>
@@ -17,8 +17,8 @@ export default {
         index: Number,
     },
     methods: {
-        toggleText(i) {
-            this.$emit('BtnToggleContent', {
+        toggleModal(i) {
+            this.$emit('BtnToggleModal', {
                 index: i
             })
         }
