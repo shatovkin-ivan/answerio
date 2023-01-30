@@ -117,7 +117,6 @@
 
 <style scoped lang="scss">
     .info {
-        padding-top: 64px;
         &__wrap {
             border-radius: 30px;
             padding: 125px 107px 95px 107px;
@@ -194,8 +193,43 @@
         }
         &__img {
             display: block;
+						max-width: 880px;
+						width: 100%;
             margin: 0 auto;
         }
     }
+
+		@media screen and (max-width: 1200px) {
+			.info {
+				&__wrap {
+					padding: 93px 50px 80px 51px;
+				}
+
+				&__head {
+					justify-content: center;
+					gap: 55px;
+					margin-bottom: 92px;
+				}
+
+				&__description {
+					max-width: 490px;
+				}
+
+				&__list {
+					justify-content: center;
+					gap: 40px;
+					margin-bottom: 93px;
+				}
+
+				&__item {
+					text-align: center;
+					padding: 30px 45px;
+				}
+
+				&__item:nth-child(4) {
+					margin-left: 0;
+				}
+			}
+	}
 </style>
 

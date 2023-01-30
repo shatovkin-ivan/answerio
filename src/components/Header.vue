@@ -18,8 +18,8 @@ export default {
 <style scoped lang="scss">
 
 .header {
-	padding-top: 24px;
-	
+	margin-top: 24px;
+	margin-bottom: 131px;
 	&__title {
 		text-transform: uppercase;
 		font-size: 20px;
@@ -40,8 +40,16 @@ export default {
 	}
 }
 
+@media screen and (max-width: 1200px){
+	.header {
+		margin-bottom: 116px;
+	}
+}
+
 @media screen and (max-width: 768px) {
 	.header {
+		margin-bottom: 77px;
+		
 		&__button {
 			padding: 20px 30px;
 		}
