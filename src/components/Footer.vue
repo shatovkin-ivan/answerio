@@ -4,7 +4,7 @@
 			<div class="footer__wrap">
 				<div class="footer__inner-wrap">
 					<p class="footer__title">Sign up to get unlimited access</p>
-					<button class="footer__button gmail">
+					<button class="footer__button">
 						<span>Sign Up with Gmail</span>
 						<div class="footer__icon-gmail"></div>
 					</button>
@@ -82,8 +82,14 @@
 			align-items: center;
 			gap: 10px;
 			position: relative;
-			background: #FFFFFF;
+			padding: 0 55px;
+			background: var(--white-color);
 			border-radius: 18px;
+			transition: .3s background-color ease-in-out, .3s color ease-in-out;
+			&:hover {
+				color: var(--white-color);
+				background-color: #1D1F20;
+			}
 		}
 
 		&__button span {
@@ -92,12 +98,6 @@
 			color: #224EFE;
 			line-height: 320%;
 		}
-
-		&__button {
-			padding: 0 55px;
-			margin-bottom: 40px;
-		}
-
 		&__icon-gmail {
 			width: 34px;
 			height: 25px;
@@ -194,7 +194,6 @@
 			}
 			&__button {
 				padding: 0 15px;
-				margin-bottom: 0;
 				& span {
 					font-size: 1.8rem;
 				}

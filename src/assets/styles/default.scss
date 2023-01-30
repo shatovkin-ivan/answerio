@@ -3,6 +3,7 @@ html {
 }
 body {
     background-color: var(--theme-color-3);
+    overflow-x: hidden;
 }
 * {
     box-sizing: border-box;

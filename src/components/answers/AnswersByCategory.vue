@@ -29,7 +29,7 @@
                     </svg>
                 </div>
                 <ul 
-                    v-show="modalSelectIsOpen"
+                    :class="modalSelectIsOpen ? 'open' : ''"
                     class="answers__categories categories"
                 >
                     <CategoryButton 
@@ -43,7 +43,7 @@
                 </ul>
             </div>
             
-            <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="setCategoryMaxWidth()" :gap="40">
+            <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="setCategoryMaxWidth()" :gap="40" :rtl="true">
                 <template #default="{ item, index }">
                     <AnswerCard
                         :item="item"
@@ -387,9 +387,13 @@ export default defineComponent({
             gap: 0;
             border: 2px solid var(--theme-color-1);
             border-radius: 18px;
+            display: none;
             padding: 40px 16px 18px 16px;
             background-color: #E2E2E2;
             z-index: 1;
+            &.open {
+                display: flex;
+            }
         }
     }
 </style>

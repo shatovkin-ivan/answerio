@@ -105,7 +105,7 @@
                 line-height: 1.9;
                 color: #5E6063;
                 background-color: transparent;
-                &.choosen {
+                &.choosen, &:hover {
                     background-color: transparent;
                     color: var(--theme-color-1);
                 }
