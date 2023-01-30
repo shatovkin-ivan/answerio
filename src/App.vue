@@ -2,7 +2,7 @@
   <HeaderComponent />
   <main>
     <app-ask/>
-    <FindsAnswers />
+    <AnswersByCategory />
     <WhatWeDo />
   </main>
   <FooterComponent />
@@ -12,7 +12,7 @@
 <script>
 import HeaderComponent from './components/Header.vue'
 import AppAsk from './components/AppAsk.vue';
-import FindsAnswers from './components/answers/FindsAnswers.vue';
+import AnswersByCategory from './components/answers/AnswersByCategory.vue';
 import WhatWeDo from './components/WhatWeDo.vue';
 import FooterComponent from './components/Footer.vue';
 import CookieModal from './components/CookieModal.vue';
@@ -25,7 +25,7 @@ export default {
   components: {
     HeaderComponent,
     AppAsk,
-    FindsAnswers,
+    AnswersByCategory,
     WhatWeDo,
     FooterComponent,
     CookieModal
