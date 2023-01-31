@@ -4,14 +4,26 @@
       <router-link class="header__title" to="/">
         Answerio
       </router-link>
-      <button class="header__button">Sign In</button>
+      <button 
+		@click="signIn"
+		class="header__button"
+	>Sign In
+		</button>
     </div>
   </header>
 </template>
 
 <script>
+
+import { signIn } from '@/plugin/authPopup'
+
 export default {
   name: 'HeaderComponent',
+  setup() {
+	return {
+		signIn
+	}
+  }
 }
 </script>
 
