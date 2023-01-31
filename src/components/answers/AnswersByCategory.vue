@@ -43,7 +43,7 @@
                 </ul>
             </div>
             
-            <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="setCategoryMaxWidth()" :gap="40" :rtl="true">
+            <masonry-wall :items="topAnswers" :column-width="setCategoryMaxWidth()" :gap="40">
                 <template #default="{ item, index }">
                     <AnswerCard
                         :item="item"
@@ -55,7 +55,7 @@
             <div class="answers__pagination" v-if="continuationToken">
                 More 100 elements
                 <button 
-                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory`)"
+                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory?PageSize=9`)"
                     class="answers__show-more"
                 >
                     Show all
@@ -176,10 +176,9 @@ export default defineComponent({
                 })
                 const data = await response.json()
                 topAnswers.value = await data.items
-                continuationToken.value = await data.continuationToken
-                
+                continuationToken.value = await data.continuationToken === null ? data.continuationToken : JSON.stringify(data.continuationToken).slice(1, -1)
             } catch(e) {
-                console.log('error');
+                console.error(e);
             }
         }
         async function showMore(url) {
@@ -192,10 +191,14 @@ export default defineComponent({
                     }
                 })
                 const data = await response.json()
-                topAnswers.value = await data.items
-                continuationToken.value = await data.continuationToken
+                const newItems = await data.items
+
+                for (let i = 0; i < newItems.length; i++) {
+                    topAnswers.value = [...topAnswers.value, newItems[i]]
+                }
+                continuationToken.value = await data.continuationToken === null ? data.continuationToken : JSON.stringify(data.continuationToken).slice(1, -1)
             } catch(e) {
-                console.log('error');
+                console.error(e);
             }
         }
         function setCategoryId(event) {
