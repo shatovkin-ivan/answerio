@@ -54,7 +54,7 @@
       <div class="answers__pagination" v-if="continuationToken">
         More 100 elements
         <button
-          @click="showMore(`http://localhost:7071/api/Question/TopByCategory`)"
+          @click="showMore(`${apiUrl}/Question/TopByCategory`)"
           class="answers__show-more"
         >
           Show all
@@ -79,7 +79,11 @@ export default defineComponent({
     CategoryButton,
   },
   setup() {
+    const apiKey = process.env.VUE_APP_API_KEY
+    const apiUrl = process.env.VUE_APP_API_URL
+
     let currentCategory = ref(null);
+    
     const answerCategories = ref([
       {
         Top: 0,
@@ -174,16 +178,16 @@ export default defineComponent({
 
         const response = await fetch(url, {
           headers: {
-            "Ocp-Apim-Subscription-Key": "08733ebda0994b709a90755651769b26",
+            "Ocp-Apim-Subscription-Key": apiKey,
             "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenResponse.accessToken}`,
+            // Authorization: `Bearer ${tokenResponse.accessToken}`,
           },
         });
         const data = await response.json();
         topAnswers.value = await data.items;
         continuationToken.value = await data.continuationToken;
       } catch (e) {
-        console.log(e);
+        console.error(e);
       }
     }
     async function showMore(url) {
@@ -194,10 +198,10 @@ export default defineComponent({
 
         const response = await fetch(url, {
           headers: {
-            "Ocp-Apim-Subscription-Key": "08733ebda0994b709a90755651769b26",
+            "Ocp-Apim-Subscription-Key": `${apiKey}`,
             "X-Continuation-Token": continuationToken.value,
             "Content-Type": "application/json",
-            Authorization: `Bearer ${tokenResponse.accessToken}`,
+            // Authorization: `Bearer ${tokenResponse.accessToken}`,
           },
         });
         const data = await response.json();
@@ -222,11 +226,11 @@ export default defineComponent({
 
       if (currentCategory.value === "0") {
         getQuestions(
-          `http://localhost:7071/api/Question/TopByCategory?PageSize=9`
+          `${apiUrl}/Question/TopByCategory?PageSize=9`
         );
       } else {
         getQuestions(
-          `http://localhost:7071/api/Question/TopByCategory?CategoryId=${currentCategory.value}&PageSize=9`
+          `${apiUrl}/Question/TopByCategory?CategoryId=${currentCategory.value}&PageSize=9`
         );
       }
     }
@@ -261,13 +265,15 @@ export default defineComponent({
     }
 
     onMounted(() => {
+      console.log(apiKey, `${apiKey}`);
       setFirstCategoryActive();
       getQuestions(
-        "http://localhost:7071/api/Question/TopByCategory?PageSize=9"
+        `${apiUrl}/Question/TopByCategory?PageSize=9`
       );
     });
 
     return {
+      apiUrl,
       chosenCategoryName,
       modalSelectIsOpen,
       answerCategories,

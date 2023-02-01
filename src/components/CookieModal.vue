@@ -65,7 +65,7 @@
 
 <style scoped lang="scss">
     .modal {
-				display: none;
+		display: none;
         position: fixed;
         bottom: 20px;
         right: 20px;

@@ -27,7 +27,7 @@ export default {
   setup() {
 	return {
 		signIn,
-    signOut
+		signOut
 	}
   }
 }
