@@ -37,7 +37,7 @@ function setAccount(account) {
     welcomeUser(username);
 }
 function welcomeUser(user) {
-    console.log('hello' + user);
+    console.log('hello ' + user);
 }
 function selectAccount() {
 
@@ -171,22 +171,7 @@ function passTokenToApi() {
     }
 }
 
-/**
- * To initiate a B2C user-flow, simply make a login request using
- * the full authority string of that user-flow e.g.
- * https://fabrikamb2c.b2clogin.com/fabrikamb2c.onmicrosoft.com/B2C_1_edit_profile_v2 
- */
-function editProfile() {
-
-
-    const editProfileRequest = b2cPolicies.authorities.editProfile;
-    editProfileRequest.loginHint = myMSALObj.getAccountByHomeId(accountId).username;
-
-    myMSALObj.loginRedirect(editProfileRequest);
-}
-
 export {
     signIn,
-    passTokenToApi,
-    editProfile
+    passTokenToApi
 }

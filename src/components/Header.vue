@@ -9,19 +9,25 @@
 		class="header__button"
 	>Sign In
 		</button>
+      <button 
+		@click="signOut"
+		class="header__button"
+	>Sign Out
+		</button>
     </div>
   </header>
 </template>
 
 <script>
 
-import { signIn } from '@/plugin/authPopup'
+import { signIn, signOut } from '@/plugin/authPopup'
 
 export default {
   name: 'HeaderComponent',
   setup() {
 	return {
-		signIn
+		signIn,
+    signOut
 	}
   }
 }

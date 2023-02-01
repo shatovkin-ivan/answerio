@@ -13,7 +13,7 @@ const msalConfig = {
     auth: {
       // clientId: '4a7aaa88-3656-4014-83fc-49443e42b889',
       // authority: 'https://login.microsoftonline.com/04d51bf3-93da-447b-8faf-c48bcaf7efc1',
-      clientId: "2fdd06f3-7b34-49a3-a78b-0cf1dd87878e", // This is the ONLY mandatory field; everything else is optional.
+      clientId: "b22eab26-4d1e-4401-aa7e-4a350c19c781", // This is the ONLY mandatory field; everything else is optional.
       authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
       knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
       redirectUri: "http://localhost:8080", // You must register this URI on Azure Portal/App Registration. Defaults to "window.location.href".
