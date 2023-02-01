@@ -49,14 +49,19 @@
 
 <script>
     export default {
-        methods: {
-            setSesionStorage(key, value) {
+        setup() {
+            function setSesionStorage(key, value) {
                 sessionStorage.setItem(key, value)
-            },
-            setCookie(key, value, expires) {
+            }
+            function setCookie(key, value, expires) {
                 const date = new Date;
                 date.setDate(date.getDate() + expires);
                 document.cookie = `${key}=${value}; path=/; expires=" + ${date.toUTCString()};`
+            }
+
+            return {
+                setSesionStorage,
+                setCookie
             }
         }
     }
