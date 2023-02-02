@@ -26,7 +26,9 @@
   export default {
     setup() {
       function login() {
-        signIn()
+        signIn(loginCompleted)
+      }
+      function loginCompleted() {
         store.dispatch('setAuthenticated')
       }
       return {

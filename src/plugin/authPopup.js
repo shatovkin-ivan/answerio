@@ -76,7 +76,7 @@ function handleResponse(response) {
     }
 }
 
-function signIn() {
+function signIn(setSuccess) {
     console.log('111');
     /**
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
@@ -85,12 +85,13 @@ function signIn() {
 
     myMSALObj.loginPopup(loginRequest)
         .then(handleResponse)
+        .then(() => setSuccess())
         .catch(error => {
             console.log(error);
-        });
+        })
 }
 
-function signOut() {
+function signOut(setSuccess) {
 
     /**
      * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
@@ -102,7 +103,7 @@ function signOut() {
         mainWindowRedirectUri: msalConfig.auth.redirectUri
     };
 
-    myMSALObj.logoutPopup(logoutRequest);
+    myMSALObj.logoutPopup(logoutRequest).then(() => setSuccess())
 }
 
 async function getTokenPopup(request) {

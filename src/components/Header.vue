@@ -7,7 +7,7 @@
       <button 
 		@click="!isAuth ? login() : logout()"
 		class="header__button"
-		v-text="!isAuth ? 'Sign In' : 'Sing Out'"
+		v-text="!isAuth ? 'Sign In' : 'Sign Out'"
 		>
 		</button>
     </div>
@@ -31,12 +31,16 @@ export default {
 	const isAuth = ref(getIsAuth)
 
 	function login() {
-		signIn()
+		signIn(loginCompleted)
+	}
+	function loginCompleted() {
 		store.dispatch('setAuthenticated')
 	}
-	function logout() {
-		signOut()
+	function logoutCompleted() {
 		store.dispatch('removeAuthenticated')
+	}
+	function logout() {
+		signOut(logoutCompleted)	
 	}
 	return {
 		isAuth,
