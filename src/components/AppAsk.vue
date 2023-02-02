@@ -13,13 +13,13 @@
       <p class="ask__text">Get an instant AI-based response from reliable sources</p>
       <form class="form">
 				<div class="form__input-wrap">
-					<input 
+					<textarea 
 						class="form__input" 
-						type="text" 
 						placeholder="Ask any question..."
 						v-model="value"
-					>
-					<div class="test">{{  answer }}</div>
+					></textarea>
+					<div class="form__answer">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.</div>
+					<!-- {{  answer }} -->
 				</div>
         <div class="flex">
           <div class="form__left-block">
@@ -80,7 +80,7 @@ setup() {
 		sendQuestion,
 		value,
 		answer,
-		questions
+		questions,
 	}
 },
 components: {
@@ -195,6 +195,20 @@ components: {
 		font-size: 24px;
 		font-weight: 400;
 		outline: none;
+		width: calc(100% - 133px);
+		resize: none;
+		box-sizing: border-box;
+		height: 50px;
+		min-height: 50px;
+		max-height: 150px;
+	}
+
+	&__answer {
+		padding-left: 24px;
+		text-align: start;
+		border-left: 2px solid #ffffff;
+		border-radius: 2px;
+		width: calc(100% - 133px);
 	}
 
 	&__left-block,
@@ -214,6 +228,7 @@ components: {
 		cursor: pointer;
 		width: 29px;
 		height: 73px;
+		opacity: 0.6;
 		appearance: none;
 		background-position: center;
 		background-size: contain;
@@ -226,6 +241,15 @@ components: {
 		background-image: url('../assets/images/thumb-down.svg');
 		margin-right: 15px;
 	
+	}
+
+	&__radio.radio-1:checked:focus {
+		background-image: url('../assets/images/thumb-active.svg');
+		transform: rotate(180deg);
+	}
+
+	&__radio.radio-2:checked:focus {
+		background-image: url('../assets/images/thumb-active.svg');
 	}
 
 	&__radio.radio-2 {
