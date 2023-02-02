@@ -5,14 +5,10 @@
         Answerio
       </router-link>
       <button 
-		@click="signIn"
+		@click="!getAuthenticated ? signIn && setAuthenticated : signOut && removeAuthenticated"
 		class="header__button"
-	>Sign In
-		</button>
-      <button 
-		@click="signOut"
-		class="header__button"
-	>Sign Out
+		v-text="!getAuthenticated ? 'Sign In' : 'Sing Out'"
+		>
 		</button>
     </div>
   </header>
@@ -21,11 +17,17 @@
 <script>
 
 import { signIn, signOut } from '@/plugin/authPopup'
+import { computed } from 'vue';
+import { useStore } from 'vuex'
 
 export default {
   name: 'HeaderComponent',
   setup() {
+	const store = useStore()
 	return {
+		getAuthenticated: computed(() => store.getters.getAuthenticated),
+		setAuthenticated: computed(() => store.dispatch.setAuthenticated),
+		removeAuthenticated: computed(() => store.dispatch.removeAuthenticated),
 		signIn,
 		signOut
 	}

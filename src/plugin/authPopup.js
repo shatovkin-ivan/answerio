@@ -15,10 +15,6 @@ let username = "";
 function setAccount(account) {
     accountId = account.homeAccountId;
     username = account.username;
-    welcomeUser(username);
-}
-function welcomeUser(user) {
-    console.log('hello ' + user);
 }
 function selectAccount() {
     /**
@@ -162,6 +158,7 @@ function passTokenToApi() {
 }
 
 export {
+    username,
     signIn,
     getTokenPopup,
     signOut,

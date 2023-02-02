@@ -10,6 +10,9 @@
 </template>
 
 <script>
+import { ref, onMounted, onBeforeMount } from 'vue'
+import store from './store'
+ 
 import HeaderComponent from './components/Header.vue'
 import AppAsk from './components/AppAsk.vue';
 import AnswersByCategory from './components/answers/AnswersByCategory.vue';
@@ -18,7 +21,6 @@ import FooterComponent from './components/Footer.vue';
 import CookieModal from './components/CookieModal.vue';
 import '@/assets/styles/style.scss';
 
-// import { onMounted } from 'vue';
 
 export default {
   name: 'App',
@@ -30,21 +32,26 @@ export default {
     FooterComponent,
     CookieModal
   },
-  data() {
-    return {
-      showCookieModal: true,
+  setup() {
+    const showCookieModal = ref(true)
+
+    onBeforeMount(() => {
+      store.dispatch('isAuthenticated')
+    })
+    onMounted(() => {
+      isCookieHidden()
+    })
+
+    function isCookieHidden() {
+      getCookie('hideCookieModal') || window.sessionStorage.getItem('hideCookieModal') ? showCookieModal.value = false : showCookieModal.value = true
     }
-  },
-  mounted() {
-    this.isCookieHidden()
-  },
-  methods: {
-    isCookieHidden() {
-      this.getCookie('hideCookieModal') || window.sessionStorage.getItem('hideCookieModal') ? this.showCookieModal = false : this.showCookieModal = true
-    },
-    getCookie(name) {
+    function getCookie(name) {
       const matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"));
       return matches ? decodeURIComponent(matches[1]) : undefined;
+    }
+
+    return {
+      showCookieModal
     }
   }
 }

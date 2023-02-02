@@ -59,7 +59,7 @@
         />
         <button 
             v-show="!isLoading"
-            @click="showMore(`${apiUrl}/Question/TopByCategory`)"
+            @click="showMore(`${apiUrl}/Question/TopByCategory?PageSize=9`)"
             class="answers__show-more"
         >
             Show more
@@ -183,7 +183,6 @@ export default defineComponent({
     async function getQuestions(url) {
       try {
         const tokenResponse = await getTokenPopup(tokenRequest);
-        console.log(tokenResponse);
         const response = await fetch(url, {
           headers: {
             "Ocp-Apim-Subscription-Key": apiKey,
