@@ -20,25 +20,7 @@
 <script>
 export default {
 	props: ['questions'],
-	setup() {
-		let firstArray = []
-		let secondArray = []
-
-		function divideArray(questions) {
-			console.log(questions);
-		}
-
-		return {
-			firstArray,
-			secondArray,
-			divideArray
-		}
-	},
-	mounted() {
-		this.divideArray(this.questions)
-		}
-	}
-
+}
 </script>
 
 <style scoped lang="scss">

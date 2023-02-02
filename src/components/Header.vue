@@ -20,6 +20,7 @@ export default {
 .header {
 	padding-top: 24px;
 	margin-bottom: 131px;
+	
 	&__title {
 		text-transform: uppercase;
 		font-size: 20px;
