@@ -8,6 +8,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@azure/msal-browser": "^2.32.2",
     "@yeger/vue-masonry-wall": "^3.4.3",
     "core-js": "^3.8.3",
     "sass": "^1.57.1",
