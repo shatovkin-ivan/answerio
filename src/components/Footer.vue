@@ -9,10 +9,10 @@
 								<span>Sign Up with Gmail</span>
 								<div class="footer__icon-gmail"></div>
 							</button>
-							<button class="footer__button facebook">
+							<!-- <button class="footer__button facebook">
 								<span>Sign Up with Facebook</span>
 								<div class="footer__icon-facebook"></div>
-							</button>
+							</button> -->
 						</div>
 					</div>
 				</div>
@@ -177,6 +177,37 @@
 		}
 		
 	}
+	}
+
+	@media screen and (max-width: 320px) {
+		.footer {
+			margin-bottom: 20px;
+			&__wrap {
+				padding: 40px 15px;
+				margin-bottom: 60px;
+			}
+
+			&__rights {
+				display: block;
+			}
+
+			&__rights-text {
+				text-align: center;
+				margin: 0 auto;
+			}
+
+			&__rights-line {
+				display: none;
+			}
+
+			&__button span {
+				font-size: 18px;
+			}
+
+			&__button.gmail {
+				padding: 0 25px;
+			}
+		}
 	}
 	</style>
   
