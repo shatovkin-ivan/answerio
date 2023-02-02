@@ -1,20 +1,26 @@
 <template>
     <footer class="footer">
-		<div class="container">
-			<div class="footer__wrap">
-				<div class="footer__inner-wrap">
-					<p class="footer__title">Sign up to get unlimited access</p>
-					<button class="footer__button">
-						<span>Sign Up with Gmail</span>
-						<div class="footer__icon-gmail"></div>
-					</button>
+			<div class="container">
+				<div class="footer__wrap">
+					<div class="footer__inner-wrap">
+						<p class="footer__title">Sign up to get unlimited access</p>
+						<div class="footer__right-block">
+							<button class="footer__button gmail">
+								<span>Sign Up with Gmail</span>
+								<div class="footer__icon-gmail"></div>
+							</button>
+							<!-- <button class="footer__button facebook">
+								<span>Sign Up with Facebook</span>
+								<div class="footer__icon-facebook"></div>
+							</button> -->
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="footer__rights">
 				<p class="footer__rights-text">All Rights Reserved © 2023</p>
 				<div class="footer__rights-line"></div>
 			</div>
-		</div>
     </footer>
   </template>
   
@@ -206,6 +212,37 @@
 				&-line {
 					display: none;
 				}
+			}
+		}
+	}
+
+	@media screen and (max-width: 320px) {
+		.footer {
+			margin-bottom: 20px;
+			&__wrap {
+				padding: 40px 15px;
+				margin-bottom: 60px;
+			}
+
+			&__rights {
+				display: block;
+			}
+
+			&__rights-text {
+				text-align: center;
+				margin: 0 auto;
+			}
+
+			&__rights-line {
+				display: none;
+			}
+
+			&__button span {
+				font-size: 18px;
+			}
+
+			&__button.gmail {
+				padding: 0 25px;
 			}
 		}
 	}

@@ -18,7 +18,7 @@ export default {
 <style scoped lang="scss">
 
 .header {
-	margin-top: 24px;
+	padding-top: 24px;
 	margin-bottom: 131px;
 	&__title {
 		text-transform: uppercase;

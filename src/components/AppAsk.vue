@@ -174,7 +174,7 @@ components: {
   border-radius: 30px;
   text-align: center;
   padding: 26px 29px 32px;
-	margin: 0 auto;
+	margin: 0 auto 220px;
 
 	&__input-wrap {
 		display: block;
@@ -272,6 +272,60 @@ components: {
 		&__text {
 			font-size: 16px;
 		}
+	}
+}
+
+@media screen and (max-width: 320px) {
+	.form {
+		padding: 26px 29px 65px;
+		
+
+		&__input,
+		&__answer {
+			font-size: 16px;
+			width: 100%;
+		}
+
+		&__label {
+			display: none;
+		}
+
+		&__left-block {
+			position: absolute;
+			bottom: 0;
+		}
+
+		&__right-block {
+			display: block;
+		}
+	}
+
+	.ask {
+		&__clear {
+			border: none;
+			opacity: 0.6;
+			position: absolute;
+			bottom: 10px;
+			right: 30px;
+		}
+
+		&__question {
+			padding: 15px;
+		}
+
+		&__question-text,
+		&__question span {
+			font-size: 18px;
+		}
+
+		&__question-text {
+			padding-right: 15px;
+		}
+		
+	}
+
+	.flex {
+		display: block;
 	}
 }
 </style>

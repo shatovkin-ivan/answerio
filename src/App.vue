@@ -1,10 +1,11 @@
 <template>
-  <HeaderComponent />
+	<HeaderComponent />
   <main>
     <app-ask/>
     <AnswersByCategory />
     <WhatWeDo />
   </main>
+
   <FooterComponent />
   <CookieModal v-if="showCookieModal" />
 </template>
@@ -49,4 +50,3 @@ export default {
   }
 }
 </script>
-
