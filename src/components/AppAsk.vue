@@ -58,7 +58,7 @@ setup() {
 	let secondArray = ref('')
 
 	const apiKey = process.env.VUE_APP_API_KEY
-    const apiUrl = process.env.VUE_APP_API_URL
+  const apiUrl = process.env.VUE_APP_API_URL
 
 	async function sendQuestion() {
 		try {
