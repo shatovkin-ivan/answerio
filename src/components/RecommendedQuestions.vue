@@ -2,14 +2,15 @@
 	<div class="recommended">
 		<div class="container">
 			<ul class="recommended__list">
-				<li class="recommended__question" v-for="question in questions" :key="question.id">
-				<p>{{ question.question }}</p>
+				<li class="recommended__question" v-for="question in array" :key="question.id">
+					<button @click="test"></button>
+				<p>{{ question }}</p>
 				<p>Lorem ipsum dolor sit amet.</p>
 				</li>
 			</ul>
 			<ul class="recommended__list">
-				<li class="recommended__question" v-for="question in questions" :key="question.id">
-				<p>{{ question.question }}</p>
+				<li class="recommended__question" v-for="question in array" :key="question.id">
+				<p> 1</p>
 				<p>Lorem ipsum dolor sit amet.</p>
 				</li>
 			</ul>
@@ -18,9 +19,21 @@
 </template>
 
 <script>
+
 export default {
-	props: ['questions'],
+	props: ['array'],
+	setup(props) {
+	function test() {
+		console.log(props.firstArray);
+	}
+
+	return {
+		test
+	}
 }
+} 
+
+
 </script>
 
 <style scoped lang="scss">

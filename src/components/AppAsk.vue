@@ -43,7 +43,8 @@
       </form>
     </div>
   </div>
-	<recommended-questions :questions="firstArray"></recommended-questions>
+	<recommended-questions :array="firstArray"/>
+	<recommended-questions :array="secondArray"/>
 </template>
 
 <script>
@@ -53,9 +54,8 @@ export default {
 setup() {
 	const value = ref('')
 	let answer = ref('')
-	let questions = ref('')
-	let firstArray = ref([])
-	let secondArray = ref([])
+	let firstArray = ref('')
+	let secondArray = ref('')
 	async function sendQuestion() {
 		try {
 			const response = await fetch('https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/Process', {
@@ -70,27 +70,24 @@ setup() {
 			})
 			const data = await response.json()
 			answer.value = data.answer
-			questions.value = data.recommendedQuestions
-			divideArray(questions.value)
+			divideArray(data.recommendedQuestions)
 		} catch(e) {
 			console.log(e);
 		}
 	}
 
 	function divideArray(questions) {
-		console.log(questions);
 		let half = Math.ceil(questions.length / 2);    
+		console.log(questions);
 		firstArray = questions.slice(0,half);
 		console.log(firstArray);
 		secondArray = questions.slice(half, questions.length);
-		console.log(secondArray);
 	}
 
 	return {
 		sendQuestion,
 		value,
 		answer,
-		questions,
 		divideArray,
 		firstArray,
 		secondArray
