@@ -101,6 +101,10 @@ export default {
             width: 100%;
             height: 28px;
             background-color: var(--theme-color-1);
+            transition: .3s opacity ease-in-out;
+            &:hover {
+                opacity: .6;
+            }
             & :is(svg) {
                 width: 11px;
                 height: 11px;

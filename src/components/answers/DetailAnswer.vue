@@ -28,9 +28,8 @@
 <script>
     import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
 
-    // import { ref } from 'vue'
-
     export default {
+        
         components: {
             AnswerCardFooter
         },
@@ -44,11 +43,14 @@
                 required: true
             }
         }, 
-        methods: {
-            clickOnModal() {
-                this.$emit('hideModalOverlay', this.visible)
+        setup(props, { emit }) {
+            const clickOnModal = () => {
+                emit('hideModalOverlay', props.visible)
             }
-        }
+            return {
+                clickOnModal
+            }
+        },
     }
 </script>
 

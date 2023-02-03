@@ -29,7 +29,7 @@
                     </svg>
                 </div>
                 <ul 
-                    v-show="modalSelectIsOpen"
+                    :class="modalSelectIsOpen ? 'open' : ''"
                     class="answers__categories categories"
                 >
                     <CategoryButton 
@@ -43,7 +43,12 @@
                 </ul>
             </div>
             
-            <masonry-wall :items="topAnswers" :ssr-columns="1" :column-width="setCategoryMaxWidth()" :gap="40">
+            <masonry-wall 
+                :class="isLoading ? 'load' : ''"
+                :items="topAnswers" 
+                :column-width="setCategoryMaxWidth()" 
+                :gap="40"
+            >
                 <template #default="{ item, index }">
                     <AnswerCard
                         :item="item"
@@ -52,13 +57,16 @@
                 </template>
             </masonry-wall>
             
-            <div class="answers__pagination" v-if="continuationToken">
-                More 100 elements
+            <div class="answers__pagination" v-show="continuationToken">
+                <PreloaderComponent 
+                    v-show="isLoading"
+                />
                 <button 
-                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory`)"
+                    v-show="!isLoading"
+                    @click="showMore(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory?PageSize=9`)"
                     class="answers__show-more"
                 >
-                    Show all
+                    Show more
                 </button>
             </div>
         </div>
@@ -71,15 +79,18 @@ import MasonryWall from '@yeger/vue-masonry-wall'
 import { defineComponent, ref, onMounted } from 'vue'
 import AnswerCard from '@/components/answers/AnswerCard.vue'
 import CategoryButton from '@/components/answers/CategoryButton.vue'
+import PreloaderComponent from '../ui/PreloaderComponent.vue'
 
 export default defineComponent({
     components: {
         AnswerCard,
         MasonryWall,
-        CategoryButton
+        CategoryButton,
+        PreloaderComponent
     },
     setup() {
-        let currentCategory = ref(null)
+        const currentCategory = ref(null)
+        const isLoading = ref(false)
         const answerCategories = ref([
             {
                 'Top': 0,
@@ -176,14 +187,15 @@ export default defineComponent({
                 })
                 const data = await response.json()
                 topAnswers.value = await data.items
-                continuationToken.value = await data.continuationToken
-                
+                continuationToken.value = await data.continuationToken === null ? data.continuationToken : JSON.stringify(data.continuationToken).slice(1, -1)
+                console.log(topAnswers.value.length);
             } catch(e) {
-                console.log('error');
+                console.error(e);
             }
         }
         async function showMore(url) {
             try {
+                isLoading.value = true
                 const response = await fetch(url, {
                     headers: {
                         'Ocp-Apim-Subscription-Key': '08733ebda0994b709a90755651769b26',
@@ -192,10 +204,15 @@ export default defineComponent({
                     }
                 })
                 const data = await response.json()
-                topAnswers.value = await data.items
-                continuationToken.value = await data.continuationToken
+                const newItems = await data.items
+
+                for (let i = 0; i < newItems.length; i++) {
+                    topAnswers.value = [...topAnswers.value, newItems[i]]
+                }
+                continuationToken.value = await data.continuationToken === null ? data.continuationToken : JSON.stringify(data.continuationToken).slice(1, -1)
+                isLoading.value = false
             } catch(e) {
-                console.log('error');
+                console.error(e);
             }
         }
         function setCategoryId(event) {
@@ -214,7 +231,6 @@ export default defineComponent({
             } else {
                 getQuestions(`https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/TopByCategory?CategoryId=${currentCategory.value}&PageSize=9`)
             }
-            
         }
         function clearChoosenCategory() {
             for (let i = 0; i < answerCategories.value.length; i++) {
@@ -252,6 +268,7 @@ export default defineComponent({
         })
 
         return {
+            isLoading,
             chosenCategoryName,
             modalSelectIsOpen,
             answerCategories,
@@ -333,6 +350,9 @@ export default defineComponent({
                 margin-bottom: 55px;
             }
         }
+        .masonry-column {
+            gap: 20px!important;
+        }
     }
     @media screen and (max-width: 991px) {
         .answers {
@@ -347,10 +367,16 @@ export default defineComponent({
                 margin-top: 40px;
             }
         }
+        .masonry-column {
+            gap: 15px!important;
+        }
+        .masonry-wall {
+            gap: 18px!important;
+        }
         .categories {
             gap: 20px 10px;
         }
-    }
+        }
     @media screen and (max-width: 560px) {
         .drop-menu {
             position: relative;
@@ -387,9 +413,13 @@ export default defineComponent({
             gap: 0;
             border: 2px solid var(--theme-color-1);
             border-radius: 18px;
+            display: none;
             padding: 40px 16px 18px 16px;
             background-color: #E2E2E2;
             z-index: 1;
+            &.open {
+                display: flex;
+            }
         }
     }
 </style>

@@ -16,11 +16,12 @@ export default {
     props: {
         index: Number,
     },
-    methods: {
-        toggleModal(i) {
-            this.$emit('BtnToggleModal', {
-                index: i
-            })
+    setup(props, { emit }) {
+        const toggleModal = (i) => {
+            emit('BtnToggleModal', { index: i  })
+        }
+        return {
+            toggleModal
         }
     }
 }

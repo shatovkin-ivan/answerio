@@ -23,31 +23,35 @@ export default {
 	
 	&__title {
 		text-transform: uppercase;
-		font-size: 20px;
+		font-size: 2rem;
 		font-weight: 700;
 		letter-spacing: 0.1em;
 		line-height: 240%;
 	}
-
 	&__button {
-		font-size: 20px;
-    font-weight: 500;
-    color: #7F8186;
-    background: #1D1F20;
-    box-shadow: 0px 34px 64px rgba(0, 0, 0, 0.25);
-    border-style: none;
-    border-radius: 18px;
-    padding: 20px 50px;
+		font-size: 2rem;
+		font-weight: 500;
+		color: #7F8186;
+		background: #1D1F20;
+		box-shadow: 0px 34px 64px rgba(0, 0, 0, 0.25);
+		border-style: none;
+		border-radius: 18px;
+		padding: 20px 50px;
+		transition: .3s color ease-in-out, .3s background-color ease-in-out;
+		&:hover {
+			color: rgba(255, 255, 255, .4);
+			background-color: var(--theme-color-1);
+		}
 	}
 }
 
-@media screen and (max-width: 1200px){
+@media screen and (max-width: 1440px){
 	.header {
 		margin-bottom: 116px;
 	}
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 991px) {
 	.header {
 		margin-bottom: 77px;
 		
@@ -57,7 +61,7 @@ export default {
 	}
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 560px) {
 	.header {
 		&__button {
 			padding: 20px 20px;

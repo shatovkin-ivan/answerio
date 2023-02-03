@@ -76,27 +76,30 @@
 <style lang="scss" scoped>
 
     .card-bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            border-radius: 0 0 16px 16px;
-            padding: 27px 24px;
-            background-color: #292A2C;
-            &__tag {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-radius: 0 0 16px 16px;
+        padding: 27px 24px;
+        background-color: #292A2C;
+        &__tag {
             display: flex;
             align-items: center;
             justify-content: center;
             border: 2px solid rgba(94, 96, 99, 0.6);
             border-radius: 68px;
-            padding: 0 18px;
-            height: 32px;
+            padding: 5px 18px;
+            min-height: 32px;
             font-size: 1.4rem;
             font-style: italic;
             color: #5E6063;
+            text-align: center;
         }
         &__share {
             display: flex;
             align-items: center;
+            justify-content: flex-end;
+            font-size: 2rem;
             font-style: italic;
             color: rgba(255, 255, 255, .6);
             background-color: transparent;
@@ -120,6 +123,8 @@
         }
         &__social {
             position: relative;
+            margin-left: auto;
+            width: 100%;
         }
         &__links {
             position: absolute;

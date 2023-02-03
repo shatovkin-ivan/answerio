@@ -3,6 +3,7 @@ html {
 }
 body {
     background-color: var(--theme-color-3);
+    overflow-x: hidden;
 }
 * {
     box-sizing: border-box;
@@ -63,18 +64,9 @@ button {
     .container {
         padding: 0 75px;
     }
-    .masonry-column {
-        gap: 20px!important;
-    }
 }
 @media screen and (max-width: 991px) {
     .container {
         padding: 0 20px;
-    }
-    .masonry-column {
-        gap: 15px!important;
-    }
-    .masonry-wall {
-        gap: 18px!important;
     }
 }
