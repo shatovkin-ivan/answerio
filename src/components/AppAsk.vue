@@ -56,12 +56,16 @@ setup() {
 	let answer = ref('')
 	let firstArray = ref('')
 	let secondArray = ref('')
+
+	const apiKey = process.env.VUE_APP_API_KEY
+    const apiUrl = process.env.VUE_APP_API_URL
+
 	async function sendQuestion() {
 		try {
-			const response = await fetch('https://answerio-dev-apim.azure-api.net/answerio-dev-api/Question/Process', {
+			const response = await fetch(`${apiUrl}/Question/Process`, {
 				method: 'POST',
 				headers: {
-					'Ocp-Apim-Subscription-Key': '08733ebda0994b709a90755651769b26',
+					'Ocp-Apim-Subscription-Key': `${apiKey}`,
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({

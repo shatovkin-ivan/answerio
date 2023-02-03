@@ -4,14 +4,50 @@
       <router-link class="header__title" to="/">
         Answerio
       </router-link>
-      <button class="header__button">Sign In</button>
+      <button 
+		@click="!isAuth ? login() : logout()"
+		class="header__button"
+		v-text="!isAuth ? 'Sign In' : 'Sign Out'"
+		>
+		</button>
     </div>
   </header>
 </template>
 
 <script>
+
+import { signIn, signOut } from '@/plugin/authPopup'
+import { ref, computed } from 'vue';
+
+import store from '@/store'
+
 export default {
   name: 'HeaderComponent',
+  setup() {
+	const getIsAuth = computed(() => {
+		return store.getters.getAuthenticated
+	})
+
+	const isAuth = ref(getIsAuth)
+
+	function login() {
+		signIn(loginCompleted)
+	}
+	function loginCompleted() {
+		store.dispatch('setAuthenticated')
+	}
+	function logoutCompleted() {
+		store.dispatch('removeAuthenticated')
+	}
+	function logout() {
+		signOut(logoutCompleted)	
+	}
+	return {
+		isAuth,
+		login,
+		logout,
+	}
+  }
 }
 </script>
 
