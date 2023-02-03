@@ -18,8 +18,7 @@
 						placeholder="Ask any question..."
 						v-model="value"
 					></textarea>
-					<div class="form__answer">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem pariatur amet, mollitia quod est numquam nobis labore voluptates quis, sint qui eos eveniet! Deserunt porro minima illum qui iste? Ratione.</div>
-					<!-- {{  answer }} -->
+					<div class="form__answer">{{  answer }}</div>
 				</div>
         <div class="flex">
           <div class="form__left-block">
@@ -57,11 +56,13 @@ setup() {
 	let firstArray = ref('')
 	let secondArray = ref('')
 
-	const apiKey = process.env.VUE_APP_API_KEY
+	const apiKey = 	process.env.VUE_APP_API_KEY
   const apiUrl = process.env.VUE_APP_API_URL
 
 	async function sendQuestion() {
 		try {
+			console.log(apiKey);
+			console.log(apiUrl);
 			const response = await fetch(`${apiUrl}/Question/Process`, {
 				method: 'POST',
 				headers: {
