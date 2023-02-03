@@ -189,7 +189,7 @@ components: {
   border-radius: 30px;
   text-align: center;
   padding: 26px 29px 32px;
-	margin: 0 auto 220px;
+	margin: 0 auto;
 
 	&__input-wrap {
 		display: block;
