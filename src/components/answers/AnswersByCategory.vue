@@ -183,7 +183,6 @@ export default defineComponent({
     async function getQuestions(url) {
       try {
         const tokenResponse = await getTokenPopup(tokenRequest);
-        console.log(tokenResponse);
         const response = await fetch(url, {
           headers: {
             "Ocp-Apim-Subscription-Key": `${apiKey}`,
@@ -193,7 +192,6 @@ export default defineComponent({
         });
         const data = await response.json();
         topAnswers.value = await data.items;
-        console.log(data.continuationToken);
         continuationToken.value = await data.continuationToken === null ? data.continuationToken : JSON.stringify(data.continuationToken).slice(1, -1)
       } catch (e) {
         console.error(e);
@@ -203,7 +201,6 @@ export default defineComponent({
       try {
         isLoading.value = true
         const tokenResponse = await getTokenPopup(tokenRequest);
-        console.log(tokenResponse);
         const response = await fetch(url, {
           headers: {
             "Ocp-Apim-Subscription-Key": `${apiKey}`,
@@ -214,7 +211,6 @@ export default defineComponent({
         })
         const data = await response.json()
         const newItems = await data.items
-        console.log(newItems);
         for (let i = 0; i < newItems.length; i++) {
             topAnswers.value = [...topAnswers.value, newItems[i]]
         }

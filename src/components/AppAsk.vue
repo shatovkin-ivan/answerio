@@ -18,7 +18,7 @@
 						placeholder="Ask any question..."
 						v-model="value"
 					></textarea>
-					<div class="form__answer">{{  answer }}</div>
+					<div class="form__answer">{{ answerProp || answer }}</div>
 				</div>
         <div class="flex">
           <div class="form__left-block">
@@ -28,7 +28,7 @@
           </div>
          <div class="form__right-block">
           <button class="ask__clear">Clear</button>
-          <button class="ask__question">
+          <button type="button" class="ask__question">
 						<span class="ask__question-text" @click.prevent="sendQuestion">Ask a question</span> 
 						<span class="ask__question-count">
 							1
@@ -47,10 +47,22 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 import RecommendedQuestions from './RecommendedQuestions.vue'
+import { useRouter } from 'vue-router'
 export default {
-setup() {
+	props: {
+		questionProp: {
+			type: String,
+			required: false
+		},
+		answerProp: {
+			type: String,
+			required: false
+		}
+	},
+setup(props) {
+	const router = useRouter()
 	const value = ref('')
 	let answer = ref('')
 	let firstArray = ref('')
@@ -61,8 +73,6 @@ setup() {
 
 	async function sendQuestion() {
 		try {
-			console.log(apiKey);
-			console.log(apiUrl);
 			const response = await fetch(`${apiUrl}/Question/Process`, {
 				method: 'POST',
 				headers: {
@@ -75,6 +85,12 @@ setup() {
 			})
 			const data = await response.json()
 			answer.value = data.answer
+			router.push({
+				name: 'PageWithAnswer',
+				params: {
+					url: data.url
+				}
+			})
 			divideArray(data.recommendedQuestions)
 		} catch(e) {
 			console.log(e);
@@ -88,7 +104,10 @@ setup() {
 		console.log(firstArray);
 		secondArray = questions.slice(half, questions.length);
 	}
-
+	watchEffect(() => {
+		const newQuestion = props.questionProp
+		value.value = newQuestion
+	})
 	return {
 		sendQuestion,
 		value,
