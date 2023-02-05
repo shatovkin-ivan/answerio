@@ -28,8 +28,8 @@
           </div>
          <div class="form__right-block">
           <button class="ask__clear">Clear</button>
-          <button class="ask__question">
-						<span class="ask__question-text" @click.prevent="sendQuestion">Ask a question</span> 
+          <button class="ask__question" @click.prevent="sendQuestion">
+						<span class="ask__question-text">Ask a question</span> 
 						<span class="ask__question-count">
 							1
 							<svg>
