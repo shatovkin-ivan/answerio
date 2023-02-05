@@ -53,16 +53,14 @@ export default {
 setup() {
 	const value = ref('')
 	let answer = ref('')
-	let firstArray = ref('')
-	let secondArray = ref('')
+	let firstArray = ref([])
+	let secondArray = ref([])
 
 	const apiKey = 	process.env.VUE_APP_API_KEY
   const apiUrl = process.env.VUE_APP_API_URL
 
 	async function sendQuestion() {
 		try {
-			console.log(apiKey);
-			console.log(apiUrl);
 			const response = await fetch(`${apiUrl}/Question/Process`, {
 				method: 'POST',
 				headers: {
@@ -83,10 +81,8 @@ setup() {
 
 	function divideArray(questions) {
 		let half = Math.ceil(questions.length / 2);    
-		console.log(questions);
-		firstArray = questions.slice(0,half);
-		console.log(firstArray);
-		secondArray = questions.slice(half, questions.length);
+		firstArray.value = questions.slice(0,half);
+		secondArray.value = questions.slice(half, questions.length);
 	}
 
 	return {
@@ -108,8 +104,9 @@ components: {
 <style scoped lang="scss">
 
 .ask {
-	
 	position: relative;
+	margin-bottom: 220px;
+
 	&__title {
 		font-weight: 400;
 		color: #A0A1A6;
@@ -272,7 +269,7 @@ components: {
 	}
 }
 
-@media screen and (max-width: 768px){
+@media screen and (max-width: 991px){
 	.ask {
 		
 		&__title, 
@@ -290,7 +287,7 @@ components: {
 	}
 }
 
-@media screen and (max-width: 320px) {
+@media screen and (max-width: 768px) {
 	.form {
 		padding: 26px 29px 65px;
 		

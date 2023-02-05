@@ -303,7 +303,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .answers {
   position: relative;
-  padding: 220px 0 64px 0;
+  padding: 121px 0 64px 0;
   &__bg {
     position: absolute;
     bottom: -50%;
