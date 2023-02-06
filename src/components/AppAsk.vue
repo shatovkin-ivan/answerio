@@ -24,7 +24,7 @@
           <div class="form__left-block">
             <label class="form__label" for="choice">Rate the answer</label>
 							<input class="form__radio radio-1" type="radio" name="choice" id="choice-for">
-							<input class="form__radio radio-2" type="radio" name="choice" id="choice-against"> 
+							<!-- <input class="form__radio radio-2" type="radio" name="choice" id="choice-against">  -->
           </div>
          <div class="form__right-block">
           <button class="ask__clear">Clear</button>
@@ -135,10 +135,15 @@ components: {
 	}
 
 	&__question {
-		border: 2px solid rgba(255,255,255,0.6);
 		border-radius: 18px;
 		background: #FFFFFF;
 		padding: 15px 32px;
+		&:hover,
+		&:hover span {
+				border-color: var(--white-color);
+        color: var(--white-color);
+        background-color: #1d1f20;
+        }
 	}
 
 	&__question span {
@@ -164,6 +169,7 @@ components: {
 		top: 5px;
 		left: 16px;
 	}
+
 	&__bg {
 		position: absolute;
 		top: -125px;
@@ -249,23 +255,17 @@ components: {
 
 	&__radio.radio-1 {
     position: relative;
-		top: 10px;
-		background-image: url('../assets/images/thumb-down.svg');
+		background-image: url('../assets/images/thumb.svg');
 		margin-right: 15px;
 	
 	}
 
-	&__radio.radio-1:checked:focus {
-		background-image: url('../assets/images/thumb-active.svg');
-		transform: rotate(180deg);
+	&__radio.radio-1:checked:hover {
+		background-image: url('../assets/images/thumb-hover.svg');
 	}
 
-	&__radio.radio-2:checked:focus {
-		background-image: url('../assets/images/thumb-active.svg');
-	}
-
-	&__radio.radio-2 {
-		background-image: url('../assets/images/thumb-up.svg');
+	&__radio.radio-1:checked {
+		background-image: url('../assets/images/thumb-click.svg');
 	}
 }
 
