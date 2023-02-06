@@ -10,10 +10,10 @@ const b2cPolicies = {
     },
     authorities: {
         signUpSignIn: {
-            authority: "https://answerio.b2clogin.com/answerio.onmicrosoft.com/B2C_1_susi_google",
+            authority: "https://qandaxyz.b2clogin.com/qandaxyz.onmicrosoft.com/B2C_1_susi_google",
         }
     },
-    authorityDomain: "answerio.b2clogin.com"
+    authorityDomain: "qandaxyz.b2clogin.com"
 }
 
 export {
