@@ -22,9 +22,12 @@
 				</div>
         <div class="flex">
           <div class="form__left-block">
-            <label class="form__label" for="choice">Rate the answer</label>
-							<input class="form__radio radio-1" type="radio" name="choice" id="choice-for">
-							<!-- <input class="form__radio radio-2" type="radio" name="choice" id="choice-against">  -->
+            <div class="form__label">Rate the answer</div>
+							<button :class="{'form__button': true, 'active': liked}" @click.prevent="sendLike">
+								<svg>
+									<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
+								</svg>
+							</button>
           </div>
          <div class="form__right-block">
           <button class="ask__clear">Clear</button>
@@ -55,6 +58,7 @@ setup() {
 	let answer = ref('')
 	let firstArray = ref([])
 	let secondArray = ref([])
+	let liked = ref(true)
 
 	const apiKey = 	process.env.VUE_APP_API_KEY
   const apiUrl = process.env.VUE_APP_API_URL
@@ -79,6 +83,20 @@ setup() {
 		}
 	}
 
+	async function sendLike() {
+		const response = await fetch(`${apiUrl}/Question/Like`, {
+			method: 'POST',
+				headers: {
+					'Ocp-Apim-Subscription-Key': `${apiKey}`,
+					'Content-Type': 'application/json',
+				},
+				body: '',
+		})
+		liked = true
+		const data = await response.json()
+		console.log(data);
+	}
+
 	function divideArray(questions) {
 		let half = Math.ceil(questions.length / 2);    
 		firstArray.value = questions.slice(0,half);
@@ -91,7 +109,9 @@ setup() {
 		answer,
 		divideArray,
 		firstArray,
-		secondArray
+		secondArray,
+		sendLike,
+		liked
 	}
 },
 
@@ -144,6 +164,10 @@ components: {
         color: var(--white-color);
         background-color: #1d1f20;
         }
+
+		&:hover	svg {
+			fill: var(--white-color);
+		}	
 	}
 
 	&__question span {
@@ -168,6 +192,7 @@ components: {
 		position: absolute;
 		top: 5px;
 		left: 16px;
+		fill: #224EFE;
 	}
 
 	&__bg {
@@ -242,30 +267,25 @@ components: {
 		margin-right: 20px;
 	} 
 
-	&__radio {
+	&__button {
 		cursor: pointer;
-		width: 29px;
-		height: 73px;
-		opacity: 0.6;
-		appearance: none;
-		background-position: center;
-		background-size: contain;
-		background-repeat: no-repeat;
-	}
-
-	&__radio.radio-1 {
-    position: relative;
-		background-image: url('../assets/images/thumb.svg');
-		margin-right: 15px;
+		background-color: transparent;
 	
-	}
+		& svg {
+			display: block;
+			width: 30px;
+			height: 30px;
+			fill: transparent;
+			stroke: rgba(255,255,255, 0.2);
+		}
 
-	&__radio.radio-1:checked:hover {
-		background-image: url('../assets/images/thumb-hover.svg');
-	}
+		&:hover svg {
+			stroke: rgba(255,255,255, 0.6);
+		}
 
-	&__radio.radio-1:checked {
-		background-image: url('../assets/images/thumb-click.svg');
+		&.active svg {
+			fill: rgba(255,255,255, 0.6);
+		}
 	}
 }
 
