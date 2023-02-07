@@ -257,7 +257,7 @@ export default {
 <style scoped lang="scss">
 .ask {
 	position: relative;
-	margin-bottom: 220px;
+	height: calc(100vh - 150px);
 
 	&__title {
 		font-weight: 400;
@@ -368,6 +368,7 @@ export default {
 }
 
 .form {
+	position: relative;
 	max-width: 1024px;
 	width: 100%;
 	background: linear-gradient(181.25deg, #224EFE -41.38%, #0E36D6 87.57%);
@@ -473,7 +474,7 @@ export default {
 
 @media screen and (max-width: 991px) {
 	.ask {
-
+		height: calc(100vh - 100px);
 		&__title,
 		&__title span {
 			font-size: 38px;

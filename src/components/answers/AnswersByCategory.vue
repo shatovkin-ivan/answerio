@@ -269,7 +269,7 @@ export default defineComponent({
 <style scoped lang="scss">
 .answers {
   position: relative;
-  padding: 121px 0 64px 0;
+  padding-bottom: 64px;
 
   &__bg {
     position: absolute;

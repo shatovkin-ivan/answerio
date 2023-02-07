@@ -1,7 +1,7 @@
 <template>
 	<section id="recommended" class="recommended" v-if="firstArray.length">
 		<a href="#recommended" class="recommended__link">
-			<span>See</span> what else we have found for you
+			<span>See </span> what else we have found for you
 		</a>
 		<div 
 			@mousedown="mouseDown"
@@ -86,6 +86,7 @@ export default {
 }
 .recommended {
 	&__list {
+		position: relative;
 		min-width: 100%;
 		display: flex;
 	}
@@ -129,6 +130,34 @@ export default {
 		border-left: 2px solid #A0A1A6;
 		border-radius: 2px;
 		color: #A0A1A6;
+	}
+
+	&__link {
+		display: block;
+		width: fit-content;
+		margin: 0 auto;
+		position: relative;
+		top: -150px;
+		color: #5E6063;
+		
+		& span {
+			color: #0E36D6;
+		}
+
+		&::after {
+			content: '';
+			position: absolute;
+			display: block;
+			right: -50px;
+			top: calc(50% - 40px);
+			width: 80px;
+			height: 80px;
+			background-image: url('@/assets/images/arrow.svg');
+			background-size: contain;
+			background-position: center;
+			background-repeat: no-repeat;
+			z-index: 3;
+		}
 	}
 }
 </style>
