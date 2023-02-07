@@ -45,8 +45,10 @@
 			</form>
 		</div>
 	</div>
-	<recommended-questions :array="firstArray" />
-	<recommended-questions :array="secondArray" />
+	<recommended-questions 
+		:firstArray="firstArray" 
+		:secondArray="secondArray" 
+	/>
 
 	<Teleport to="body">
         <MessageModal
