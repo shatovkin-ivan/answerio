@@ -1,128 +1,224 @@
 <template>
-  <div class="ask">
-	<div class="ask__bg">
-		<picture>
-			<source srcset="@/assets/images/intro-bg.avif" type="image/avif">
-			<source srcset="@/assets/images/intro-bg.webp" type="image/webp">
-			<source srcset="@/assets/images/intro-bg.png" type="image/png">
-			<img src="@/assets/images/intro-bg.png" alt="">
-		</picture>
-	</div>
-    <div class="container">
-      <h1 class="ask__title h1-title">From <span class="h1-title">science</span> fiction to reality</h1>
-      <p class="ask__text">Get an instant AI-based response from reliable sources</p>
-      <form class="form">
+	<div class="ask">
+		<div class="ask__bg">
+			<picture>
+				<source srcset="@/assets/images/intro-bg.avif" type="image/avif">
+				<source srcset="@/assets/images/intro-bg.webp" type="image/webp">
+				<source srcset="@/assets/images/intro-bg.png" type="image/png">
+				<img src="@/assets/images/intro-bg.png" alt="">
+			</picture>
+		</div>
+		<div class="container">
+			<h1 class="ask__title h1-title">From <span class="h1-title">science</span> fiction to reality</h1>
+			<p class="ask__text">Get an instant AI-based response from reliable sources</p>
+			<form class="form">
 				<div class="form__input-wrap">
-					<textarea 
-						class="form__input" 
-						placeholder="Ask any question..."
-						v-model="value"
-					></textarea>
-					<div class="form__answer">{{  answer }}</div>
+					<textarea class="form__input" placeholder="Ask any question..." v-model="value"
+						@input="setAutoHeight">
+					</textarea>
+					<div class="form__answer">{{ answer }}</div>
 				</div>
-        <div class="flex">
-          <div class="form__left-block">
-            <div class="form__label">Rate the answer</div>
-							<button :class="{'form__button': true, 'active': liked}" @click.prevent="sendLike">
-								<svg>
-									<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
-								</svg>
-							</button>
-          </div>
-         <div class="form__right-block">
-          <button class="ask__clear">Clear</button>
-          <button class="ask__question" @click.prevent="sendQuestion">
-						<span class="ask__question-text">Ask a question</span> 
-						<span class="ask__question-count">
-							1
+				<div class="flex">
+					<div class="form__left-block">
+						<div class="form__label">Rate the answer</div>
+						<button :class="{ 'form__button': true, 'active': liked }" @click.prevent="sendLike">
 							<svg>
-								<use xlink:href="@/assets/images/sprites.svg#light"></use>
-						</svg>
-						</span>
-					</button>
-         </div>
-        </div>
-      </form>
-    </div>
-  </div>
-	<recommended-questions :array="firstArray"/>
-	<recommended-questions :array="secondArray"/>
+								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
+							</svg>
+						</button>
+					</div>
+					<div class="form__right-block">
+						<button class="ask__clear">Clear</button>
+						<button class="ask__question" @click.prevent="isAuth
+						? sendAuthenticationQuestion(`${apiUrl}/Question/ProcessAuthenticated`)
+						: sendAnonimousQuestion(`${apiUrl}/Question/ProcessAnonymous`)">
+							<span class="ask__question-text">Ask a question</span>
+							<span class="ask__question-count">
+								1
+								<svg>
+									<use xlink:href="@/assets/images/sprites.svg#light"></use>
+								</svg>
+							</span>
+						</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<recommended-questions :array="firstArray" />
+	<recommended-questions :array="secondArray" />
+
+	<Teleport to="body">
+        <MessageModal
+		@hideMessage="hideMessage"
+		:showMessage="showMessage"
+		:messageText="messageText"
+		>
+			<div 
+				v-show="!isAuth"
+				class="message-modal__buttons">
+				<button 
+					@click="hideMessage"
+					class="message-modal__close-btn" 
+					type="button">
+					Try Later
+				</button>
+				<button type="button" class="sign-up__button">
+					<span>Sign Up</span>
+					<div class="sign-up__icon-gmail"></div>
+				</button>
+			</div>
+		</MessageModal>
+    </Teleport>
 </template>
 
 <script>
-import { ref } from 'vue'
-import RecommendedQuestions from './RecommendedQuestions.vue'
+import { ref, computed } from 'vue'
+import RecommendedQuestions from '@/components/RecommendedQuestions.vue'
+import { getTokenPopup } from "@/plugin/authPopup"
+import { tokenRequest } from "@/plugin/authConfig"
+import MessageModal from '@/components/ui/MessageModal.vue'
+
+import store from '@/store'
+
+// import { useRouter } from 'vue-router'
+
 export default {
-setup() {
-	const value = ref('')
-	let answer = ref('')
-	let firstArray = ref([])
-	let secondArray = ref([])
-	let liked = ref(true)
+	components: {
+		RecommendedQuestions,
+		MessageModal
+	},
+	setup() {
+		const value = ref('')
+		let answer = ref('')
+		let firstArray = ref([])
+		let secondArray = ref([])
+		let liked = ref(true)
 
-	const apiKey = 	process.env.VUE_APP_API_KEY
-  const apiUrl = process.env.VUE_APP_API_URL
+		const apiKey = process.env.VUE_APP_API_KEY
+		const apiUrl = process.env.VUE_APP_API_URL
 
-	async function sendQuestion() {
-		try {
-			const response = await fetch(`${apiUrl}/Question/Process`, {
+		const getIsAuth = computed(() => {
+			return store.getters.getAuthenticated
+		})
+
+		const isAuth = ref(getIsAuth)
+
+		const showMessage = ref(false)
+		const messageText = ref('')
+
+		// const router = useRouter()
+
+		async function sendAnonimousQuestion(url) {
+			try {
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Ocp-Apim-Subscription-Key': `${apiKey}`,
+						'Content-Type': 'application/json',
+					},
+					body: JSON.stringify({
+						question: value.value,
+					}),
+				})
+				const data = await response.json()
+				answer.value = data.answer
+				if (data.statusCode === 429) {
+					console.log('222');
+					showMessage.value = true
+					messageText.value = data.message
+				}
+				// setPathName(data.url)
+				divideArray(data.recommendedQuestions)
+			} catch (e) {
+				console.log(e);
+			}
+		}
+
+		async function sendAuthenticationQuestion(url) {
+			try {
+				const tokenResponse = await getTokenPopup(tokenRequest)
+				const response = await fetch(url, {
+					method: 'POST',
+					headers: {
+						'Ocp-Apim-Subscription-Key': `${apiKey}`,
+						'Content-Type': 'application/json',
+						Authorization: `Bearer ${tokenResponse.accessToken}`,
+					},
+					body: JSON.stringify({
+						question: value.value,
+					}),
+				})
+				const data = await response.json()
+				answer.value = data.answer
+				if (data.statusCode === 429) {
+					showMessage.value = true
+					messageText.value = data.message
+				}
+				// setPathName(data.url)
+				divideArray(data.recommendedQuestions)
+			} catch (e) {
+				console.error(e)
+			}
+		}
+
+		async function sendLike() {
+			const response = await fetch(`${apiUrl}/Question/Like`, {
 				method: 'POST',
 				headers: {
 					'Ocp-Apim-Subscription-Key': `${apiKey}`,
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify({
-					question: value.value,
-				}),
-			})
-			const data = await response.json()
-			answer.value = data.answer
-			divideArray(data.recommendedQuestions)
-		} catch(e) {
-			console.log(e);
-		}
-	}
-
-	async function sendLike() {
-		const response = await fetch(`${apiUrl}/Question/Like`, {
-			method: 'POST',
-				headers: {
-					'Ocp-Apim-Subscription-Key': `${apiKey}`,
-					'Content-Type': 'application/json',
-				},
 				body: '',
-		})
-		liked = true
-		const data = await response.json()
-		console.log(data);
-	}
+			})
+			liked = true
+			const data = await response.json()
+			console.log(data);
+		}
 
-	function divideArray(questions) {
-		let half = Math.ceil(questions.length / 2);    
-		firstArray.value = questions.slice(0,half);
-		secondArray.value = questions.slice(half, questions.length);
-	}
+		function divideArray(questions) {
+			let half = Math.ceil(questions.length / 2);
+			firstArray.value = questions.slice(0, half);
+			secondArray.value = questions.slice(half, questions.length);
+		}
 
-	return {
-		sendQuestion,
-		value,
-		answer,
-		divideArray,
-		firstArray,
-		secondArray,
-		sendLike,
-		liked
-	}
-},
-
-components: {
-	RecommendedQuestions
-}
+		// function setPathName(url) {
+		// 	router.push({
+		// 		name: 'home',
+		// 		params: {
+		// 			url
+		// 		}
+		// 	})
+		// }
+		function setAutoHeight(e) {
+			e.target.style.height = 'auto'
+			e.target.style.height = e.target.scrollHeight + 2 + "px"
+		}
+		function hideMessage() {
+			showMessage.value = false
+		}
+		return {
+			sendAnonimousQuestion,
+			sendAuthenticationQuestion,
+			value,
+			answer,
+			divideArray,
+			firstArray,
+			secondArray,
+			sendLike,
+			liked,
+			isAuth,
+			apiUrl,
+			setAutoHeight,
+			showMessage,
+			messageText,
+			hideMessage
+		}
+	},
 }
 </script>
 
 <style scoped lang="scss">
-
 .ask {
 	position: relative;
 	margin-bottom: 220px;
@@ -147,7 +243,7 @@ components: {
 	}
 
 	&__clear {
-		border: 2px solid rgba(255,255,255,0.6);
+		border: 2px solid rgba(255, 255, 255, 0.6);
 		border-radius: 18px;
 		background: transparent;
 		padding: 15px 20px;
@@ -158,16 +254,17 @@ components: {
 		border-radius: 18px;
 		background: #FFFFFF;
 		padding: 15px 32px;
+
 		&:hover,
 		&:hover span {
-				border-color: var(--white-color);
-        color: var(--white-color);
-        background-color: #1d1f20;
-        }
+			border-color: var(--white-color);
+			color: var(--white-color);
+			background-color: #1d1f20;
+		}
 
-		&:hover	svg {
+		&:hover svg {
 			fill: var(--white-color);
-		}	
+		}
 	}
 
 	&__question span {
@@ -202,6 +299,7 @@ components: {
 		width: 100vw;
 		height: auto;
 		z-index: -1;
+
 		& :is(img) {
 			display: block;
 			width: 100%;
@@ -209,14 +307,15 @@ components: {
 		}
 	}
 }
+
 .form {
 	max-width: 1024px;
 	width: 100%;
-  background: linear-gradient(181.25deg, #224EFE -41.38%, #0E36D6 87.57%);
-  box-shadow: 0px 34px 64px 0px #00000040;
-  border-radius: 30px;
-  text-align: center;
-  padding: 26px 29px 32px;
+	background: linear-gradient(181.25deg, #224EFE -41.38%, #0E36D6 87.57%);
+	box-shadow: 0px 34px 64px 0px #00000040;
+	border-radius: 30px;
+	text-align: center;
+	padding: 26px 29px 32px;
 	margin: 0 auto;
 
 	&__input-wrap {
@@ -234,7 +333,7 @@ components: {
 		display: block;
 		background: transparent;
 		border: none;
-		color: rgba(255,255,255,0.6);
+		color: rgba(255, 255, 255, 0.6);
 		font-size: 24px;
 		font-weight: 400;
 		outline: none;
@@ -243,7 +342,6 @@ components: {
 		box-sizing: border-box;
 		height: 50px;
 		min-height: 50px;
-		max-height: 150px;
 	}
 
 	&__answer {
@@ -263,36 +361,54 @@ components: {
 	&__label {
 		font-size: 20px;
 		font-weight: 400;
-		color: rgba(255,255,255,0.6);
+		color: rgba(255, 255, 255, 0.6);
 		margin-right: 20px;
-	} 
+	}
 
 	&__button {
 		cursor: pointer;
 		background-color: transparent;
-	
+
 		& svg {
 			display: block;
 			width: 30px;
 			height: 30px;
 			fill: transparent;
-			stroke: rgba(255,255,255, 0.2);
+			stroke: rgba(255, 255, 255, 0.2);
 		}
 
 		&:hover svg {
-			stroke: rgba(255,255,255, 0.6);
+			stroke: rgba(255, 255, 255, 0.6);
 		}
 
 		&.active svg {
-			fill: rgba(255,255,255, 0.6);
+			fill: rgba(255, 255, 255, 0.6);
 		}
 	}
 }
-
-@media screen and (max-width: 991px){
+.message-modal__buttons {
+	display: flex;
+}
+.message-modal__close-btn {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border-radius: 18px;
+	padding: 0 55px;
+	margin-right: 20px;
+	font-size: 2rem;
+    font-weight: 500;
+	color: #7F8186;
+	background-color: #1D1F20; 
+	transition: 0.3s background-color ease-in-out;
+	&:hover {
+		background-color: #224EFE;
+	}
+}
+@media screen and (max-width: 991px) {
 	.ask {
-		
-		&__title, 
+
+		&__title,
 		&__title span {
 			font-size: 38px;
 		}
@@ -310,7 +426,7 @@ components: {
 @media screen and (max-width: 768px) {
 	.form {
 		padding: 26px 29px 65px;
-		
+
 
 		&__input,
 		&__answer {
@@ -353,7 +469,7 @@ components: {
 		&__question-text {
 			padding-right: 15px;
 		}
-		
+
 	}
 
 	.flex {

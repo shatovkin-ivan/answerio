@@ -1,29 +1,26 @@
 function callApi(endpoint, token) {
-    
-  const headers = new Headers();
-  const bearer = `Bearer ${token}`;
+  const headers = new Headers()
+  const bearer = `Bearer ${token}`
 
-  headers.append("Authorization", bearer);
+  headers.append('Authorization', bearer)
 
   const options = {
-      method: "GET",
-      headers: headers
-    };
-  
+    method: 'GET',
+    headers: headers,
+  }
+
   fetch(endpoint, options)
-    .then(response => response.json())
-    .then(response => {
-
+    .then((response) => response.json())
+    .then((response) => {
       if (response) {
-        console.log(response);
+        console.log(response)
       }
-      
-      return response;
-    }).catch(error => {
-      console.error(error);
-    });
+
+      return response
+    })
+    .catch((error) => {
+      console.error(error)
+    })
 }
 
-export {
-  callApi
-}
+export { callApi }

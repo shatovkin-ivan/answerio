@@ -2,9 +2,9 @@
 	<div class="recommended">
 		<div class="container">
 			<ul class="recommended__list">
-				<li class="recommended__question" v-for="question in array" :key="question.id">					
-				<p class="recommended__title">{{ question.question }}</p>
-				<p class="recommended__answer">{{ question.answer }}</p>
+				<li class="recommended__question" v-for="question in array" :key="question.id">
+					<p class="recommended__title">{{ question.question }}</p>
+					<p class="recommended__answer">{{ question.answer }}</p>
 				</li>
 			</ul>
 		</div>
@@ -20,22 +20,22 @@ export default {
 	props: ['array'],
 	setup(props) {
 
-	let innerArray = ref(props.array)
+		let innerArray = ref(props.array)
 
-	function test() {
-		console.log(props.array);
-	}
+		function test() {
+			console.log(props.array);
+		}
 
-	watchEffect(() => {
-		console.log(innerArray);
-	})
+		watchEffect(() => {
+			console.log(innerArray);
+		})
 
-	return {
-		test,
-		innerArray
+		return {
+			test,
+			innerArray
+		}
 	}
 }
-} 
 
 
 </script>
@@ -62,8 +62,8 @@ export default {
 			left: 24px;
 			width: 0;
 			height: 0;
-			border-top: 21px solid #1D1F20; 
-			border-right: 21px solid transparent;	
+			border-top: 21px solid #1D1F20;
+			border-right: 21px solid transparent;
 		}
 	}
 

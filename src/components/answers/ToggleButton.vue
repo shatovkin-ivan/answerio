@@ -1,8 +1,5 @@
 <template>
-    <button
-        @click="toggleModal(index)"
-        class="card__button"
-    >
+    <button @click="toggleModal(index)" class="card__button">
         <svg>
             <use xlink:href="@/assets/images/sprites.svg#plus"></use>
         </svg>
@@ -18,7 +15,7 @@ export default {
     },
     setup(props, { emit }) {
         const toggleModal = (i) => {
-            emit('BtnToggleModal', { index: i  })
+            emit('BtnToggleModal', { index: i })
         }
         return {
             toggleModal

@@ -18,30 +18,30 @@
 <script>
 import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
 
-    export default {
-        
-        components: {
-            AnswerCardFooter
-        },
-        props: {
-            item: {
-                type: Object,
-                required: true
-            },
-            visible: {
-                type: Boolean,
-                required: true
-            }
-        }, 
-        setup(props, { emit }) {
-            const clickOnModal = () => {
-                emit('hideModalOverlay', props.visible)
-            }
-            return {
-                clickOnModal
-            }
-        },
+export default {
+
+  components: {
+    AnswerCardFooter
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true
+    },
+    visible: {
+      type: Boolean,
+      required: true
     }
+  },
+  setup(props, { emit }) {
+    const clickOnModal = () => {
+      emit('hideModalOverlay', props.visible)
+    }
+    return {
+      clickOnModal
+    }
+  },
+}
 </script>
 
 <style lang="scss" scoped>
@@ -57,24 +57,29 @@ import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
   background-color: rgba(18, 20, 22, 0.8);
   z-index: 1000;
 }
+
 .answer-modal {
   position: relative;
   border: 2px solid #5e6063;
   border-radius: 16px;
+
   &__head {
     border-radius: 16px 16px 0 0;
     padding: 49px 36px 40px 36px;
     background-color: #d9d9d9;
   }
+
   &__title {
     margin-bottom: 27px;
     color: var(--theme-color-1);
   }
+
   &__text {
     position: relative;
     padding-left: 20px;
     line-height: 1.25;
     color: #5e6063;
+
     &::before {
       content: '';
       position: absolute;
@@ -87,6 +92,7 @@ import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
       background-color: #5e6063;
     }
   }
+
   &__close {
     position: absolute;
     top: -43px;
@@ -96,9 +102,11 @@ import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
     height: 30px;
     background-color: transparent;
     transition: 0.3s opacity ease-in-out;
+
     &:hover {
       opacity: 0.6;
     }
+
     &::before,
     &::after {
       content: '';
@@ -111,9 +119,11 @@ import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
       background-color: var(--theme-color-1);
       transition: 0.3s;
     }
+
     &::before {
       transform: translate(-50%, -50%) rotate(45deg);
     }
+
     &::after {
       transform: translate(-50%, -50%) rotate(-45deg);
     }

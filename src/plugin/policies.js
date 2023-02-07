@@ -5,17 +5,15 @@
  */
 
 const b2cPolicies = {
-    names: {
-        signUpSignIn: "B2C_1_susi_google",
+  names: {
+    signUpSignIn: 'B2C_1_susi_google',
+  },
+  authorities: {
+    signUpSignIn: {
+      authority: 'https://qandaxyz.b2clogin.com/qandaxyz.onmicrosoft.com/B2C_1_susi_google',
     },
-    authorities: {
-        signUpSignIn: {
-            authority: "https://qandaxyz.b2clogin.com/qandaxyz.onmicrosoft.com/B2C_1_susi_google",
-        }
-    },
-    authorityDomain: "qandaxyz.b2clogin.com"
+  },
+  authorityDomain: 'qandaxyz.b2clogin.com',
 }
 
-export {
-    b2cPolicies
-}
+export { b2cPolicies }
