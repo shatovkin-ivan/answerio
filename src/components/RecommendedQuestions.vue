@@ -44,7 +44,6 @@ export default {
 		margin: 5px;
 		display: inline-block;
 		background-color: #1D1F20;
-		box-shadow: 0px 34px 64px 0px #00000040;
 		border-radius: 16px;
 		padding: 16px 24px;
 		position: relative;
