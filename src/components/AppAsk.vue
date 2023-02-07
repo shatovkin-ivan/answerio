@@ -218,6 +218,7 @@ export default {
 			secondArray,
 			sendLike,
 			liked,
+			active,
 			isAuth,
 			apiUrl,
 			setAutoHeight,
@@ -258,6 +259,7 @@ export default {
 		border: 2px solid rgba(255, 255, 255, 0.6);
 		border-radius: 18px;
 		background: transparent;
+		color: rgba(255, 255, 255, 0.6);
 		padding: 15px 20px;
 		margin-right: 18px;
 
