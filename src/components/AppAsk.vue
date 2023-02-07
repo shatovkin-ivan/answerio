@@ -13,7 +13,7 @@
 			<p class="ask__text">Get an instant AI-based response from reliable sources</p>
 			<form class="form">
 				<div class="form__input-wrap">
-					<textarea class="form__input" placeholder="Ask any question..." v-model="value"
+					<textarea class="form__input" placeholder="Ask any question..." v-model="question"
 						@input="setAutoHeight">
 					</textarea>
 					<div class="form__answer">{{  answer }}</div>
