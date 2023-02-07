@@ -12,24 +12,30 @@
 			<h1 class="ask__title h1-title">From <span class="h1-title">science</span> fiction to reality</h1>
 			<p class="ask__text">Get an instant AI-based response from reliable sources</p>
 			<form class="form">
-				<div class="form__input-wrap">
-					<textarea class="form__input" placeholder="Ask any question..." v-model="question"
+				<label for="question" class="form__input-wrap">
+					<textarea id="question" class="form__input" placeholder="Ask any question..." v-model="question"
 						@input="setAutoHeight">
 					</textarea>
-					<div class="form__answer">{{  answer }}</div>
-				</div>
-        <div class="flex">
-          <div class="form__left-block">
-            <div class="form__label">Rate the answer</div>
-						<button :class="{ 'form__button': true, 'active': liked }" @click.prevent="sendLike">
+					<div class="form__answer">{{ answer }}</div>
+				</label>
+				<div class="flex">
+					<div class="form__left-block"
+						v-show="answer"
+					>
+						<div class="form__label">Rate the answer</div>
+						<button 
+							:class="{ 'form__button': true, 'active': liked }" 
+							@click.prevent="sendLike"
+						>
 							<svg>
 								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
 							</svg>
 						</button>
-          </div>
-         <div class="form__right-block">
-          <button :class="{'ask__clear': true, 'active': active}" @click.prevent="clearForm">Clear</button>
-					<button class="ask__question" @click.prevent="isAuth
+					</div>
+					<div class="form__right-block">
+						<button :class="{ 'ask__clear': true, 'active': active }"
+							@click.prevent="clearForm">Clear</button>
+						<button class="ask__question" @click.prevent="isAuth
 						? sendAuthenticationQuestion(`${apiUrl}/Question/ProcessAuthenticated`)
 						: sendAnonimousQuestion(`${apiUrl}/Question/ProcessAnonymous`)">
 							<span class="ask__question-text">Ask a question</span>
@@ -39,39 +45,29 @@
 									<use xlink:href="@/assets/images/sprites.svg#light"></use>
 								</svg>
 							</span>
-					</button>
+						</button>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
-	<recommended-questions 
-		:firstArray="firstArray" 
-		:secondArray="secondArray" 
-	/>
+	<recommended-questions :firstArray="firstArray" :secondArray="secondArray" />
 
 	<Teleport to="body">
-        <MessageModal
-		@hideMessage="hideMessage"
-		:showMessage="showMessage"
-		:messageText="messageText"
-		>
-			<div 
-				v-show="!isAuth"
-				class="message-modal__buttons">
-				<button 
-					@click="hideMessage"
-					class="message-modal__close-btn" 
-					type="button">
+		<MessageModal @hideMessage="hideMessage" :showMessage="showMessage" :messageText="messageText">
+			<div v-show="!isAuth" class="message-modal__buttons">
+				<button @click="hideMessage" class="message-modal__close-btn" type="button">
 					Try Later
 				</button>
-				<button type="button" class="sign-up__button">
-					<span>Sign Up</span>
+				<button 
+					@click="login"
+					type="button" class="sign-up__button">
+					<span>Sign In</span>
 					<div class="sign-up__icon-gmail"></div>
 				</button>
 			</div>
 		</MessageModal>
-    </Teleport>
+	</Teleport>
 </template>
 
 <script>
@@ -80,6 +76,8 @@ import RecommendedQuestions from '@/components/RecommendedQuestions.vue'
 import { getTokenPopup } from "@/plugin/authPopup"
 import { tokenRequest } from "@/plugin/authConfig"
 import MessageModal from '@/components/ui/MessageModal.vue'
+
+import { signIn } from '@/plugin/authPopup'
 
 import store from '@/store'
 
@@ -95,7 +93,7 @@ export default {
 		let answer = ref('')
 		let firstArray = ref([])
 		let secondArray = ref([])
-		let liked = ref(true)
+		let liked = ref(false)
 		let active = ref(false)
 
 		const apiKey = process.env.VUE_APP_API_KEY
@@ -109,6 +107,8 @@ export default {
 
 		const showMessage = ref(false)
 		const messageText = ref('')
+
+		const pageUrl = ref('')
 
 		// const router = useRouter()
 
@@ -126,15 +126,16 @@ export default {
 				})
 				const data = await response.json()
 				answer.value = data.answer
+				pageUrl.value = data.url
+				liked.value = false
 				if (data.statusCode === 429) {
-					console.log('222');
 					showMessage.value = true
-					messageText.value = data.message
+					messageText.value = 'Sign in to get unlimited answers!'
 				}
 				// setPathName(data.url)
 				divideArray(data.recommendedQuestions)
 			} catch (e) {
-				console.log(e);
+				console.error(e);
 			}
 		}
 
@@ -154,9 +155,11 @@ export default {
 				})
 				const data = await response.json()
 				answer.value = data.answer
+				pageUrl.value = data.url
+				liked.value = false
 				if (data.statusCode === 429) {
 					showMessage.value = true
-					messageText.value = data.message
+					messageText.value = 'Try a bit later!'
 				}
 				// setPathName(data.url)
 				divideArray(data.recommendedQuestions)
@@ -166,15 +169,21 @@ export default {
 		}
 
 		async function sendLike() {
-			const response = await fetch(`${apiUrl}/Question/Like`, {
+			const tokenResponse = await getTokenPopup(tokenRequest)
+			if (!tokenResponse) {
+				showMessage.value = true
+				messageText.value = 'Sign in to get unlimited answers!'
+			}
+			const response = await fetch(`${apiUrl}/Question/Like/${pageUrl.value}`, {
 				method: 'POST',
 				headers: {
 					'Ocp-Apim-Subscription-Key': `${apiKey}`,
 					'Content-Type': 'application/json',
+					Authorization: `Bearer ${tokenResponse.accessToken}`,
 				},
 				body: '',
 			})
-			liked = true
+			liked.value = true
 			const data = await response.json()
 			console.log(data);
 		}
@@ -207,12 +216,19 @@ export default {
 			active.value = false
 		}
 
+		function login() {
+			signIn(loginCompleted)
+		}
+		function loginCompleted() {
+			store.dispatch('setAuthenticated')
+		}
+
 		watch(question, (currentValue) => {
 			if (currentValue) {
 				active.value = true
 			}
-			
-		}) 
+
+		})
 
 		return {
 			sendAnonimousQuestion,
@@ -231,7 +247,8 @@ export default {
 			showMessage,
 			messageText,
 			hideMessage,
-			clearForm
+			clearForm,
+			login
 		}
 	},
 }
@@ -268,38 +285,51 @@ export default {
 		color: rgba(255, 255, 255, 0.6);
 		padding: 15px 20px;
 		margin-right: 18px;
+		transition: .3s color ease-in-out, .3s border-color ease-in-out;
+		pointer-events: none;
+
+		&.active {
+			color: var(--white-color);
+			border-color: var(--white-color);
+			pointer-events: all;
+		}
 
 		&:hover {
 			color: #1D1F20;
 			border-color: #1D1F20;
 		}
-		&.active {
-			color: var(--white-color);
-			border-color: var(--white-color);
-		}
 	}
 
 	&__question {
 		border-radius: 18px;
-		background: #FFFFFF;
+		background: var(--white-color);
 		padding: 15px 32px;
+		transition: .3s color ease-in-out, .3s border-color ease-in-out, .3s background-color ease-in-out;
 
-		&:hover,
-		&:hover span {
+		&:hover {
 			border-color: var(--white-color);
 			color: var(--white-color);
 			background-color: #1d1f20;
 		}
 
+		& span {
+			color: #224EFE;
+			font-size: 20px;
+			font-weight: 500;
+			transition: .3s color ease-in-out;
+		}
+
+		&:hover span {
+			color: var(--white-color);
+		}
+
+		& svg {
+			transition: .3s fill ease-in-out;
+		}
+
 		&:hover svg {
 			fill: var(--white-color);
 		}
-	}
-
-	&__question span {
-		color: #224EFE;
-		font-size: 20px;
-		font-weight: 500;
 	}
 
 	&__question-text {
@@ -386,6 +416,9 @@ export default {
 		display: flex;
 		align-items: center;
 	}
+	&__right-block {
+		margin-left: auto;
+	}
 
 	&__label {
 		font-size: 20px;
@@ -415,9 +448,11 @@ export default {
 		}
 	}
 }
+
 .message-modal__buttons {
 	display: flex;
 }
+
 .message-modal__close-btn {
 	display: flex;
 	align-items: center;
@@ -426,14 +461,16 @@ export default {
 	padding: 0 55px;
 	margin-right: 20px;
 	font-size: 2rem;
-    font-weight: 500;
+	font-weight: 500;
 	color: #7F8186;
-	background-color: #1D1F20; 
+	background-color: #1D1F20;
 	transition: 0.3s background-color ease-in-out;
+
 	&:hover {
 		background-color: #224EFE;
 	}
 }
+
 @media screen and (max-width: 991px) {
 	.ask {
 

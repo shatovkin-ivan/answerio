@@ -12,10 +12,6 @@ function callApi(endpoint, token) {
   fetch(endpoint, options)
     .then((response) => response.json())
     .then((response) => {
-      if (response) {
-        console.log(response)
-      }
-
       return response
     })
     .catch((error) => {

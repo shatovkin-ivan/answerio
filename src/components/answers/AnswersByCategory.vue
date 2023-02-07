@@ -181,7 +181,6 @@ export default defineComponent({
         })
         const data = await response.json()
         const newItems = await data.items
-        console.log(newItems);
         for (let i = 0; i < newItems.length; i++) {
           topAnswers.value = [...topAnswers.value, newItems[i]]
         }
