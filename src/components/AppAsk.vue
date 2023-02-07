@@ -16,20 +16,16 @@
 					<textarea class="form__input" placeholder="Ask any question..." v-model="value"
 						@input="setAutoHeight">
 					</textarea>
-					<div class="form__answer">{{ answer }}</div>
+					<div class="form__answer">{{  answer }}</div>
 				</div>
-				<div class="flex">
-					<div class="form__left-block">
-						<div class="form__label">Rate the answer</div>
-						<button :class="{ 'form__button': true, 'active': liked }" @click.prevent="sendLike">
-							<svg>
-								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
-							</svg>
-						</button>
-					</div>
-					<div class="form__right-block">
-						<button class="ask__clear">Clear</button>
-						<button class="ask__question" @click.prevent="isAuth
+        <div class="flex">
+          <div class="form__left-block">
+            <div class="form__label">Rate the answer</div>
+						<button :class="{ 'form__button': true, 'active': liked }" @click.prevent="sendLike"></button>
+          </div>
+         <div class="form__right-block">
+          <button :class="{'ask__clear': true, 'active': active}" @click.prevent="clearForm">Clear</button>
+					<button class="ask__question" @click.prevent="isAuth
 						? sendAuthenticationQuestion(`${apiUrl}/Question/ProcessAuthenticated`)
 						: sendAnonimousQuestion(`${apiUrl}/Question/ProcessAnonymous`)">
 							<span class="ask__question-text">Ask a question</span>
@@ -39,7 +35,7 @@
 									<use xlink:href="@/assets/images/sprites.svg#light"></use>
 								</svg>
 							</span>
-						</button>
+					</button>
 					</div>
 				</div>
 			</form>
@@ -73,7 +69,7 @@
 </template>
 
 <script>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import RecommendedQuestions from '@/components/RecommendedQuestions.vue'
 import { getTokenPopup } from "@/plugin/authPopup"
 import { tokenRequest } from "@/plugin/authConfig"
@@ -89,11 +85,12 @@ export default {
 		MessageModal
 	},
 	setup() {
-		const value = ref('')
+		let question = ref('')
 		let answer = ref('')
 		let firstArray = ref([])
 		let secondArray = ref([])
 		let liked = ref(true)
+		let active = ref(false)
 
 		const apiKey = process.env.VUE_APP_API_KEY
 		const apiUrl = process.env.VUE_APP_API_URL
@@ -118,7 +115,7 @@ export default {
 						'Content-Type': 'application/json',
 					},
 					body: JSON.stringify({
-						question: value.value,
+						question: question.value,
 					}),
 				})
 				const data = await response.json()
@@ -146,7 +143,7 @@ export default {
 						Authorization: `Bearer ${tokenResponse.accessToken}`,
 					},
 					body: JSON.stringify({
-						question: value.value,
+						question: question.value,
 					}),
 				})
 				const data = await response.json()
@@ -197,10 +194,24 @@ export default {
 		function hideMessage() {
 			showMessage.value = false
 		}
+
+		function clearForm() {
+			answer.value = ''
+			question.value = ''
+			active.value = false
+		}
+
+		watch(question, (currentValue) => {
+			if (currentValue) {
+				active.value = true
+			}
+			
+		}) 
+
 		return {
 			sendAnonimousQuestion,
 			sendAuthenticationQuestion,
-			value,
+			question,
 			answer,
 			divideArray,
 			firstArray,
@@ -212,7 +223,8 @@ export default {
 			setAutoHeight,
 			showMessage,
 			messageText,
-			hideMessage
+			hideMessage,
+			clearForm
 		}
 	},
 }
@@ -248,6 +260,15 @@ export default {
 		background: transparent;
 		padding: 15px 20px;
 		margin-right: 18px;
+
+		&:hover {
+			color: #1D1F20;
+			border-color: #1D1F20;
+		}
+		&.active {
+			color: var(--white-color);
+			border-color: var(--white-color);
+		}
 	}
 
 	&__question {
