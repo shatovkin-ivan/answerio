@@ -16,7 +16,7 @@
 					<textarea 
 						class="form__input" 
 						placeholder="Ask any question..."
-						v-model="value"
+						v-model="question"
 					></textarea>
 					<div class="form__answer">{{  answer }}</div>
 				</div>
@@ -27,7 +27,7 @@
 							<!-- <input class="form__radio radio-2" type="radio" name="choice" id="choice-against">  -->
           </div>
          <div class="form__right-block">
-          <button class="ask__clear">Clear</button>
+          <button :class="{'ask__clear': true, 'active': active}" @click.prevent="clearForm">Clear</button>
           <button class="ask__question" @click.prevent="sendQuestion">
 						<span class="ask__question-text">Ask a question</span> 
 						<span class="ask__question-count">
@@ -47,14 +47,15 @@
 </template>
 
 <script>
-import { ref } from 'vue'
+import {watch, ref } from 'vue'
 import RecommendedQuestions from './RecommendedQuestions.vue'
 export default {
 setup() {
-	const value = ref('')
+	let question = ref('')
 	let answer = ref('')
 	let firstArray = ref([])
 	let secondArray = ref([])
+	let active = ref(false)
 
 	const apiKey = 	process.env.VUE_APP_API_KEY
   const apiUrl = process.env.VUE_APP_API_URL
@@ -68,7 +69,7 @@ setup() {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify({
-					question: value.value,
+					question: question.value,
 				}),
 			})
 			const data = await response.json()
@@ -85,13 +86,28 @@ setup() {
 		secondArray.value = questions.slice(half, questions.length);
 	}
 
+	function clearForm() {
+		answer.value = ''
+		question.value = ''
+		active.value = false
+	}
+
+
+	watch(question, (currentValue) => {
+		if (currentValue) {
+			active.value = true
+		}
+		
+	}) 
 	return {
 		sendQuestion,
-		value,
+		question,
 		answer,
 		divideArray,
 		firstArray,
-		secondArray
+		secondArray,
+		clearForm,
+		active
 	}
 },
 
@@ -132,6 +148,15 @@ components: {
 		background: transparent;
 		padding: 15px 20px;
 		margin-right: 18px;
+
+		&:hover {
+			color: #1D1F20;
+			border-color: #1D1F20;
+		}
+		&.active {
+			color: var(--white-color);
+			border-color: var(--white-color);
+		}
 	}
 
 	&__question {

@@ -12,31 +12,10 @@
 </template>
 
 <script>
-// import { onMounted } from '@vue/runtime-core';
-import { watchEffect } from 'vue';
-import { ref } from 'vue';
 
 export default {
 	props: ['array'],
-	setup(props) {
-
-	let innerArray = ref(props.array)
-
-	function test() {
-		console.log(props.array);
-	}
-
-	watchEffect(() => {
-		console.log(innerArray);
-	})
-
-	return {
-		test,
-		innerArray
-	}
-}
 } 
-
 
 </script>
 
