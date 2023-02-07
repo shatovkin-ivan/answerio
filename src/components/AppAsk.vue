@@ -21,7 +21,11 @@
         <div class="flex">
           <div class="form__left-block">
             <div class="form__label">Rate the answer</div>
-						<button :class="{ 'form__button': true, 'active': liked }" @click.prevent="sendLike"></button>
+						<button :class="{ 'form__button': true, 'active': liked }" @click.prevent="sendLike">
+							<svg>
+								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
+							</svg>
+						</button>
           </div>
          <div class="form__right-block">
           <button :class="{'ask__clear': true, 'active': active}" @click.prevent="clearForm">Clear</button>
@@ -468,6 +472,12 @@ export default {
 
 		&__right-block {
 			display: block;
+		}
+
+		&__button {
+			position: absolute;
+			bottom: 25px;
+			left: 30px;
 		}
 	}
 
