@@ -1,6 +1,15 @@
 <template>
-	<div class="recommended">
-		<div class="container">
+	<section id="recommended" class="recommended" v-if="firstArray.length">
+		<a href="#recommended" class="recommended__link">
+			<span>See</span> what else we have found for you
+		</a>
+		<div 
+			@mousedown="mouseDown"
+			@mouseleave="mouseLeave"
+			@mouseup="mouseUp"
+			@mousemove="mouseMove"
+			class="container container_scroll"
+		>
 			<ul class="recommended__list">
 				<li class="recommended__question" v-for="question in firstArray" :key="question.id">
 					<p class="recommended__title">{{ question.question }}</p>
@@ -14,33 +23,76 @@
 				</li>
 			</ul>
 		</div>
-	</div>
+	</section>
 </template>
 
 <script>
 
 export default {
 	props: ['firstArray', 'secondArray'],
+	setup() {
+		const tableGrab = {
+			isDown: false,
+			startX: null,
+			scrollLeft: null,
+		}
+		function mouseDown(e) {
+			tableGrab.isDown = true
+            e.currentTarget.classList.add('active')
+            tableGrab.startX = e.pageX - e.currentTarget.offsetLeft
+            tableGrab.scrollLeft = e.currentTarget.scrollLeft
+		}
+		function mouseLeave(e) {
+			tableGrab.isDown = false
+            e.currentTarget.classList.remove('active')
+		}
+		function mouseUp(e) {
+			tableGrab.isDown = false
+            e.currentTarget.classList.remove('active')
+		}
+		function mouseMove(e) {
+			if(!tableGrab.isDown) return
+            e.preventDefault()
+            const x = e.pageX - e.currentTarget.offsetLeft
+            const walk = (x - tableGrab.startX) * 1
+            e.currentTarget.scrollLeft = tableGrab.scrollLeft - walk
+		}
+
+		return {
+			mouseDown,
+			mouseLeave,
+			mouseUp,
+			mouseMove
+		}
+	}
 } 
 
 </script>
 
 <style scoped lang="scss">
+
+.container_scroll {
+	display: flex;
+	flex-direction: column;
+	gap: 40px;
+	overflow-x: auto;
+	cursor: grab;
+	&::-webkit-scrollbar {
+		width: 0;
+	}
+	&.active {
+		cursor: grabbing;
+	}
+}
 .recommended {
 	&__list {
 		min-width: 100%;
-		// min-height: 300px;
-		margin-bottom: 40px;
 		display: flex;
-		overflow-x: auto;
 	}
 
-	&__list::-webkit-scrollbar {
-  display: none;
-}
-
 	&__question {
-		min-width: 650px;
+		min-width: 33%;
+		max-width: 600px;
 		margin: 5px;
 		display: inline-block;
 		background-color: #1D1F20;
