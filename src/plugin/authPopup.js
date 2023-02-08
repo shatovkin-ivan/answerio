@@ -72,6 +72,7 @@ function handleResponse(response) {
 }
 
 function signIn(setSuccess) {
+  console.log('111')
   /**
    * You can pass a custom request object below. This will override the initial configuration. For more information, visit:
    * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-browser/docs/request-response-object.md#request
@@ -82,7 +83,7 @@ function signIn(setSuccess) {
     .then(handleResponse)
     .then(() => setSuccess())
     .catch((error) => {
-      console.error(error)
+      console.log(error)
     })
 }
 
@@ -121,19 +122,20 @@ async function getTokenPopup(request) {
       return response
     })
     .catch((error) => {
-      console.error('Silent token acquisition fails. Acquiring token using popup. \n', error)
+      console.log('Silent token acquisition fails. Acquiring token using popup. \n', error)
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
         return myMSALObj
           .acquireTokenPopup(request)
           .then((response) => {
+            console.log(response)
             return response
           })
           .catch((error) => {
-            console.error(error)
+            console.log(error)
           })
       } else {
-        console.error(error)
+        console.log(error)
       }
     })
 }
