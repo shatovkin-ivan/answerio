@@ -3,16 +3,25 @@
     --h2-size: 5.4rem;
     --default-size: 2.4rem;
 
+    --container-padding: 20px;
+
     --white-color: #fff;
     --theme-color-1: #224EFE;
     --theme-color-2: #A0A1A6;
     --theme-color-3: #141618;
 }
 
+@media screen and (max-width: 1440px) {
+    :root {
+        --container-padding: 75px;
+    }
+}
 @media screen and (max-width: 991px) {
     :root {
         --h1-size: 3.8rem;
         --h2-size: 2.4rem;
         --default-size: 1.6rem;
+
+        --container-padding: 20px;
     }
 }

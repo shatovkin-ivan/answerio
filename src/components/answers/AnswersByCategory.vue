@@ -430,6 +430,9 @@ export default defineComponent({
     }
 
     @media screen and (max-width: 560px) {
+      .answers {
+        padding-top: 50px;
+      }
       .drop-menu {
         position: relative;
 

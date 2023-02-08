@@ -471,7 +471,11 @@ export default {
 		background-color: #224EFE;
 	}
 }
-
+@media screen and (max-width: 1440px) and (min-width: 991px), screen and (max-height: 900px) {
+	.ask {
+		height: calc(100vh - 33px);
+	}
+}
 @media screen and (max-width: 991px) {
 	.ask {
 		height: calc(100vh - 100px);
@@ -486,13 +490,14 @@ export default {
 
 		&__text {
 			font-size: 16px;
+			margin-bottom: 50px;
 		}
 	}
 }
 
 @media screen and (max-width: 768px) {
 	.form {
-		padding: 26px 29px 65px;
+		padding: 11px 10px 65px;
 
 
 		&__input,
@@ -500,7 +505,11 @@ export default {
 			font-size: 16px;
 			width: 100%;
 		}
-
+		&__input-wrap {
+			padding: 16px 18px;
+			margin-bottom: 17px;
+			min-height: 120px;
+		}
 		&__label {
 			display: none;
 		}
@@ -542,11 +551,21 @@ export default {
 		&__question-text {
 			padding-right: 15px;
 		}
-
+		&__text {
+			margin-bottom: 40px;
+		}
 	}
 
 	.flex {
 		display: block;
+	}
+}
+@media screen and (max-width: 560px) {
+	.ask {
+		padding-bottom: 100px;
+	}
+	.ask__question {
+		width: 100%;
 	}
 }
 </style>

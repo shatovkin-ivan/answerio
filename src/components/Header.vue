@@ -79,9 +79,17 @@ export default {
 	}
 }
 
+
+
 @media screen and (max-width: 1440px) {
 	.header {
 		margin-bottom: 116px;
+	}
+}
+
+@media screen and (max-width: 1440px) and (min-width: 991px), screen and (max-height: 900px) {
+	.header {
+		margin-bottom: 30px;
 	}
 }
 
@@ -97,8 +105,10 @@ export default {
 
 @media screen and (max-width: 560px) {
 	.header {
+		margin-bottom: 60px;
 		&__button {
-			padding: 20px 20px;
+			padding: 15px 18px;
+			font-size: 1.8rem;
 		}
 	}
 }

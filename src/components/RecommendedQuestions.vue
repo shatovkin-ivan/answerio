@@ -1,8 +1,19 @@
 <template>
 	<section id="recommended" class="recommended" v-if="firstArray.length">
-		<a href="#recommended" class="recommended__link">
+		<div 
+			@click="scrollToList"
+			class="recommended__link"
+		>
 			<span>See </span> what else we have found for you
-		</a>
+		</div>
+		<div class="show-scroll">
+			<span class="show-scroll__line"></span>
+			<div class="show-scroll__hand">
+				<svg>
+					<use xlink:href="@/assets/images/sprites.svg#hand"></use>
+				</svg>
+			</div>
+		</div>
 		<div 
 			@mousedown="mouseDown"
 			@mouseleave="mouseLeave"
@@ -13,13 +24,29 @@
 			<ul class="recommended__list">
 				<li class="recommended__question" v-for="question in firstArray" :key="question.id">
 					<p class="recommended__title">{{ question.question }}</p>
-					<p class="recommended__answer">{{ question.answer }}</p>
+					<p 
+						:class="question.answer.length > 250 ? 'hidden' : ''"
+						class="recommended__answer"
+					>
+						{{ question.answer }}
+					</p>
+					<p v-if="question.answer.length > 250" class="recommended__show">
+						Read more
+					</p>
 				</li>
 			</ul>
 			<ul class="recommended__list">
 				<li class="recommended__question" v-for="question in secondArray" :key="question.id">
 					<p class="recommended__title">{{ question.question }}</p>
-					<p class="recommended__answer">{{ question.answer }}</p>
+					<p 
+						:class="question.answer.length > 250 ? 'hidden' : ''"
+						class="recommended__answer"
+					>
+						{{ question.answer }}
+					</p>
+					<p v-if="question.answer.length > 250" class="recommended__show">
+						Read more
+					</p>
 				</li>
 			</ul>
 		</div>
@@ -58,11 +85,20 @@ export default {
             e.currentTarget.scrollLeft = tableGrab.scrollLeft - walk
 		}
 
+		function scrollToList() {
+			const top = window.innerHeight
+			window.scrollTo({
+				top: top,
+				behavior: "smooth"
+			})
+		}
+
 		return {
 			mouseDown,
 			mouseLeave,
 			mouseUp,
-			mouseMove
+			mouseMove,
+			scrollToList
 		}
 	}
 } 
@@ -71,10 +107,13 @@ export default {
 
 <style scoped lang="scss">
 
+.show-scroll {
+	display: none;
+}
 .container_scroll {
 	display: flex;
 	flex-direction: column;
-	gap: 40px;
+	gap: 20px;
 	overflow-x: auto;
 	cursor: grab;
 	&::-webkit-scrollbar {
@@ -85,17 +124,20 @@ export default {
 	}
 }
 .recommended {
+	position: relative;
+	padding-bottom: 100px;
 	&__list {
 		position: relative;
 		min-width: 100%;
 		display: flex;
+		gap: 30px;
+		padding-bottom: 20px;
 	}
 
 	&__question {
 		min-width: 33%;
 		max-width: 600px;
-		margin: 5px;
-		display: inline-block;
+		display: block;
 		background-color: #1D1F20;
 		border-radius: 16px;
 		padding: 16px 24px;
@@ -115,18 +157,13 @@ export default {
 		}
 	}
 
-	&__question:not(:last-child) {
-		margin-right: 30px;
-		margin-bottom: 40px;
-	}
-
 	&__title {
 		margin-bottom: 20px;
 	}
 
 	&__answer {
 		padding-left: 24px;
-		line-height: 200%;
+		line-height: 1.25;
 		border-left: 2px solid #A0A1A6;
 		border-radius: 2px;
 		color: #A0A1A6;
@@ -139,7 +176,7 @@ export default {
 		position: relative;
 		top: -150px;
 		color: #5E6063;
-		
+		cursor: pointer;
 		& span {
 			color: #0E36D6;
 		}
@@ -158,6 +195,97 @@ export default {
 			background-repeat: no-repeat;
 			z-index: 3;
 		}
+	}
+}
+@media screen and (max-width: 1440px) {
+	.recommended {
+		padding-bottom: 60px;
+		&__question {
+			min-width: 45%;
+		}
+	}
+}
+@media screen and (max-width: 991px) {
+	.recommended {
+		&__question {
+			min-width: 50%;
+		}
+	}
+	.show-scroll {
+		position: absolute;
+		top: -46px;
+		right: calc(var(--container-padding) + 20px);
+		display: block;
+		max-width: 142px;
+		width: 100%;
+		&__line {
+			display: block;
+			border-radius: 40px;
+			width: 100%;
+			height: 2px;
+			background-color: rgba(160, 161, 166, 0.4);
+			&::before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 0;
+				display: block;
+				border-radius: 40px;
+				width: 30px;
+				height: 2px;
+				background-color: rgba(160, 161, 166, 1);
+			}
+		}
+		&__hand {
+			position: relative;
+			top: 7px;
+			margin: 0 auto;
+			width: 23px;
+			height: 32px;
+			// animation: handAnimation 3s ease-in-out 0 infinite;
+			animation: handAnimation 1s linear infinite alternate;
+			& svg {
+				width: 100%;
+				height: 100%;
+			}
+		}
+	}
+}
+@media screen and (max-width: 560px) {
+	.recommended {
+		padding-bottom: 0;
+		&__link {
+			top: -85px;
+			max-width: 150px;
+		}
+	}
+	.recommended {
+		&__question {
+			min-width: 75%;
+		}
+		&__list {
+			padding-bottom: 14px;
+			gap: 10px;
+		}
+		&__question {
+			&::after {
+				bottom: -14px;
+				border-top: 14px solid #1D1F20;
+				border-right: 14px solid transparent;
+			}
+		}
+		&__answer {
+			padding-left: 16px;
+		}
+	}
+	.container_scroll {
+		gap: 15px;
+	}
+	.show-scroll {
+		top: -10px;
+		right: auto;
+		left: 50%;
+		transform: translateX(-50%);
 	}
 }
 </style>
