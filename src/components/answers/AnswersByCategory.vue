@@ -9,8 +9,8 @@
       </picture>
     </div>
     <div class="container">
-      <h1 class="h1-title answers__title">Finds Answerio</h1>
-      <p class="answers__description">Select one or more topics of interest</p>
+      <h2 class="h1-title answers__title">More of <span>Q</span>and<span>A</span>s</h2>
+      <p class="answers__description">Select your topic of interest</p>
       <div class="answers__drop drop-menu">
         <div :class="modalSelectIsOpen ? 'open' : ''" @click="modalSelectIsOpen = !modalSelectIsOpen"
           class="drop-menu__field">
@@ -288,6 +288,11 @@ export default defineComponent({
 
   &__title {
     margin-bottom: 30px;
+    & span {
+      color: var(--theme-color-1);
+      font-size: inherit;
+      line-height: inherit;
+    }
   }
 
   &__description {

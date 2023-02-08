@@ -2,7 +2,9 @@
 	<header class="header">
 		<div class="container flex gap-50">
 			<router-link class="header__title" to="/">
-				Answerio
+				<svg class="header__logo">
+					<use xlink:href="@/assets/images/sprites.svg#logo"></use>
+				</svg>
 			</router-link>
 			<button @click="!isAuth ? login() : logout()" class="header__button"
 				v-text="!isAuth ? 'Sign In' : 'Sign Out'">
@@ -54,11 +56,17 @@ export default {
 	margin-bottom: 131px;
 
 	&__title {
+		display: flex;
+		align-items: center;
 		text-transform: uppercase;
 		font-size: 2rem;
 		font-weight: 700;
 		letter-spacing: 0.1em;
 		line-height: 240%;
+	}
+	&__logo {
+		max-width: 112px;
+		height: 34px;
 	}
 
 	&__button {

@@ -4,12 +4,10 @@
             <div class="info__wrap">
                 <div class="info__head">
                     <h2 class="h1-title info__title">
-                        What can Ansverio do
+                        What Qanda is capable of 
                     </h2>
                     <p class="info__description">
-                        Answerio is a new approach to answering your question. Instead of tedious searching for
-                        information in Google or waiting for an answer in a community of experts on various topics, get
-                        instant AI-based answers.
+                        Qanda is a new approach to having your questions answered. Instead of tedious searching for information in Google or waiting for an answer from a community, get instant and valid AI-based answers.
                     </p>
                 </div>
                 <ul class="info__list">
@@ -36,7 +34,7 @@
                             </defs>
                         </svg>
                         <p class="info__subtitle">
-                            Saving time
+                            Time-saving
                         </p>
                     </li>
                     <li class="info__item">
@@ -57,7 +55,7 @@
                             </defs>
                         </svg>
                         <p class="info__subtitle">
-                            Reliable sources
+                            Reliable answers
                         </p>
                     </li>
                     <li class="info__item">
@@ -122,16 +120,15 @@
                             </defs>
                         </svg>
                         <p class="info__subtitle">
-                            Quality answers
+                            Instant reply
                         </p>
                     </li>
                 </ul>
                 <h3 class="h2-title info__secondary-title">
-                    For whom is <span>Аnsverio</span>
+                    For whom is <span>Quanda</span>
                 </h3>
                 <p class="info__text">
-                    For students, professionals, entrepreneurs, amateurs and anyone interested in getting more
-                    information on any topic.
+                    For students, professionals, entrepreneurs, amateurs and anyone interested in getting more information on any topic.
                 </p>
                 <img class="info__img" src="@/assets/images/info.png" alt="">
             </div>
