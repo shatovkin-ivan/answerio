@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, createWebHashHistory } from 'vue-router'
 
 import App from '@/App.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: process.env.NODE_ENV === 'production' ? createWebHistory() : createWebHashHistory(),
   routes: [
     {
       path: '/',

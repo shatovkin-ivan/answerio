@@ -1,12 +1,10 @@
 <template>
-	<HeaderComponent />
+  <HeaderComponent />
   <main>
-    <app-ask/>
+    <app-ask />
     <AnswersByCategory />
     <WhatWeDo />
-    <SignUp 
-      v-if="!isAuth"
-    />
+    <SignUp v-if="!isAuth" />
   </main>
   <FooterComponent />
   <CookieModal v-if="showCookieModal" />
@@ -15,16 +13,15 @@
 <script>
 import { ref, onMounted, onBeforeMount, computed } from 'vue'
 import store from './store'
- 
-import HeaderComponent from './components/Header.vue'
-import AppAsk from './components/AppAsk.vue';
-import AnswersByCategory from './components/answers/AnswersByCategory.vue';
-import WhatWeDo from './components/WhatWeDo.vue';
-import FooterComponent from './components/Footer.vue';
-import SignUp from './components/SignUp.vue';
-import CookieModal from './components/CookieModal.vue';
-import '@/assets/styles/style.scss';
 
+import HeaderComponent from './components/Header.vue'
+import AppAsk from './components/AppAsk.vue'
+import AnswersByCategory from './components/answers/AnswersByCategory.vue'
+import WhatWeDo from './components/WhatWeDo.vue'
+import FooterComponent from './components/Footer.vue'
+import SignUp from './components/SignUp.vue'
+import CookieModal from './components/CookieModal.vue'
+import '@/assets/styles/style.scss'
 
 export default {
   name: 'App',
@@ -35,7 +32,7 @@ export default {
     WhatWeDo,
     SignUp,
     FooterComponent,
-    CookieModal
+    CookieModal,
   },
   setup() {
     const showCookieModal = ref(true)
@@ -54,17 +51,21 @@ export default {
     })
 
     function isCookieHidden() {
-      getCookie('hideCookieModal') || window.sessionStorage.getItem('hideCookieModal') ? showCookieModal.value = false : showCookieModal.value = true
+      getCookie('hideCookieModal') || window.sessionStorage.getItem('hideCookieModal')
+        ? (showCookieModal.value = false)
+        : (showCookieModal.value = true)
     }
     function getCookie(name) {
-      const matches = document.cookie.match(new RegExp("(?:^|; )" + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + "=([^;]*)"));
-      return matches ? decodeURIComponent(matches[1]) : undefined;
+      const matches = document.cookie.match(
+        new RegExp('(?:^|; )' + name.replace(/([.$?*|{}()[\]\\/+^])/g, '\\$1') + '=([^;]*)')
+      )
+      return matches ? decodeURIComponent(matches[1]) : undefined
     }
 
     return {
       isAuth,
-      showCookieModal
+      showCookieModal,
     }
-  }
+  },
 }
 </script>

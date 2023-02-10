@@ -1,172 +1,169 @@
 <template>
-    <div class="card-bottom">
-        <span class="card-bottom__tag">
-            {{ item.category }}
-        </span>
-        <div class="card-bottom__social">
-            <div class="card-bottom__share" @click="visible = !visible">
-                Share
-                <div class="card-bottom__icon">
-                    <svg>
-                        <use xlink:href="@/assets/images/sprites.svg#share"></use>
-                    </svg>
-                </div>
-            </div>
-            <ul class="card-bottom__links" v-show="visible">
-                <ShareItem v-for="(social, index) in socials" :key="index" :item="social" />
-            </ul>
+  <div class="card-bottom">
+    <span class="card-bottom__tag">
+      {{ item.category }}
+    </span>
+    <div class="card-bottom__social">
+      <div class="card-bottom__share" @click="copyPageLink">
+        Share
+        <div class="card-bottom__icon">
+          <svg>
+            <use xlink:href="@/assets/images/sprites.svg#share"></use>
+          </svg>
         </div>
+      </div>
     </div>
+  </div>
+  <Teleport to="body">
+    <MessageModal @hideMessage="hideMessage" :showMessage="showMessage" :messageText="messageText"> </MessageModal>
+  </Teleport>
 </template>
 
 <script>
-
-import ShareItem from './ShareItem.vue'
+import MessageModal from '../ui/MessageModal.vue'
 import { ref, computed } from 'vue'
 
 export default {
-    components: {
-        ShareItem
+  components: {
+    MessageModal
+  },
+  props: {
+    item: {
+      type: Object,
+      required: true,
     },
-    props: {
-        item: {
-            type: Object,
-            required: true
-        }
-    },
-    setup(props) {
-        const visible = ref(false)
-        const cardURL = computed(() => {
-            return window.location.protocol + '//' + window.location.host + props.item.url
-        })
-        const socials = ref([
-            {
-                iconId: 'facebook',
-                link: `https://www.facebook.com/sharer/sharer.php?u=${cardURL.value}`
-            },
-            {
-                iconId: 'telegram',
-                link: `https://t.me/share/url?url=${cardURL.value}&text=${props.item.question}`
-            },
-            {
-                iconId: 'instagram',
-                link: ''
-            },
-            {
-                iconId: 'twitter',
-                link: `https://twitter.com/intent/tweet?text=${props.item.question}&url=${cardURL.value}`
-            },
-        ])
-
-        return {
-            visible,
-            socials
-        }
+  },
+  setup(props) {
+    const showMessage = ref(false)
+    const messageText = 'link successfully copied'
+    const cardURL = computed(() => {
+      return window.location.origin + (process.env.NODE_ENV === 'production' ? '/' : '/#/') + props.item.url
+    })
+    function hideMessage() {
+      showMessage.value = false
     }
+    function copyPageLink() {
+      navigator.clipboard
+        .writeText(cardURL.value)
+        .then(() => {
+          showMessage.value = true
+        })
+        .catch((e) => {
+          console.error(e)
+        })
+    }
+
+    return {
+      copyPageLink,
+      showMessage,
+      messageText,
+      hideMessage,
+    }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
 .card-bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 0 0 16px 16px;
+  padding: 27px 24px;
+  background-color: #292a2c;
+
+  &__tag {
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    border-radius: 0 0 16px 16px;
-    padding: 27px 24px;
-    background-color: #292A2C;
+    justify-content: center;
+    border: 2px solid rgba(94, 96, 99, 0.6);
+    border-radius: 68px;
+    padding: 5px 18px;
+    min-height: 32px;
+    font-size: 1.4rem;
+    font-style: italic;
+    color: #5e6063;
+    text-align: center;
+  }
 
-    &__tag {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border: 2px solid rgba(94, 96, 99, 0.6);
-        border-radius: 68px;
-        padding: 5px 18px;
-        min-height: 32px;
-        font-size: 1.4rem;
-        font-style: italic;
-        color: #5E6063;
-        text-align: center;
+  &__share {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 2rem;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.6);
+    background-color: transparent;
+    cursor: pointer;
+    user-select: none;
+
+    & :is(svg) {
+      width: 18px;
+      height: 18px;
+      fill: var(--white-color);
+    }
+  }
+
+  &__icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    margin-left: 12px;
+    width: 38px;
+    height: 38px;
+    background-color: #404245;
+  }
+
+  &__social {
+    position: relative;
+    margin-left: auto;
+    width: 100%;
+  }
+
+  &__links {
+    position: absolute;
+    top: -65px;
+    right: 0;
+    display: flex;
+    align-items: center;
+    gap: 21px;
+    border-radius: 10px;
+    padding: 13px 18px;
+    max-height: 50px;
+    background-color: rgba(196, 196, 196, 0.4);
+    backdrop-filter: blur(2px);
+  }
+
+  &__link {
+    & :is(a) {
+      display: block;
     }
 
-    &__share {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        font-size: 2rem;
-        font-style: italic;
-        color: rgba(255, 255, 255, .6);
-        background-color: transparent;
-        cursor: pointer;
-        user-select: none;
+    & :is(svg) {
+      display: block;
+      width: 25px;
+      height: 25px;
+      fill: #fff;
+      opacity: 0.6;
+      transition: 0.3s opacity ease-in-out;
 
-        & :is(svg) {
-            width: 18px;
-            height: 18px;
-            fill: var(--white-color);
-        }
+      &:hover {
+        opacity: 1;
+      }
     }
-
-    &__icon {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50%;
-        margin-left: 12px;
-        width: 38px;
-        height: 38px;
-        background-color: #404245;
-    }
-
-    &__social {
-        position: relative;
-        margin-left: auto;
-        width: 100%;
-    }
-
-    &__links {
-        position: absolute;
-        top: -65px;
-        right: 0;
-        display: flex;
-        align-items: center;
-        gap: 21px;
-        border-radius: 10px;
-        padding: 13px 18px;
-        max-height: 50px;
-        background-color: rgba(196, 196, 196, 0.4);
-        backdrop-filter: blur(2px);
-    }
-
-    &__link {
-        & :is(a) {
-            display: block;
-        }
-
-        & :is(svg) {
-            display: block;
-            width: 25px;
-            height: 25px;
-            fill: #fff;
-            opacity: .6;
-            transition: .3s opacity ease-in-out;
-
-            &:hover {
-                opacity: 1;
-            }
-        }
-    }
+  }
 }
 
 @media screen and (max-width: 560px) {
-    .card-bottom {
-        padding: 11px 15px;
+  .card-bottom {
+    padding: 11px 15px;
 
-        &__tag {
-            max-width: 130px;
-            font-size: 1.2rem;
-            text-align: center;
-        }
+    &__tag {
+      max-width: 130px;
+      font-size: 1.2rem;
+      text-align: center;
     }
+  }
 }
 </style>

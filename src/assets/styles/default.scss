@@ -1,72 +1,79 @@
 html {
-    font-size: 62.5%;
+  font-size: 62.5%;
 }
 body {
-    background-color: var(--theme-color-3);
-    overflow-x: hidden;
+  background-color: var(--theme-color-3);
+  overflow-x: hidden;
 }
 * {
-    box-sizing: border-box;
-    font: normal 400 var(--default-size)/1.2 "Roboto", sans-serif;
-    color: var(--white-color);
+  box-sizing: border-box;
+  font: normal 400 var(--default-size) / 1.2 'Roboto', sans-serif;
+  color: var(--white-color);
 }
 .h1-title {
-    font-size: var(--h1-size);
+  font-size: var(--h1-size);
 }
 .h2-title {
-    font-size: var(--h2-size);
+  font-size: var(--h2-size);
 }
 .container {
-    padding: 0 var(--container-padding);
-    margin: 0 auto;
-    max-width: 1800px;
-    width: 100%;
+  padding: 0 var(--container-padding);
+  margin: 0 auto;
+  max-width: 1900px;
+  width: 100%;
 }
-h1, h2, h3, p, ul, li {
-    margin: 0;
+h1,
+h2,
+h3,
+p,
+ul,
+li {
+  margin: 0;
 }
-ul, li, button {
-    padding: 0;
+ul,
+li,
+button {
+  padding: 0;
 }
 ul {
-    list-style-type: none;
+  list-style-type: none;
 }
 a {
-    text-decoration: none;
+  text-decoration: none;
 }
 button {
-    border: none;
-    cursor: pointer;
+  border: none;
+  cursor: pointer;
 }
 .visually-hidden {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    margin: -1px;
-    border: 0;
-    padding: 0;
-    white-space: nowrap;
-    clip-path: inset(100%);
-    clip: rect(0 0 0 0);
-    overflow: hidden;
-  }
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
 
 .flex {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .gap-50 {
-	gap: 50px;
+  gap: 50px;
 }
 @media screen and (max-width: 1440px) {
-    .container {
-        padding: 0 var(--container-padding);
-    }
+  .container {
+    padding: 0 var(--container-padding);
+  }
 }
 @media screen and (max-width: 991px) {
-    .container {
-        padding: 0 var(--container-padding);
-    }
+  .container {
+    padding: 0 var(--container-padding);
+  }
 }

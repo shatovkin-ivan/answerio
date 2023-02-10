@@ -19,26 +19,25 @@
 import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
 
 export default {
-
   components: {
-    AnswerCardFooter
+    AnswerCardFooter,
   },
   props: {
     item: {
       type: Object,
-      required: true
+      required: true,
     },
     visible: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   setup(props, { emit }) {
     const clickOnModal = () => {
       emit('hideModalOverlay', props.visible)
     }
     return {
-      clickOnModal
+      clickOnModal,
     }
   },
 }
@@ -62,7 +61,8 @@ export default {
   position: relative;
   border: 2px solid #5e6063;
   border-radius: 16px;
-
+  max-width: 670px;
+  width: 100%;
   &__head {
     border-radius: 16px 16px 0 0;
     padding: 49px 36px 40px 36px;

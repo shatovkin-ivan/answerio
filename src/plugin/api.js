@@ -1,22 +1,19 @@
-function callApi(endpoint, token) {
-  const headers = new Headers()
-  const bearer = `Bearer ${token}`
-
-  headers.append('Authorization', bearer)
-
-  const options = {
-    method: 'GET',
-    headers: headers,
+function getHeaders() {
+  return {
+    'Ocp-Apim-Subscription-Key': `${process.env.VUE_APP_API_KEY}`,
+    'Content-Type': 'application/json',
   }
-
-  fetch(endpoint, options)
-    .then((response) => response.json())
-    .then((response) => {
-      return response
-    })
-    .catch((error) => {
-      console.error(error)
-    })
 }
 
-export { callApi }
+function getHeadersWithAuthorization(token) {
+  const headers = getHeaders()
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`
+    return headers
+  }
+
+  return headers
+}
+
+export { getHeaders, getHeadersWithAuthorization }

@@ -4,26 +4,20 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
 
 trigger:
-- prod
+  - prod
 
 pool:
   vmImage: ubuntu-latest
 
 steps:
-- task: NodeTool@0
-  inputs:
-    versionSpec: '16.x'
-  displayName: 'Install Node.js'
 
-- script: |
-    npm install
-    npm run build
-  displayName: 'npm install and build'
-
-- task: AzureStaticWebApp@0
-  inputs:
-    app_location: ''
-    api_location: ''
-    output_location: 'dist'
-  env:
-    azure_static_web_apps_api_token: $(DeploymentToken)
+  - task: AzureStaticWebApp@0
+    inputs:
+      output_location: 'dist'
+    env:
+      azure_static_web_apps_api_token: $(DeploymentToken)
+      VUE_APP_API_URL: $(ApiUrl)
+      VUE_APP_API_KEY: $(ApiKey)
+      VUE_APP_REDIRECT_URI: $(RedirectUrl)
+      VUE_APP_CLIENT_ID: $(ClientId)
+      VUE_APP_AAD_TENANT: $(AADTenant)

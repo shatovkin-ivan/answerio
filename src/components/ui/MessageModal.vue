@@ -1,5 +1,5 @@
 <template>
-    <div @click.self="clickOnModal" class="overlay" v-show="showMessage">
+    <div @click.self="clickOnModal" class="overlay" v-if="showMessage">
         <div class="message-modal">
             <p class="message-modal__text">
                 {{ messageText }}
@@ -12,20 +12,18 @@
 </template>
 
 <script>
-
 export default {
     props: {
         showMessage: {
             type: Boolean,
-            required: true
+            required: true,
         },
         messageText: {
             type: String,
-            required: true
-        }
+            required: true,
+        },
     },
     setup(props, { emit }) {
-    
         const clickOnModal = () => {
             emit('hideMessage', props.showMessage)
         }
@@ -33,7 +31,7 @@ export default {
         return {
             clickOnModal,
         }
-    }
+    },
 }
 </script>
 
@@ -57,14 +55,17 @@ export default {
     border-radius: 16px;
     padding: 49px 36px 40px 36px;
     background-color: #d9d9d9;
+
     &__text {
         position: relative;
         padding-left: 20px;
         line-height: 1.25;
         color: #5e6063;
+
         &:not(:last-child) {
             margin-bottom: 25px;
         }
+
         &::before {
             content: '';
             position: absolute;
@@ -77,6 +78,7 @@ export default {
             background-color: #5e6063;
         }
     }
+
     &__close {
         position: absolute;
         top: -43px;
