@@ -81,6 +81,7 @@ import { signIn } from '@/plugin/authPopup'
 import store from '@/store'
 
 import { useRouter } from 'vue-router'
+import { useRequest } from '@/hooks/useRequest'
 
 export default {
 	components: {
@@ -135,20 +136,20 @@ export default {
 		async function sendAnonimousQuestion(url) {
 			try {
 				isLoading.value = true
-				const response = await fetch(url, {
-					method: 'POST',
-					headers: {
+				const { data, response } = await useRequest(
+					url,
+					'POST',
+					{
 						'Ocp-Apim-Subscription-Key': `${apiKey}`,
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({
+					{
 						question: question.value,
-					}),
-				})
+					}
+				)
 				if (response.status === 429) {
 					showModal(messages.TooMuchRequestsAnonimous)
 				}
-				const data = await response.json()
 				answer.value = data.answer
 				pageUrl.value = data.url
 				likedByUser.value = data.likedByUser
@@ -166,21 +167,18 @@ export default {
 			try {
 				isLoading.value = true
 				const tokenResponse = await getTokenPopup(tokenRequest)
-				const response = await fetch(url, {
-					method: 'POST',
-					headers: {
+				const { data } = await useRequest(
+					url,
+					'POST',
+					{
 						'Ocp-Apim-Subscription-Key': `${apiKey}`,
 						'Content-Type': 'application/json',
 						Authorization: `Bearer ${tokenResponse.accessToken}`,
 					},
-					body: JSON.stringify({
+					{
 						question: question.value,
-					}),
-				})
-				if (response.status === 429) {
-					showModal(messages.TooMuchRequestsAuthentication)
-				}
-				const data = await response.json()
+					}
+				)
 				answer.value = data.answer
 				pageUrl.value = data.url
 				setMetaData()
@@ -199,16 +197,16 @@ export default {
 			if (!tokenResponse) {
 				showModal(messages.LikeAnonimous)
 			}
-			const response = await fetch(`${apiUrl}/Question/Like/${pageUrl.value}`, {
-				method: 'POST',
-				headers: {
+			const { data } = await useRequest(
+				`${apiUrl}/Question/Like/${pageUrl.value}`,
+				'POST',
+				{
 					'Ocp-Apim-Subscription-Key': `${apiKey}`,
 					'Content-Type': 'application/json',
 					Authorization: `Bearer ${tokenResponse.accessToken}`,
 				},
-				body: '',
-			})
-			const data = await response.json()
+				null
+			)
 			if (data) {
 				likedByUser.value = true
 			}
@@ -222,14 +220,16 @@ export default {
 					const tokenResponse = await getTokenPopup(tokenRequest)
 					token = tokenResponse.accessToken
 				}
-				const response = await fetch(url, {
-					headers: getHeadersWithAuthorization(token),
-				})
+				const { response, data } = await useRequest(
+					url,
+					'GET',
+					getHeadersWithAuthorization(token),
+					null
+				)
 				if (response.status === 404) {
 					showModal(messages.PegeNotFound)
 					isError.value = true
 				}
-				const data = await response.json()
 				answer.value = data.answer
 				question.value = data.question
 				pageUrl.value = data.url

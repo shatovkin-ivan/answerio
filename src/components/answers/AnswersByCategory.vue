@@ -68,6 +68,8 @@ import AnswerCard from '@/components/answers/AnswerCard.vue'
 import CategoryButton from '@/components/answers/CategoryButton.vue'
 import PreloaderComponent from '@/components/ui/PreloaderComponent.vue'
 
+import { useRequest } from '@/hooks/useRequest'
+
 export default defineComponent({
   components: {
     AnswerCard,
@@ -171,16 +173,18 @@ export default defineComponent({
     ])
     async function getQuestions(url) {
       try {
-        const response = await fetch(url, {
-          headers: {
+        const { data } = await useRequest(
+          url,
+          'GET',
+          {
             'Ocp-Apim-Subscription-Key': `${apiKey}`,
             'Content-Type': 'application/json',
           },
-        })
-        const data = await response.json()
-        topAnswers.value = await data.items
+          null
+        )
+        topAnswers.value = data.items
         continuationToken.value =
-          (await data.continuationToken) === null
+          (data.continuationToken) === null
             ? data.continuationToken
             : JSON.stringify(data.continuationToken).slice(1, -1)
       } catch (e) {
@@ -190,21 +194,23 @@ export default defineComponent({
     async function showMore(url) {
       try {
         isLoading.value = true
-        const response = await fetch(url, {
-          headers: {
+        const { data } = await useRequest(
+          url,
+          'GET',
+          {
             'Ocp-Apim-Subscription-Key': `${apiKey}`,
             'X-Continuation-Token': continuationToken.value,
             'Content-Type': 'application/json',
           },
-        })
-        const data = await response.json()
-        const newItems = await data.items
+          null
+        )
+        const newItems = data.items
         for (let i = 0; i < newItems.length; i++) {
           topAnswers.value = [...topAnswers.value, newItems[i]]
         }
 
         continuationToken.value =
-          (await data.continuationToken) === null
+          (data.continuationToken) === null
             ? data.continuationToken
             : JSON.stringify(data.continuationToken).slice(1, -1)
         isLoading.value = false
