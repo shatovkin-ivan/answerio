@@ -16,7 +16,7 @@
 					<textarea id="question" class="form__input" placeholder="Ask any question..." v-model="question"
 						@input="setAutoHeight">
 					</textarea>
-					<div class="form__answer">{{ answer }}</div>
+					<div class="form__answer" v-html="replaceWithBr(answer)"></div>
 				</label>
 				<div class="flex">
 					<div class="form__left-block"
@@ -223,6 +223,10 @@ export default {
 			store.dispatch('setAuthenticated')
 		}
 
+		function replaceWithBr(answer) {
+			return answer.replace(/\n/g, "<br />")
+		}
+
 		watch(question, (currentValue) => {
 			if (currentValue) {
 				active.value = true
@@ -248,7 +252,8 @@ export default {
 			messageText,
 			hideMessage,
 			clearForm,
-			login
+			login,
+			replaceWithBr
 		}
 	},
 }
