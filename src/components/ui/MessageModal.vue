@@ -1,37 +1,47 @@
 <template>
-    <div @click.self="clickOnModal" class="overlay" v-if="showMessage">
+    <div @click.self="closeModal" class="overlay" v-if="getIsVisibility">
         <div class="message-modal">
             <p class="message-modal__text">
-                {{ messageText }}
+                {{ getModalMessage }}
             </p>
             <slot></slot>
-            <button @click.self="clickOnModal" type="button" class="message-modal__close">
+            <button @click.self="closeModal" type="button" class="message-modal__close">
             </button>
         </div>
     </div>
 </template>
 
 <script>
-export default {
-    props: {
-        showMessage: {
-            type: Boolean,
-            required: true,
-        },
-        messageText: {
-            type: String,
-            required: true,
-        },
-    },
-    setup(props, { emit }) {
-        const clickOnModal = () => {
-            emit('hideMessage', props.showMessage)
-        }
+import { useRouter } from 'vue-router'
 
-        return {
-            clickOnModal,
+import store from '@/store'
+import { computed } from 'vue'
+
+export default {
+    setup() {
+        const router = useRouter()
+
+        const getIsVisibility = computed(() => {
+            return store.getters.getModalVisibility
+        })
+        const getModalMessage = computed(() => {
+            return store.getters.getModalMessage
+        })
+        const isError = computed(() => {
+			return store.getters.getPageInfo
+		})
+        function closeModal() {
+            store.dispatch('closeModal')
+            if (isError.value) {
+                router.push('/')
+            }
         }
-    },
+        return {
+            getIsVisibility,
+            getModalMessage,
+            closeModal
+        }
+    }
 }
 </script>
 

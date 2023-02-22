@@ -66,6 +66,7 @@ export default {
   &__head {
     border-radius: 16px 16px 0 0;
     padding: 49px 36px 40px 36px;
+    margin: -1px -1px 0 -1px;
     background-color: #d9d9d9;
   }
 

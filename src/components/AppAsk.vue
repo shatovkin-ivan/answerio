@@ -51,7 +51,7 @@
 	<recommended-questions :firstArray="firstArray" :secondArray="secondArray" />
 
 	<Teleport to="body">
-		<MessageModal @hideMessage="hideMessage" :showMessage="showMessage" :messageText="messageText">
+		<MessageModal>
 			<div v-show="!isAuth && !isError" class="message-modal__buttons">
 				<button @click="hideMessage" class="message-modal__close-btn" type="button">
 					Try Later
@@ -87,7 +87,7 @@ export default {
 	components: {
 		RecommendedQuestions,
 		MessageModal,
-		PreloaderComponent
+		PreloaderComponent,
 	},
 	directives: {
 		debounce: vue3Debounce({ lock: true })
@@ -109,20 +109,19 @@ export default {
 			return store.getters.getAuthenticated
 		})
 
+		const isError = computed(() => {
+			return store.getters.getPageInfo
+		})
+
 		const isAuth = ref(getIsAuth)
 
 		const isLoading = ref(false)
-
-		const showMessage = ref(false)
-		const messageText = ref('')
 
 		const pageUrl = ref('')
 
 		const router = useRouter()
 
 		const pathName = ref(window.location.href)
-
-		const isError = ref(false)
 
 		const textarea = ref(null)
 
@@ -136,7 +135,7 @@ export default {
 		async function sendAnonimousQuestion(url) {
 			try {
 				isLoading.value = true
-				const { data, response } = await useRequest(
+				const { response, data } = await useRequest(
 					url,
 					'POST',
 					{
@@ -147,15 +146,15 @@ export default {
 						question: question.value,
 					}
 				)
-				if (response.status === 429) {
-					showModal(messages.TooMuchRequestsAnonimous)
+				if (response.status === 429) showModal(messages.TooMuchRequestsAnonimous)
+				if (data) {
+					answer.value = data.answer
+					pageUrl.value = data.url
+					likedByUser.value = data.likedByUser
+					setMetaData()
+					setPathName(data.url)
+					divideArray(data.recommendedQuestions)
 				}
-				answer.value = data.answer
-				pageUrl.value = data.url
-				likedByUser.value = data.likedByUser
-				setMetaData()
-				setPathName(data.url)
-				divideArray(data.recommendedQuestions)
 				isLoading.value = false
 			} catch (e) {
 				console.error(e);
@@ -167,7 +166,7 @@ export default {
 			try {
 				isLoading.value = true
 				const tokenResponse = await getTokenPopup(tokenRequest)
-				const { data } = await useRequest(
+				const { response, data } = await useRequest(
 					url,
 					'POST',
 					{
@@ -179,12 +178,15 @@ export default {
 						question: question.value,
 					}
 				)
-				answer.value = data.answer
-				pageUrl.value = data.url
-				setMetaData()
-				likedByUser.value = data.likedByUser
-				setPathName(data.url)
-				divideArray(data.recommendedQuestions)
+				if (response.status === 429) showModal(messages.TooMuchRequestsAuthentication)
+				if (data) {
+					answer.value = data.answer
+					pageUrl.value = data.url
+					setMetaData()
+					likedByUser.value = data.likedByUser
+					setPathName(data.url)
+					divideArray(data.recommendedQuestions)
+				}	
 				isLoading.value = false
 			} catch (e) {
 				console.error(e)
@@ -228,14 +230,16 @@ export default {
 				)
 				if (response.status === 404) {
 					showModal(messages.PegeNotFound)
-					isError.value = true
+					store.dispatch('pageNotFound')
 				}
-				answer.value = data.answer
-				question.value = data.question
-				pageUrl.value = data.url
-				likedByUser.value = data.likedByUser
-				setMetaData()
-				divideArray(data.recommendedQuestions)
+				if (data) {
+					answer.value = data.answer
+					question.value = data.question
+					pageUrl.value = data.url
+					likedByUser.value = data.likedByUser
+					setMetaData()
+					divideArray(data.recommendedQuestions)
+				}
 				isLoading.value = false
 			} catch(e) {
 				console.error(e)
@@ -245,8 +249,7 @@ export default {
 		}
 
 		function showModal(message) {
-			showMessage.value = true
-			messageText.value = message
+			store.dispatch('openModal', message)
 		}
 
 		function divideArray(questions) {
@@ -268,8 +271,7 @@ export default {
 			textarea.value.style.height = textarea.value.scrollHeight + 2 + "px"
 		}
 		function hideMessage() {
-			showMessage.value = false
-			if (isError.value) closeErrorPage()
+			store.dispatch('closeModal')
 		}
 
 		function clearForm() {
@@ -307,12 +309,6 @@ export default {
 			head.querySelector('meta[name="description"]').setAttribute('content', limitStr())
 		}
 
-		function closeErrorPage() {
-			isError.value = false
-			showMessage.value = false
-			router.push('/')
-		}
-
 		watch(question, (currentValue) => {
 			if (currentValue) {
 				active.value = true
@@ -339,8 +335,6 @@ export default {
 			active,
 			isAuth,
 			apiUrl,
-			showMessage,
-			messageText,
 			isLoading,
 			textarea,
 			isError,
@@ -352,7 +346,6 @@ export default {
 			hideMessage,
 			clearForm,
 			login,
-			closeErrorPage
 		}
 	},
 }
@@ -485,7 +478,6 @@ export default {
     display: block;
     background: transparent;
     border: none;
-    color: rgba(255, 255, 255, 0.6);
     font-size: 24px;
     font-weight: 400;
     outline: none;
@@ -494,9 +486,16 @@ export default {
     box-sizing: border-box;
     height: 50px;
     min-height: 50px;
+	transition: .3s color ease-in-out;
 	&::-webkit-scrollbar {
       width: 0;
     }
+	&, &::placeholder {
+		color: rgba(255, 255, 255, 0.6);
+	}
+	&:focus {
+		color: rgba(255, 255, 255, 1);
+	}
   }
 
   &__answer {
@@ -599,7 +598,7 @@ export default {
 
 @media screen and (max-width: 768px) {
   .form {
-    padding: 11px 10px 65px;
+    padding: 11px 10px 80px;
 
     &__input,
     &__answer {
@@ -633,7 +632,7 @@ export default {
     }
 	&__preloader {
 		left: 50%;
-		top: 60px;
+		top: 75px;
 		transform: translateX(-50%);
 	}
   }
@@ -642,7 +641,7 @@ export default {
     &__clear {
       opacity: 0.6;
       position: absolute;
-      bottom: -55px;
+      bottom: -70px;
       right: -18px;
     }
 

@@ -4,61 +4,25 @@
       {{ item.category }}
     </span>
     <div class="card-bottom__social">
-      <div class="card-bottom__share" @click="copyPageLink">
-        Share
-        <div class="card-bottom__icon">
-          <svg>
-            <use xlink:href="@/assets/images/sprites.svg#share"></use>
-          </svg>
-        </div>
-      </div>
+      <ShareButton 
+        :url="item.url"
+      />
     </div>
   </div>
-  <Teleport to="body">
-    <MessageModal @hideMessage="hideMessage" :showMessage="showMessage" :messageText="messageText"> </MessageModal>
-  </Teleport>
 </template>
 
 <script>
-import MessageModal from '../ui/MessageModal.vue'
-import { ref, computed } from 'vue'
+import ShareButton from '@/components/ui/ShareButton.vue'
 
 export default {
   components: {
-    MessageModal
+    ShareButton
   },
   props: {
     item: {
       type: Object,
       required: true,
     },
-  },
-  setup(props) {
-    const showMessage = ref(false)
-    const messageText = 'link successfully copied'
-    const cardURL = computed(() => {
-      return window.location.origin + (process.env.NODE_ENV === 'production' ? '/' : '/#/') + props.item.url
-    })
-    function hideMessage() {
-      showMessage.value = false
-    }
-    function copyPageLink() {
-      navigator.clipboard
-        .writeText(cardURL.value)
-        .then(() => {
-          showMessage.value = true
-        })
-        .catch((e) => {
-          console.error(e)
-        })
-    }
-
-    return {
-      copyPageLink,
-      showMessage,
-      messageText,
-      hideMessage,
-    }
   },
 }
 </script>
@@ -86,39 +50,9 @@ export default {
     text-align: center;
   }
 
-  &__share {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    font-size: 2rem;
-    font-style: italic;
-    color: rgba(255, 255, 255, 0.6);
-    background-color: transparent;
-    cursor: pointer;
-    user-select: none;
-
-    & :is(svg) {
-      width: 18px;
-      height: 18px;
-      fill: var(--white-color);
-    }
-  }
-
-  &__icon {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    margin-left: 12px;
-    width: 38px;
-    height: 38px;
-    background-color: #404245;
-  }
-
   &__social {
     position: relative;
     margin-left: auto;
-    width: 100%;
   }
 
   &__links {

@@ -1,0 +1,46 @@
+# Node.js with Vue
+# Build a Node.js project that uses Vue.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: DownloadSecureFile@1
+    displayName: 'Download robots.txt'
+    name: disallowAllRobotsTxtFile
+    inputs:
+      secureFile: 'disallow_all_robots.txt'
+
+  - script: tree $(Agent.TempDirectory)
+    displayName: 'Test'
+
+  - task: CopyFiles@2
+    displayName: 'Move robots.txt to public directiry'
+    inputs:
+      SourceFolder: '$(Agent.TempDirectory)'
+      Contents: 'disallow_all_robots.txt'
+      TargetFolder: 'public'
+
+  - script: tree .
+    displayName: 'List project files'
+
+  - script: mv disallow_all_robots.txt robots.txt
+    workingDirectory: 'public'
+    displayName: 'Set correct name for robots.txt'
+
+  - task: AzureStaticWebApp@0
+    displayName: 'Build and deploy to Azure Static Web App'
+    inputs:
+      output_location: 'dist'
+    env:
+      azure_static_web_apps_api_token: $(DeploymentToken)
+      VUE_APP_API_URL: $(ApiUrl)
+      VUE_APP_API_KEY: $(ApiKey)
+      VUE_APP_REDIRECT_URI: $(RedirectUrl)
+      VUE_APP_CLIENT_ID: $(ClientId)
+      VUE_APP_AAD_TENANT: $(AADTenant)

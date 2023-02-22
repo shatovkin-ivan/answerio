@@ -5,10 +5,16 @@ const useRequest = async function(url, method, headers, body) {
             headers,
             body: body === null ? null : JSON.stringify(body),
         })
-        const data = await response.json() 
-        return {
-            response,
-            data
+        if (response.ok) {
+            const data = await response.json() 
+            return {
+                response,
+                data
+            }
+        } else {
+            return {
+                response
+            }
         }
     } catch(e) {
         console.error(e)
