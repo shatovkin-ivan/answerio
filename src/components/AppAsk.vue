@@ -22,18 +22,24 @@
 				<div class="flex">
 					<div class="form__left-block" v-show="answer">
 						<div class="form__label">Rate the answer</div>
-						<button :class="{ 'form__button': true, 'form__dislike': true, 'active': dislikedByUser }" @click.prevent="sendDislike">
-							<svg>
-								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
-							</svg>
-						</button>
-						<button :class="{ 'form__button': true, 'active': likedByUser }" @click.prevent="sendLike">
-							<svg>
-								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
-							</svg>
-						</button>
+						<div class="form__button-wrap">
+							<button :class="{ 'form__button': true, 'form__dislike': true, 'active': dislikedByUser }" @click.prevent="sendDislike">
+								<svg>
+									<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
+								</svg>
+							</button>
+							<button :class="{ 'form__button': true, 'active': likedByUser }" @click.prevent="sendLike">
+								<svg>
+									<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
+								</svg>
+							</button>
+						</div>
 					</div>
 					<div class="form__right-block">
+						<ShareButton 
+						class="form__share"
+							:url="pageUrl"
+						/>
 						<PreloaderComponent v-show="isLoading" class="form__preloader"/>
 						<button :disabled="isLoading ? true : false" :class="{ 'ask__clear': true, 'active': active }"
 							@click.prevent="clearForm">Clear</button>
@@ -80,7 +86,7 @@ import { tokenRequest } from '@/plugin/authConfig'
 import { getHeadersWithAuthorization } from '@/plugin/api'
 import MessageModal from '@/components/ui/MessageModal.vue'
 import PreloaderComponent from './ui/PreloaderComponent.vue'
-
+import ShareButton from './ui/ShareButton.vue'
 import { signIn } from '@/plugin/authPopup'
 
 import store from '@/store'
@@ -93,6 +99,7 @@ export default {
 		RecommendedQuestions,
 		MessageModal,
 		PreloaderComponent,
+		ShareButton
 	},
 	directives: {
 		debounce: vue3Debounce({ lock: true })
@@ -368,6 +375,7 @@ export default {
 			active,
 			isAuth,
 			apiUrl,
+			pageUrl,
 			isLoading,
 			textarea,
 			isError,
@@ -590,6 +598,10 @@ export default {
       }
     }
   }
+
+	&__share {
+		margin-right: 15px;
+	}
 }
 
 .message-modal__buttons {
@@ -678,6 +690,15 @@ export default {
 		left: 50%;
 		top: 75px;
 		transform: translateX(-50%);
+	}
+
+	&__share {
+		margin-bottom: 10px;
+	}
+
+	&__button-wrap {
+		display: flex;
+		
 	}
   }
 
