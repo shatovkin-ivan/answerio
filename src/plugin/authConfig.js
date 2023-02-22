@@ -13,10 +13,10 @@ const msalConfig = {
   auth: {
     // clientId: '4a7aaa88-3656-4014-83fc-49443e42b889',
     // authority: 'https://login.microsoftonline.com/04d51bf3-93da-447b-8faf-c48bcaf7efc1',
-    clientId: '24f29145-8040-4c5d-8cb9-2a3eac6d6434', // This is the ONLY mandatory field; everything else is optional.
+    clientId: process.env.VUE_APP_CLIENT_ID, // This is the ONLY mandatory field; everything else is optional.
     authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
     knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
-    redirectUri: 'http://localhost:8080', // You must register this URI on Azure Portal/App Registration. Defaults to "window.location.href".
+    redirectUri: process.env.VUE_APP_REDIRECT_URI, // You must register this URI on Azure Portal/App Registration. Defaults to "window.location.href".
   },
   cache: {
     cacheLocation: 'localStorage', // Configures cache location. "sessionStorage" is more secure, but "localStorage" gives you SSO between tabs.

@@ -32,6 +32,10 @@ myMSALObj
 function setAccount(account) {
   accountId = account.homeAccountId
   username = account.username
+  welcomeUser(username)
+}
+function welcomeUser(user) {
+  console.log('hello ' + user)
 }
 function selectAccount() {
   /**
@@ -130,18 +134,18 @@ function getTokenRedirect(request) {
       if (!response.accessToken || response.accessToken === '') {
         throw new InteractionRequiredAuthError()
       } else {
-        console.error('access_token acquired at: ' + new Date().toString())
+        console.log('access_token acquired at: ' + new Date().toString())
         accessToken = response.accessToken
         passTokenToApi()
       }
     })
     .catch((error) => {
-      console.error('Silent token acquisition fails. Acquiring token using popup. \n', error)
+      console.log('Silent token acquisition fails. Acquiring token using popup. \n', error)
       if (error instanceof InteractionRequiredAuthError) {
         // fallback to interaction when silent call fails
         return myMSALObj.acquireTokenRedirect(request)
       } else {
-        console.error(error)
+        console.log(error)
       }
     })
 }

@@ -30,7 +30,7 @@ export default {
     return {
       login,
     }
-  }
+  },
 }
 </script>
 
@@ -42,7 +42,7 @@ export default {
     position: relative;
     background: #224efe;
     border-radius: 30px;
-    padding: 122px 0;
+    padding: 122px 105px;
 
     &::before,
     &::after {
@@ -92,11 +92,12 @@ export default {
   &__button {
     position: relative;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     gap: 10px;
     position: relative;
     padding: 0 55px;
+    max-width: 350px;
+    width: 100%;
     background: var(--white-color);
     border-radius: 18px;
     transition: 0.3s background-color ease-in-out, 0.3s color ease-in-out;

@@ -1,37 +1,45 @@
 <template>
-    <div @click.self="clickOnModal" class="overlay" v-show="showMessage">
+    <div @click.self="closeModal" class="overlay" v-if="getIsVisibility">
         <div class="message-modal">
             <p class="message-modal__text">
-                {{ messageText }}
+                {{ getModalMessage }}
             </p>
             <slot></slot>
-            <button @click.self="clickOnModal" type="button" class="message-modal__close">
+            <button @click.self="closeModal" type="button" class="message-modal__close">
             </button>
         </div>
     </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router'
+
+import store from '@/store'
+import { computed } from 'vue'
 
 export default {
-    props: {
-        showMessage: {
-            type: Boolean,
-            required: true
-        },
-        messageText: {
-            type: String,
-            required: true
-        }
-    },
-    setup(props, { emit }) {
-    
-        const clickOnModal = () => {
-            emit('hideMessage', props.showMessage)
-        }
+    setup() {
+        const router = useRouter()
 
+        const getIsVisibility = computed(() => {
+            return store.getters.getModalVisibility
+        })
+        const getModalMessage = computed(() => {
+            return store.getters.getModalMessage
+        })
+        const isError = computed(() => {
+			return store.getters.getPageInfo
+		})
+        function closeModal() {
+            store.dispatch('closeModal')
+            if (isError.value) {
+                router.push('/')
+            }
+        }
         return {
-            clickOnModal,
+            getIsVisibility,
+            getModalMessage,
+            closeModal
         }
     }
 }
@@ -57,14 +65,17 @@ export default {
     border-radius: 16px;
     padding: 49px 36px 40px 36px;
     background-color: #d9d9d9;
+
     &__text {
         position: relative;
         padding-left: 20px;
         line-height: 1.25;
         color: #5e6063;
+
         &:not(:last-child) {
             margin-bottom: 25px;
         }
+
         &::before {
             content: '';
             position: absolute;
@@ -77,6 +88,7 @@ export default {
             background-color: #5e6063;
         }
     }
+
     &__close {
         position: absolute;
         top: -43px;

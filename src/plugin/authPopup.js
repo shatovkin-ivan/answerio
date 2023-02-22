@@ -127,6 +127,7 @@ async function getTokenPopup(request) {
         return myMSALObj
           .acquireTokenPopup(request)
           .then((response) => {
+            console.error(response)
             return response
           })
           .catch((error) => {

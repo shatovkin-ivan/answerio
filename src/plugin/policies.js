@@ -4,16 +4,18 @@
  * To learn more about custom policies, visit: https://docs.microsoft.com/en-us/azure/active-directory-b2c/custom-policy-overview
  */
 
+const userFlow = 'B2C_1_susi_google'
+
 const b2cPolicies = {
   names: {
-    signUpSignIn: 'B2C_1_susi_google',
+    signUpSignIn: userFlow,
   },
   authorities: {
     signUpSignIn: {
-      authority: 'https://qandaxyz.b2clogin.com/qandaxyz.onmicrosoft.com/B2C_1_susi_google',
+      authority: `https://${process.env.VUE_APP_AAD_TENANT}.b2clogin.com/${process.env.VUE_APP_AAD_TENANT}.onmicrosoft.com/${userFlow}`,
     },
   },
-  authorityDomain: 'qandaxyz.b2clogin.com',
+  authorityDomain: `${process.env.VUE_APP_AAD_TENANT}.b2clogin.com`,
 }
 
 export { b2cPolicies }
