@@ -22,6 +22,11 @@
 				<div class="flex">
 					<div class="form__left-block" v-show="answer">
 						<div class="form__label">Rate the answer</div>
+						<button :class="{ 'form__button': true, 'form__dislike': true, 'active': dislikedByUser }" @click.prevent="sendDislike">
+							<svg>
+								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
+							</svg>
+						</button>
 						<button :class="{ 'form__button': true, 'active': likedByUser }" @click.prevent="sendLike">
 							<svg>
 								<use xlink:href="@/assets/images/sprites.svg#thumb"></use>
@@ -100,6 +105,7 @@ export default {
 		const secondArray = ref([])
 
 		const likedByUser = ref(false)
+		const dislikedByUser = ref(false)
 		const active = ref(false)
 
 		const apiKey = process.env.VUE_APP_API_KEY
@@ -194,13 +200,34 @@ export default {
 			}
 		}
 
+		async function sendDislike() {
+			const tokenResponse = await getTokenPopup(tokenRequest)
+			if (!tokenResponse) {
+				showModal(messages.LikeAnonimous)
+			}
+			const { data } = await useRequest(
+				`${apiUrl}/Question/ToggleDislike/${pageUrl.value}`,
+				'POST',
+				{
+					'Ocp-Apim-Subscription-Key': `${apiKey}`,
+					'Content-Type': 'application/json',
+					Authorization: `Bearer ${tokenResponse.accessToken}`,
+				},
+				null
+			)
+			if (data) {
+				dislikedByUser.value = true
+				likedByUser.value = false
+			}
+		}
+
 		async function sendLike() {
 			const tokenResponse = await getTokenPopup(tokenRequest)
 			if (!tokenResponse) {
 				showModal(messages.LikeAnonimous)
 			}
 			const { data } = await useRequest(
-				`${apiUrl}/Question/Like/${pageUrl.value}`,
+				`${apiUrl}/Question/ToggleLike/${pageUrl.value}`,
 				'POST',
 				{
 					'Ocp-Apim-Subscription-Key': `${apiKey}`,
@@ -211,6 +238,7 @@ export default {
 			)
 			if (data) {
 				likedByUser.value = true
+				dislikedByUser.value = false
 			}
 		}
 
@@ -336,6 +364,7 @@ export default {
 			firstArray,
 			secondArray,
 			likedByUser,
+			dislikedByUser,
 			active,
 			isAuth,
 			apiUrl,
@@ -343,6 +372,7 @@ export default {
 			textarea,
 			isError,
 			sendLike,
+			sendDislike,
 			setAutoHeight,
 			divideArray,
 			sendAuthenticationQuestion,
@@ -350,10 +380,7 @@ export default {
 			hideMessage,
 			clearForm,
 			login,
-<<<<<<< HEAD
-			replaceWithBr
-=======
->>>>>>> main
+			replaceWithBr,
 		}
 	},
 }
@@ -533,6 +560,15 @@ export default {
     color: rgba(255, 255, 255, 0.6);
     margin-right: 20px;
   }
+
+	&__dislike {
+		position: relative;
+		top: 10px;
+		margin-right: 15px;
+		& svg {
+			transform: rotate(180deg);
+		}
+	}
 
   &__button {
     cursor: pointer;
