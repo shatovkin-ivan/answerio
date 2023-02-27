@@ -37,7 +37,8 @@
 					</div>
 					<div class="form__right-block">
 						<ShareButton 
-						class="form__share"
+							v-show="pageUrl"
+							class="form__share"
 							:url="pageUrl"
 						/>
 						<PreloaderComponent v-show="isLoading" class="form__preloader"/>
@@ -77,7 +78,7 @@
 </template>
 
 <script>
-import { vue3Debounce, debounce } from 'vue-debounce'
+import { vue3Debounce } from 'vue-debounce'
 
 import { ref, computed, watch, onMounted, watchEffect } from 'vue'
 import RecommendedQuestions from '@/components/RecommendedQuestions.vue'
@@ -164,6 +165,7 @@ export default {
 					answer.value = data.answer
 					pageUrl.value = data.url
 					likedByUser.value = data.likedByUser
+					dislikedByUser.value = data.dislikedByUser
 					setMetaData()
 					setPathName(data.url)
 					divideArray(data.recommendedQuestions)
@@ -197,6 +199,7 @@ export default {
 					pageUrl.value = data.url
 					setMetaData()
 					likedByUser.value = data.likedByUser
+					dislikedByUser.value = data.dislikedByUser
 					setPathName(data.url)
 					divideArray(data.recommendedQuestions)
 				}	
@@ -272,6 +275,7 @@ export default {
 					question.value = data.question
 					pageUrl.value = data.url
 					likedByUser.value = data.likedByUser
+					dislikedByUser.value = data.dislikedByUser
 					setMetaData()
 					divideArray(data.recommendedQuestions)
 				}
@@ -315,6 +319,9 @@ export default {
 			active.value = false
 			firstArray.value = []
 			secondArray.value = []
+			pageUrl.value = ''
+			likedByUser.value = false
+			dislikedByUser.value = false
 			router.push('/')
 		}
 
@@ -356,9 +363,9 @@ export default {
 		watchEffect(() => {
 			const newUlr = router.currentRoute.value.fullPath
 			pathName.value = newUlr
-			debounce(() => {
+			// debounce(() => {
 				if (pathName.value.length > 1) getPageByUrl(`${apiUrl}/Question/ByUrl/${pathName.value}`)
-			}, 1000)
+			// }, 1000)
 		})
 		onMounted(() => {
 			getPathName()

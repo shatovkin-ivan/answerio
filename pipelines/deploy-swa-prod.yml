@@ -1,0 +1,23 @@
+variables:
+  - group: qanda-webapp-prod
+
+trigger:
+  - prod
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - script: tree .
+    displayName: 'List project files'
+
+  - task: AzureStaticWebApp@0
+    displayName: 'Build and deploy to Azure Static Web App'
+    inputs:
+      output_location: 'dist'
+    env:
+      azure_static_web_apps_api_token: $(AzureSWADeploymentToken)
+      VUE_APP_AAD_TENANT: $(VUE_APP_AAD_TENANT)
+      VUE_APP_API_URL: $(VUE_APP_API_URL)
+      VUE_APP_CLIENT_ID: $(VUE_APP_CLIENT_ID)
+      VUE_APP_REDIRECT_URI: $(VUE_APP_REDIRECT_URI)

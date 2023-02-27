@@ -5,49 +5,94 @@
         <p class="card__subtitle">
           {{ item.question }}
         </p>
-        <ToggleButton :index="index" @BtnToggleModal="toggleModal" />
       </div>
-
-      <div class="card__content">
-        {{ item.answer }}
+      <div ref="wrap" class="card__wrapper">
+        <p ref="text" class="card__content">
+          {{ item.answer }}
+        </p>
+        
       </div>
+      <button class="show-more" 
+        v-text="isOpen ? 'hide' : 'read more'"
+        @click="isOpen ? hideText() : showMore()"
+      ></button>
+      <a 
+        @click="changePage(item.url)"
+        v-show="isOpen" 
+        :href="cardURL" 
+        class="full-answer" >
+        read full answer
+      </a>
     </div>
     <AnswerCardFooter :item="item" />
   </li>
-  <Teleport to="body">
-    <DetailAnswer :item="item" :visible="showModal" @hideModalOverlay="closeModal" />
-  </Teleport>
 </template>
 
 <script>
-import ToggleButton from '@/components/answers/ToggleButton.vue'
 import AnswerCardFooter from '@/components/answers/AnswerCardFooter.vue'
-import DetailAnswer from '@/components/answers/DetailAnswer.vue'
 
-import { ref } from 'vue'
+import { ref, onMounted, computed } from 'vue'
+import { useRouter } from 'vue-router'
 
 export default {
   components: {
-    ToggleButton,
     AnswerCardFooter,
-    DetailAnswer,
   },
   props: {
     item: Object,
     index: Number,
   },
-  setup() {
-    let showModal = ref(false)
+  setup(props) {
+    const showModal = ref(false)
+    const text = ref(null)
+    const wrap = ref(null)
+    const height = 60
+    const isOpen = ref(false)
+
+    const router = useRouter()
+
+    const cardURL = computed(() => {
+      return window.location.origin + (process.env.NODE_ENV === 'production' ? '/' : '/#/') + props.item.url
+    })
+
     function toggleModal() {
       showModal.value = !showModal.value
     }
     function closeModal(visibility) {
       showModal.value = !visibility
     }
+    function hideText() {
+      if (isOpen.value) isOpen.value = false
+      wrap.value.style.maxHeight = height + 'px'
+    }
+    function showMore() {
+      isOpen.value = true
+      wrap.value.style.maxHeight = height * 2 + 'px'
+    }
+    function changePage(url) {
+      router.push({
+				name: 'home',
+				params: {
+          url
+				}
+			})
+      window.scrollTo(0, 100)
+    }
+    onMounted(() => {
+      hideText()
+    })
+
     return {
       toggleModal,
       showModal,
+      text,
+      wrap,
+      isOpen,
       closeModal,
+      showMore,
+      hideText,
+      changePage,
+      cardURL
     }
   },
 }
@@ -104,19 +149,19 @@ export default {
       fill: var(--white-color);
     }
   }
-
+  &__wrapper {
+    margin-bottom: 15px;
+    overflow: hidden;
+  }
   &__content {
     position: relative;
     padding-left: 15px;
-    max-height: 60px;
-    overflow: hidden;
     background: linear-gradient(180deg, #a0a1a6 22.03%, rgba(160, 161, 166, 0) 157.63%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     text-fill-color: transparent;
     transition: 0.3s max-height ease-in-out;
-
     &::before {
       content: '';
       position: absolute;
@@ -132,6 +177,15 @@ export default {
   }
 }
 
+.show-more, .full-answer {
+  display: inline-block;
+  padding: 3px 15px;
+  color: var(--theme-color-1);
+  font-size: 1.8rem;
+  background-color: transparent;
+  text-transform: uppercase;
+}
+
 @media screen and (max-width: 560px) {
   .card {
     &__top {
@@ -140,10 +194,6 @@ export default {
 
     &__subtitle {
       margin-bottom: 15px;
-    }
-
-    &__content {
-      max-height: 76px;
     }
   }
 }

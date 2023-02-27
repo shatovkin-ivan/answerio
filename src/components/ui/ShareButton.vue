@@ -73,4 +73,7 @@ export default {
         background-color: #404245;
     }
 }
+.form__share .share__icon {
+    background-color: transparent;
+}
 </style>
