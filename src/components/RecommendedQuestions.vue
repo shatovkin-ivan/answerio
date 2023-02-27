@@ -21,6 +21,7 @@
         <RecommendedQuestion
           v-for="question in firstArray"
           :key="question.id"
+          :url="question.url"
           :question="question.question"
           :answer="question.answer"
         />
@@ -29,6 +30,7 @@
         <RecommendedQuestion
           v-for="question in secondArray"
           :key="question.id"
+          :url="question.url"
           :question="question.question"
           :answer="question.answer"
         />

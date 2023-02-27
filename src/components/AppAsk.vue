@@ -277,6 +277,7 @@ export default {
 					likedByUser.value = data.likedByUser
 					dislikedByUser.value = data.dislikedByUser
 					setMetaData()
+					console.log(data);
 					divideArray(data.recommendedQuestions)
 				}
 				isLoading.value = false
