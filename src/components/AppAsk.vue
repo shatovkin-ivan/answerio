@@ -689,24 +689,25 @@ export default {
     }
 
     &__button {
-      position: absolute;
+      position: relative;
       bottom: 20px;
       left: 30px;
     }
-	&__preloader {
-		left: 50%;
-		top: 75px;
-		transform: translateX(-50%);
-	}
+		&__preloader {
+			left: 50%;
+			top: 75px;
+			transform: translateX(-50%);
+		}
 
-	&__share {
-		margin-bottom: 10px;
-	}
+		&__share {
+			margin-bottom: 10px;
+		}
 
-	&__button-wrap {
-		display: flex;
-		
-	}
+		&__dislike {
+			position: relative;
+			top: -10px;
+			
+		}
   }
 
   .ask {
